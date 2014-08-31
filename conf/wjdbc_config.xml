@@ -1,0 +1,16 @@
+<wjdbc-configuration>
+    <rmi compressionMode="bestspeed" registryPort="40000" remotingPort="40001"/>
+	<connection 
+		id="h2" 
+		driver="org.h2.Driver" 
+		url="jdbc:h2:~/test"
+		user="sa"
+       	password="">       	
+    	<connection-pool
+                   maxActive="20"
+                   maxIdle="10"
+                   maxWait="10000"
+                   timeBetweenEvictionRunsMillis="5000"
+                   minEvictableIdleTimeMillis="10000"/>
+	</connection>
+</wjdbc-configuration>
