@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -16,6 +12,7 @@ public class StatementUpdateCommand implements Command<Integer, Statement> {
 	private String					sql;
 
 	public StatementUpdateCommand() {
+		// Empty
 	}
 
 	public StatementUpdateCommand(final String sql) {

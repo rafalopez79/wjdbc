@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.math.BigDecimal;
@@ -24,50 +20,50 @@ public final class ParameterTypeCombinations {
 	}
 
 	public static final Class<?>[][]	TYPE_COMBINATIONS		= new Class[][] { new Class[0], // 0
-			new Class[] { boolean.class }, // 1
-			new Class[] { int.class }, // 2
-			new Class[] { String.class }, // 3
-			new Class[] { Map.class }, // 4
-			// Pairs
-			new Class[] { int.class, int.class }, // 5
-			new Class[] { int.class, Calendar.class }, // 6
-			new Class[] { String.class, boolean.class }, // 7
-			new Class[] { String.class, byte.class }, // 8
-			new Class[] { String.class, short.class }, // 9
-			new Class[] { String.class, int.class }, // 10
-			new Class[] { String.class, long.class }, // 11
-			new Class[] { String.class, float.class }, // 12
-			new Class[] { String.class, double.class }, // 13
-			new Class[] { String.class, String.class }, // 14
-			new Class[] { String.class, Date.class }, // 15
-			new Class[] { String.class, Time.class }, // 16
-			new Class[] { String.class, Timestamp.class }, // 17
-			new Class[] { String.class, Calendar.class }, // 18
-			new Class[] { String.class, URL.class }, // 19
-			new Class[] { String.class, BigDecimal.class }, // 20
-			new Class[] { String.class, byte[].class }, // 21
-			new Class[] { String.class, int[].class }, // 22
-			new Class[] { String.class, String[].class }, // 23
-			// Triples
-			new Class[] { int.class, int.class, int.class }, // 24
-			new Class[] { String.class, int.class, int.class }, // 25
-			new Class[] { int.class, int.class, String.class }, // 26
-			new Class[] { String.class, int.class, String.class }, // 27
-			new Class[] { String.class, String.class, String.class }, // 28
-			new Class[] { String.class, Date.class, Calendar.class }, // 29
-			new Class[] { String.class, Time.class, Calendar.class }, // 30
-			new Class[] { String.class, Timestamp.class, Calendar.class }, // 31
-			// Quad
-			new Class[] { String.class, int.class, int.class, int.class }, // 32
-			new Class[] { String.class, String.class, String.class, String.class }, // 33
-			new Class[] { String.class, String.class, String.class, String[].class }, // 34
-			new Class[] { String.class, String.class, String.class, int[].class }, // 35
-			// Five
-			new Class[] { String.class, String.class, String.class, int.class, boolean.class }, // 36
-			new Class[] { String.class, String.class, String.class, boolean.class, boolean.class }, // 37
-			// Six
-			new Class[] { String.class, String.class, String.class, String.class, String.class, String.class } // 38
-																			};
+		new Class[] { boolean.class }, // 1
+		new Class[] { int.class }, // 2
+		new Class[] { String.class }, // 3
+		new Class[] { Map.class }, // 4
+		// Pairs
+		new Class[] { int.class, int.class }, // 5
+		new Class[] { int.class, Calendar.class }, // 6
+		new Class[] { String.class, boolean.class }, // 7
+		new Class[] { String.class, byte.class }, // 8
+		new Class[] { String.class, short.class }, // 9
+		new Class[] { String.class, int.class }, // 10
+		new Class[] { String.class, long.class }, // 11
+		new Class[] { String.class, float.class }, // 12
+		new Class[] { String.class, double.class }, // 13
+		new Class[] { String.class, String.class }, // 14
+		new Class[] { String.class, Date.class }, // 15
+		new Class[] { String.class, Time.class }, // 16
+		new Class[] { String.class, Timestamp.class }, // 17
+		new Class[] { String.class, Calendar.class }, // 18
+		new Class[] { String.class, URL.class }, // 19
+		new Class[] { String.class, BigDecimal.class }, // 20
+		new Class[] { String.class, byte[].class }, // 21
+		new Class[] { String.class, int[].class }, // 22
+		new Class[] { String.class, String[].class }, // 23
+		// Triples
+		new Class[] { int.class, int.class, int.class }, // 24
+		new Class[] { String.class, int.class, int.class }, // 25
+		new Class[] { int.class, int.class, String.class }, // 26
+		new Class[] { String.class, int.class, String.class }, // 27
+		new Class[] { String.class, String.class, String.class }, // 28
+		new Class[] { String.class, Date.class, Calendar.class }, // 29
+		new Class[] { String.class, Time.class, Calendar.class }, // 30
+		new Class[] { String.class, Timestamp.class, Calendar.class }, // 31
+		// Quad
+		new Class[] { String.class, int.class, int.class, int.class }, // 32
+		new Class[] { String.class, String.class, String.class, String.class }, // 33
+		new Class[] { String.class, String.class, String.class, String[].class }, // 34
+		new Class[] { String.class, String.class, String.class, int[].class }, // 35
+		// Five
+		new Class[] { String.class, String.class, String.class, int.class, boolean.class }, // 36
+		new Class[] { String.class, String.class, String.class, boolean.class, boolean.class }, // 37
+		// Six
+		new Class[] { String.class, String.class, String.class, String.class, String.class, String.class } // 38
+	};
 
 	// Single
 	public static final int				VOID						= 0;

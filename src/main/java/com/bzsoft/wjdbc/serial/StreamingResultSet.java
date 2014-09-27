@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.serial;
 
 import java.io.ByteArrayInputStream;
@@ -130,8 +126,7 @@ public class StreamingResultSet implements ResultSet, Externalizable {
 	public boolean populate(final ResultSet rs) throws SQLException {
 		final ResultSetMetaData md = rs.getMetaData();
 		// Fetch the meta data immediately if required. Succeeding getMetaData()
-		// calls
-		// on the ResultSet won't require an additional remote call
+		// calls on the ResultSet won't require an additional remote call
 		if (prefetchMetaData) {
 			this.metaData = new SerialResultSetMetaData(md);
 		}
@@ -159,7 +154,6 @@ public class StreamingResultSet implements ResultSet, Externalizable {
 	@Override
 	public boolean next() throws SQLException {
 		boolean result = false;
-
 		if (++cursor < rows.size()) {
 			actualRow = rows.get(cursor);
 			result = true;

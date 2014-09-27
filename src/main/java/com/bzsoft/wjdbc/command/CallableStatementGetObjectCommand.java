@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -14,7 +10,6 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import com.bzsoft.wjdbc.WCallableStatement;
-
 
 public class CallableStatementGetObjectCommand extends BaseCommand<Object, CallableStatement> {
 

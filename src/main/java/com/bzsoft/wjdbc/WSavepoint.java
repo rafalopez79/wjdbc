@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc;
 
 import java.sql.SQLException;
@@ -10,7 +6,6 @@ import java.sql.Savepoint;
 import com.bzsoft.wjdbc.command.DecoratedCommandSink;
 import com.bzsoft.wjdbc.command.JdbcInterfaceType;
 import com.bzsoft.wjdbc.command.ReflectiveCommand;
-
 
 public class WSavepoint extends WBase implements Savepoint {
 

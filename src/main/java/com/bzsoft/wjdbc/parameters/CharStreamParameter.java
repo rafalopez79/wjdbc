@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.parameters;
 
 import java.io.CharArrayReader;
@@ -14,7 +10,6 @@ import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.serial.StreamSerializer;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
-
 
 public class CharStreamParameter implements PreparedStatementParameter {
 

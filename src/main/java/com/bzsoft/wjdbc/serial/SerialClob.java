@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.serial;
 
 import java.io.ByteArrayInputStream;
@@ -29,6 +25,7 @@ public class SerialClob implements Clob, Externalizable {
 	protected char[]				data;
 
 	public SerialClob() {
+		// empty
 	}
 
 	public SerialClob(final Clob other) throws SQLException {

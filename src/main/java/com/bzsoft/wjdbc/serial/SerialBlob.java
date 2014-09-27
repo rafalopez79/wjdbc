@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.serial;
 
 import java.io.ByteArrayInputStream;
@@ -21,6 +17,7 @@ public class SerialBlob implements Blob, Externalizable {
 	private byte[]					data;
 
 	public SerialBlob() {
+		// empty
 	}
 
 	public SerialBlob(final Blob other) throws SQLException {

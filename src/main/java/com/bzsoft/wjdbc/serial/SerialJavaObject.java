@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.serial;
 
 import java.io.Externalizable;
@@ -10,22 +6,25 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 public class SerialJavaObject implements Externalizable {
-    private static final long serialVersionUID = 4050198631045215540L;
-    
-    private Object _javaObject;
+	private static final long	serialVersionUID	= 4050198631045215540L;
 
-    public SerialJavaObject(Object javaObject) {
-        _javaObject = javaObject;
-    }
+	private Object					javaObject;
 
-    public SerialJavaObject() {
-    }
+	public SerialJavaObject(final Object javaObject) {
+		this.javaObject = javaObject;
+	}
 
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject(_javaObject);
-    }
+	public SerialJavaObject() {
+		// empty
+	}
 
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        _javaObject = in.readObject();
-    }
+	@Override
+	public void writeExternal(final ObjectOutput out) throws IOException {
+		out.writeObject(javaObject);
+	}
+
+	@Override
+	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
+		javaObject = in.readObject();
+	}
 }

@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.server.rmi;
 
 import java.rmi.RemoteException;
@@ -30,13 +26,13 @@ public class CommandSinkRmiImpl implements CommandSinkRmi, Unreferenced {
 
 	@Override
 	public ConnectResult connect(final String url, final Properties props, final Properties clientInfo, final CallingContext ctx) throws SQLException,
-			RemoteException {
+	RemoteException {
 		return processor.createConnection(url, props, clientInfo, ctx);
 	}
 
 	@Override
 	public <R, V> R process(final long connuid, final long uid, final Command<R, V> cmd, final CallingContext ctx) throws SQLException,
-			RemoteException {
+	RemoteException {
 		return processor.process(connuid, uid, cmd, ctx);
 	}
 }

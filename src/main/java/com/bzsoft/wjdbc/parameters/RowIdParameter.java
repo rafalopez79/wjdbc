@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Hunter Payne
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.parameters;
 
 import java.io.IOException;
@@ -12,7 +8,6 @@ import java.sql.RowId;
 import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.serial.SerialRowId;
-
 
 public class RowIdParameter implements PreparedStatementParameter {
 

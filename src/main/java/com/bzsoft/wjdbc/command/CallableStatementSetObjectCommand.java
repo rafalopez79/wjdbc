@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -21,6 +17,7 @@ public class CallableStatementSetObjectCommand extends BaseCommand<Void, Callabl
 	private Object					transport;
 
 	public CallableStatementSetObjectCommand() {
+		// empty
 	}
 
 	public CallableStatementSetObjectCommand(final int index, final Integer targetSqlType, final Integer scale) {

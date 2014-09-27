@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Hunter Payne
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -13,7 +9,6 @@ import java.sql.SQLXML;
 
 import com.bzsoft.wjdbc.serial.SerialSQLXML;
 
-
 public class CallableStatementGetSQLXMLCommand extends BaseCommand<SQLXML, CallableStatement> {
 	private static final long	serialVersionUID	= 4203440656745793953L;
 
@@ -21,6 +16,7 @@ public class CallableStatementGetSQLXMLCommand extends BaseCommand<SQLXML, Calla
 	private String					parameterName;
 
 	public CallableStatementGetSQLXMLCommand() {
+		// empty
 	}
 
 	public CallableStatementGetSQLXMLCommand(final int index) {

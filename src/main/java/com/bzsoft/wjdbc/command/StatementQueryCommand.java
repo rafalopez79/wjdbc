@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -18,6 +14,7 @@ public class StatementQueryCommand implements Command<ResultSet, Statement>, Res
 	private String					sql;
 
 	public StatementQueryCommand() {
+		// Empty
 	}
 
 	public StatementQueryCommand(final String sql, final int resultSetType) {

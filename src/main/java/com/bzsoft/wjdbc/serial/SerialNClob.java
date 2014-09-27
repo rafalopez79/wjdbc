@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Hunter Payne
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.serial;
 
 import java.io.IOException;
@@ -16,6 +12,7 @@ public class SerialNClob extends SerialClob implements NClob {
 	private static final long	serialVersionUID	= -869122661664868443L;
 
 	public SerialNClob() {
+		// empty
 	}
 
 	public SerialNClob(final NClob other) throws SQLException {

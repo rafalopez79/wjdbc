@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc;
 
 import java.sql.Connection;
@@ -32,8 +28,9 @@ import com.bzsoft.wjdbc.util.Validate;
 
 public class WStatement extends WBase implements Statement {
 
-	protected final Connection		connection;
 	private final List<String>		batchCollector;
+
+	protected final Connection		connection;
 	protected int						maxRows;
 	protected int						queryTimeout;
 	protected StreamingResultSet	currentResultSet;
@@ -53,7 +50,6 @@ public class WStatement extends WBase implements Statement {
 		this.batchCollector = new ArrayList<String>();
 		isClosed = false;
 		isCloseOnCompletion = false;
-
 		maxFieldSize = null;
 	}
 
@@ -177,7 +173,7 @@ public class WStatement extends WBase implements Statement {
 	public SQLWarning getWarnings() throws SQLException {
 		Validate.isFalse(connection.isClosed(), "Connection closed");
 		Validate.isFalse(isClosed, "Statement closed");
-		return (SQLWarning) sink.process(objectUid, ReflectiveCommand.of(JdbcInterfaceType.STATEMENT, "getWarnings"));
+		return sink.process(objectUid, ReflectiveCommand.<SQLWarning, Void> of(JdbcInterfaceType.STATEMENT, "getWarnings"));
 	}
 
 	@Override
@@ -387,7 +383,6 @@ public class WStatement extends WBase implements Statement {
 		return sink.processWithIntResult(objectUid, ReflectiveCommand.<Integer, Object> of(JdbcInterfaceType.STATEMENT, "getResultSetHoldability"));
 	}
 
-	/* start JDBC4 support */
 	@Override
 	public boolean isClosed() throws SQLException {
 		return isClosed;

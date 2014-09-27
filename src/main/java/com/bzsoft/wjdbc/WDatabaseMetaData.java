@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc;
 
 import java.sql.Connection;
@@ -119,7 +115,7 @@ public class WDatabaseMetaData extends WBase implements DatabaseMetaData {
 			return sink.processWithIntResult(objectUid,
 					ReflectiveCommand.<Integer, Object> of(JdbcInterfaceType.DATABASEMETADATA, "getDriverMajorVersion"));
 		} catch (final SQLException e) {
-			return 1;
+			return 0;
 		}
 	}
 

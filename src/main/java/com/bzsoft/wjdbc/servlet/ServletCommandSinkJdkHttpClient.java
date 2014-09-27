@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.servlet;
 
 import java.io.ObjectInputStream;
@@ -15,7 +11,6 @@ import com.bzsoft.wjdbc.command.ConnectResult;
 import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 import com.bzsoft.wjdbc.util.StreamCloser;
-
 
 public class ServletCommandSinkJdkHttpClient extends AbstractServletCommandSinkClient {
 
@@ -76,6 +71,7 @@ public class ServletCommandSinkJdkHttpClient extends AbstractServletCommandSinkC
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <R, P> R process(final long connuid, final long uid, final Command<R, P> cmd, final CallingContext ctx) throws SQLException {
 		HttpURLConnection conn = null;

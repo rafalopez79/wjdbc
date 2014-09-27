@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -12,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.parameters.PreparedStatementParameter;
-
 
 public class PreparedStatementQueryCommand implements Command<ResultSet, PreparedStatement>, ResultSetProducerCommand {
 

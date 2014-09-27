@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -18,6 +14,7 @@ public class ConnectionRollbackWithSavepointCommand extends BaseCommand<Void, Co
 	private long					uidOfSavepoint;
 
 	public ConnectionRollbackWithSavepointCommand() {
+		// Empty
 	}
 
 	public ConnectionRollbackWithSavepointCommand(final long uidOfSavepoint) {

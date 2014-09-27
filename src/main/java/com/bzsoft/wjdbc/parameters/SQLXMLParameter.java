@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Hunter Payne
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.parameters;
 
 import java.io.IOException;
@@ -12,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.SQLXML;
 
 import com.bzsoft.wjdbc.serial.SerialSQLXML;
-
 
 public class SQLXMLParameter implements PreparedStatementParameter {
 

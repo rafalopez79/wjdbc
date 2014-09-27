@@ -1,7 +1,3 @@
-//VJDBC - Virtual JDBC
-//Written by Michael Link
-//Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.server.command;
 
 import java.sql.ResultSet;
@@ -17,7 +13,6 @@ import org.apache.log4j.Logger;
 
 import com.bzsoft.wjdbc.serial.RowPacket;
 import com.bzsoft.wjdbc.server.concurrent.Executor;
-
 
 /**
  * The ResultSetHolder is responsible to hold a reference to an open ResultSet.

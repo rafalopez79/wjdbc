@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.util;
 
 import java.net.InetAddress;
@@ -21,8 +17,8 @@ public final class ClientInfo {
 			try {
 				// Deliver local host information
 				final InetAddress iadr = InetAddress.getLocalHost();
-				PROPERTIES.put("vjdbc-client.address", iadr.getHostAddress());
-				PROPERTIES.put("vjdbc-client.name", iadr.getHostName());
+				PROPERTIES.put("wjdbc-client.address", iadr.getHostAddress());
+				PROPERTIES.put("wjdbc-client.name", iadr.getHostName());
 				// Split the passed string into pieces and put all system PROPERTIES
 				// into the Properties object
 				if (propertiesToTransfer != null) {

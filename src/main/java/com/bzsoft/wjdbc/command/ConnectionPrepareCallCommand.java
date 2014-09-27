@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -14,7 +10,6 @@ import java.sql.SQLException;
 import com.bzsoft.wjdbc.transport.JdbcStatementTransport;
 import com.bzsoft.wjdbc.transport.StatementLocalJdbcObjectTransport;
 
-
 public class ConnectionPrepareCallCommand extends BaseCommand<JdbcStatementTransport<CallableStatement>, Connection> {
 	private static final long	serialVersionUID	= 3258125843279655728L;
 
@@ -24,6 +19,7 @@ public class ConnectionPrepareCallCommand extends BaseCommand<JdbcStatementTrans
 	private Integer				resultSetHoldability;
 
 	public ConnectionPrepareCallCommand() {
+		// empty
 	}
 
 	public ConnectionPrepareCallCommand(final String sql) {

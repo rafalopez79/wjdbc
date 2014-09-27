@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -12,13 +8,13 @@ import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.parameters.PreparedStatementParameter;
 
-
 public class PreparedStatementExecuteCommand extends BaseCommand<Boolean, PreparedStatement> {
 	private static final long					serialVersionUID	= 8987200111317750567L;
 
 	protected PreparedStatementParameter[]	params;
 
 	public PreparedStatementExecuteCommand() {
+		// Empty
 	}
 
 	public PreparedStatementExecuteCommand(final PreparedStatementParameter[] params) {

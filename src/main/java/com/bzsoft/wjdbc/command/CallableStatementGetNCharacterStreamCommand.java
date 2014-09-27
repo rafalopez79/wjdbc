@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Hunter Payne
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -13,7 +9,6 @@ import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.serial.StreamSerializer;
 
-
 public class CallableStatementGetNCharacterStreamCommand extends BaseCommand<char[], CallableStatement> {
 
 	private static final long	serialVersionUID	= -8218845136435435097L;
@@ -22,6 +17,7 @@ public class CallableStatementGetNCharacterStreamCommand extends BaseCommand<cha
 	private String					parameterName;
 
 	public CallableStatementGetNCharacterStreamCommand() {
+		// Empty
 	}
 
 	public CallableStatementGetNCharacterStreamCommand(final int index) {

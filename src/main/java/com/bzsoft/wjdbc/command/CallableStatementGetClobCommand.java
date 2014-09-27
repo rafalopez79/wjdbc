@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -13,7 +9,6 @@ import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.serial.SerialClob;
 
-
 public class CallableStatementGetClobCommand extends BaseCommand<Clob, CallableStatement> {
 
 	private static final long	serialVersionUID	= 8230491873823084213L;
@@ -22,6 +17,7 @@ public class CallableStatementGetClobCommand extends BaseCommand<Clob, CallableS
 	private String					parameterName;
 
 	public CallableStatementGetClobCommand() {
+		// empty
 	}
 
 	public CallableStatementGetClobCommand(final int index) {

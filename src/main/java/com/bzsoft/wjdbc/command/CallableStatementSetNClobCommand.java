@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Hunter Payne
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -19,6 +15,7 @@ public class CallableStatementSetNClobCommand extends BaseCommand<Void, Callable
 	private NClob					clob;
 
 	public CallableStatementSetNClobCommand() {
+		// empty
 	}
 
 	public CallableStatementSetNClobCommand(final int index, final NClob clob) throws IOException {

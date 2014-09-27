@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.parameters;
 
 import java.io.IOException;
@@ -30,12 +26,22 @@ public class StringParameter implements PreparedStatementParameter {
 
 	@Override
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
-		value = in.readUTF();
+		final boolean bool = in.readBoolean();
+		if (bool) {
+			value = null;
+		} else {
+			value = in.readUTF();
+		}
 	}
 
 	@Override
 	public void writeExternal(final ObjectOutput out) throws IOException {
-		out.writeUTF(value);
+		if (value == null) {
+			out.writeBoolean(true);
+		} else {
+			out.writeBoolean(false);
+			out.writeUTF(value);
+		}
 	}
 
 	@Override

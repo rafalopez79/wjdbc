@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.serial;
 
 import java.io.Externalizable;
@@ -211,12 +207,12 @@ public class RowPacket implements Externalizable {
 					flattenedColumnsValues[internalIndex].setObject(rowCount, new SerialRowId(rs.getRowId(i)));
 					break;
 
-				// what oracle does instead of SQLXML in their 1.6 driver,
-				// don't ask me why, commented out so we don't need
-				// an oracle driver to compile this class
-				// case 2007:
-				// flattenedColumnsValues[internalIndex].setObject(rowCount, new
-				// XMLType(((OracleResultSet)rs).getOPAQUE(i)));
+					// what oracle does instead of SQLXML in their 1.6 driver,
+					// don't ask me why, commented out so we don't need
+					// an oracle driver to compile this class
+					// case 2007:
+					// flattenedColumnsValues[internalIndex].setObject(rowCount, new
+					// XMLType(((OracleResultSet)rs).getOPAQUE(i)));
 				case Types.SQLXML:
 					flattenedColumnsValues[internalIndex].setObject(rowCount, new SerialSQLXML(rs.getSQLXML(i)));
 					break;

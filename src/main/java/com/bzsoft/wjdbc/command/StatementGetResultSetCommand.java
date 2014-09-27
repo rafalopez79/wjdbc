@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -16,6 +12,7 @@ public class StatementGetResultSetCommand extends BaseCommand<ResultSet, Stateme
 	private static final long	serialVersionUID	= 972478509574280291L;
 
 	public StatementGetResultSetCommand() {
+		// Empty
 	}
 
 	@Override

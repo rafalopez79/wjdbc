@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.rmi;
 
 import java.rmi.RemoteException;
@@ -13,7 +9,6 @@ import com.bzsoft.wjdbc.command.CommandSink;
 import com.bzsoft.wjdbc.command.ConnectResult;
 import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
-
 
 public class CommandSinkRmiProxy implements CommandSink {
 

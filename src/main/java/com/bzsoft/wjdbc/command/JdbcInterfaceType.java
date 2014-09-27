@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.sql.CallableStatement;
@@ -13,7 +9,6 @@ import java.sql.Statement;
 
 import com.bzsoft.wjdbc.server.command.ResultSetHolder;
 
-
 public final class JdbcInterfaceType {
 
 	private JdbcInterfaceType() {
@@ -21,7 +16,7 @@ public final class JdbcInterfaceType {
 	}
 
 	public static final Class<?>[]	INTERFACES			= new Class[] { null, CallableStatement.class, Connection.class, DatabaseMetaData.class,
-			PreparedStatement.class, Savepoint.class, Statement.class, ResultSetHolder.class };
+		PreparedStatement.class, Savepoint.class, Statement.class, ResultSetHolder.class };
 
 	public static final int				CALLABLESTATEMENT	= 1;
 	public static final int				CONNECTION			= 2;

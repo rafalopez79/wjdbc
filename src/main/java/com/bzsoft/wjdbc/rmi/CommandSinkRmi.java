@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.rmi;
 
 import java.rmi.Remote;
@@ -12,7 +8,6 @@ import java.util.Properties;
 import com.bzsoft.wjdbc.command.Command;
 import com.bzsoft.wjdbc.command.ConnectResult;
 import com.bzsoft.wjdbc.serial.CallingContext;
-
 
 public interface CommandSinkRmi extends Remote {
 

@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -11,7 +7,6 @@ import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.serial.RowPacket;
 import com.bzsoft.wjdbc.server.command.ResultSetHolder;
-
 
 public class NextRowPacketCommand extends BaseCommand<RowPacket, ResultSetHolder> {
 

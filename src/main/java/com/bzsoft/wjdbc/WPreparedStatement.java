@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc;
 
 import java.io.InputStream;
@@ -97,7 +93,6 @@ public class WPreparedStatement extends WStatement implements PreparedStatement 
 		} catch (final Exception e) {
 			throw SQLExceptionHelper.wrap(e);
 		}
-
 		return result;
 	}
 

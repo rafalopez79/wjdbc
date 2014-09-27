@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.parameters;
 
 import java.io.IOException;
@@ -12,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.serial.SerialClob;
-
 
 public class ClobParameter implements PreparedStatementParameter {
 	private static final long	serialVersionUID	= -8231456859022053216L;

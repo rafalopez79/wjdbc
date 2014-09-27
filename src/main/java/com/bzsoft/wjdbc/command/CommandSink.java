@@ -1,14 +1,9 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.sql.SQLException;
 import java.util.Properties;
 
 import com.bzsoft.wjdbc.serial.CallingContext;
-
 
 /**
  * Interface which each CommandSink must implement to be used for VJDBC

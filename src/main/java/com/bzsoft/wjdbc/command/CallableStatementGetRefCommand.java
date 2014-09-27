@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -13,7 +9,6 @@ import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.serial.SerialRef;
 
-
 public class CallableStatementGetRefCommand extends BaseCommand<Ref, CallableStatement> {
 
 	private static final long	serialVersionUID	= 6253579473434177231L;
@@ -22,6 +17,7 @@ public class CallableStatementGetRefCommand extends BaseCommand<Ref, CallableSta
 	private String					parameterName;
 
 	public CallableStatementGetRefCommand() {
+		// empty
 	}
 
 	public CallableStatementGetRefCommand(final int index) {

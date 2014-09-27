@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Hunter Payne
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -19,6 +15,7 @@ public class CallableStatementSetSQLXMLCommand extends BaseCommand<Void, Callabl
 	private SQLXML		sqlxml;
 
 	public CallableStatementSetSQLXMLCommand() {
+		// Empty
 	}
 
 	public CallableStatementSetSQLXMLCommand(final int index, final SQLXML sqlxml) throws IOException {

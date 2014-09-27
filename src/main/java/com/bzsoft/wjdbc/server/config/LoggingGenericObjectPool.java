@@ -1,7 +1,3 @@
-//VJDBC - Virtual JDBC
-//Written by Michael Link
-//Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.server.config;
 
 import org.apache.commons.pool.impl.GenericObjectPool;
@@ -10,7 +6,7 @@ import org.apache.log4j.Logger;
 /**
  * This class inherits from the GenericObjectPool and provides a little bit of
  * logging when eviction happens.
- * 
+ *
  * @author Mike
  */
 public class LoggingGenericObjectPool extends GenericObjectPool {

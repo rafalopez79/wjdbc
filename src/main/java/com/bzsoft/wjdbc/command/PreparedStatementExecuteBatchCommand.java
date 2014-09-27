@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.command;
 
 import java.io.IOException;
@@ -13,7 +9,6 @@ import java.util.List;
 
 import com.bzsoft.wjdbc.parameters.PreparedStatementParameter;
 
-
 public class PreparedStatementExecuteBatchCommand implements Command<int[], PreparedStatement> {
 
 	private static final long							serialVersionUID	= 2439854950000135145L;
@@ -21,6 +16,7 @@ public class PreparedStatementExecuteBatchCommand implements Command<int[], Prep
 	private List<PreparedStatementParameter[]>	batchCommands;
 
 	public PreparedStatementExecuteBatchCommand() {
+		// empty
 	}
 
 	public PreparedStatementExecuteBatchCommand(final List<PreparedStatementParameter[]> batches) {

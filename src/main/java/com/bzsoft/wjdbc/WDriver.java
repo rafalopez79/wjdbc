@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc;
 
 import java.rmi.server.RMISocketFactory;
@@ -136,12 +132,7 @@ public final class WDriver implements Driver {
 		} else {
 			socketFactory = new CompressedRMISocketFactory(compressionMode);
 		}
-		// final ConnectionBrokerRmi broker = (ConnectionBrokerRmi)
-		// Naming.lookup(rminame, socketFactory);
-		// final CommandSinkRmi rmiSink = broker.createCommandSink();
-		// final CommandSink proxy = new CommandSinkRmiProxy(rmiSink);
-		final CommandSink proxy = new ReconnectableCommandSinkRmiProxy(rminame, socketFactory);
-		return proxy;
+		return new ReconnectableCommandSinkRmiProxy(rminame, socketFactory);
 	}
 
 	private static CommandSink createServletCommandSink(final String url, final Properties props) throws Exception {
@@ -160,8 +151,6 @@ public final class WDriver implements Driver {
 		return new ServletCommandSinkJdkHttpClient(url, requestEnhancer);
 	}
 
-	// Helper method (can't use the 1.4-Method because support for 1.3 is
-	// desired)
 	private static String[] split(final String url) {
 		final char[] splitChars = { ',', ';', '#', '$' };
 		for (final char splitChar : splitChars) {

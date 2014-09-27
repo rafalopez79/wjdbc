@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.server.servlet;
 
 import java.io.FileInputStream;
@@ -40,7 +36,7 @@ public class ServletCommandSink extends HttpServlet {
 
 	private static final String	INIT_PARAMETER_CONFIG_RESOURCE	= "config-resource";
 	private static final String	INIT_PARAMETER_CONFIG_VARIABLES	= "config-variables";
-	private static final String	DEFAULT_CONFIG_RESOURCE				= "/WEB-INF/vjdbc-config.xml";
+	private static final String	DEFAULT_CONFIG_RESOURCE				= "/WEB-INF/wjdbc-config.xml";
 	private static final Logger	LOGGER									= Logger.getLogger(ServletCommandSink.class);
 
 	private WJdbcConfiguration		config;
@@ -70,7 +66,7 @@ public class ServletCommandSink extends HttpServlet {
 		}
 
 		if (configResourceInputStream == null) {
-			final String msg = "VJDBC-Configuration " + configResource + " not found !";
+			final String msg = "WJDBC-Configuration " + configResource + " not found !";
 			LOGGER.error(msg);
 			throw new ServletException(msg);
 		}
@@ -103,12 +99,12 @@ public class ServletCommandSink extends HttpServlet {
 		}
 
 		try {
-			LOGGER.info("Initialize VJDBC-Configuration");
+			LOGGER.info("Initialize WJDBC-Configuration");
 			config = WJdbcConfiguration.init(configResourceInputStream, configVariablesProps);
 			processor = new CommandProcessor(config);
 		} catch (final ConfigurationException e) {
 			LOGGER.error("Initialization failed", e);
-			throw new ServletException("VJDBC-Initialization failed", e);
+			throw new ServletException("WJDBC-Initialization failed", e);
 		} finally {
 			StreamCloser.close(configResourceInputStream);
 		}

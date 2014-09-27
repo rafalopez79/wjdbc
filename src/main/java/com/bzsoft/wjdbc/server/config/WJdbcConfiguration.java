@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.server.config;
 
 import java.io.IOException;
@@ -53,7 +49,7 @@ public class WJdbcConfiguration {
 
 	/**
 	 * Initialization with resource.
-	 * 
+	 *
 	 * @param configResource
 	 *           Resource to be loaded by the ClassLoader
 	 * @throws ConfigurationException
@@ -64,7 +60,7 @@ public class WJdbcConfiguration {
 
 	/**
 	 * Initialization with resource.
-	 * 
+	 *
 	 * @param configResource
 	 *           Resource to be loaded by the ClassLoader
 	 * @throws ConfigurationException
@@ -85,7 +81,7 @@ public class WJdbcConfiguration {
 
 	/**
 	 * Initialization with pre-opened InputStream.
-	 * 
+	 *
 	 * @param configResourceInputStream
 	 *           InputStream
 	 * @throws ConfigurationException
@@ -119,7 +115,7 @@ public class WJdbcConfiguration {
 
 	/**
 	 * Returns the RMI-Configuration.
-	 * 
+	 *
 	 * @return RmiConfiguration object or null
 	 */
 	public RmiConfiguration getRmiConfiguration() {
@@ -128,7 +124,7 @@ public class WJdbcConfiguration {
 
 	/**
 	 * Sets the RMI-Configuration object.
-	 * 
+	 *
 	 * @param rmiConfiguration
 	 *           RmiConfiguration object to be used.
 	 */
@@ -138,7 +134,7 @@ public class WJdbcConfiguration {
 
 	/**
 	 * Returns a ConnectionConfiguration for a specific identifier.
-	 * 
+	 *
 	 * @param name
 	 *           Identifier of the ConnectionConfiguration
 	 * @return ConnectionConfiguration or null
@@ -154,7 +150,7 @@ public class WJdbcConfiguration {
 
 	/**
 	 * Adds a ConnectionConfiguration.
-	 * 
+	 *
 	 * @param connectionConfiguration
 	 * @throws ConfigurationException
 	 *            Thrown when the connection identifier already exists
