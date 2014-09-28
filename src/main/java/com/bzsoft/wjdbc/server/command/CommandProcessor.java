@@ -124,8 +124,6 @@ public class CommandProcessor {
 				if (cmd instanceof StatementCancelCommand) {
 					connentry.cancelCurrentStatementExecution(connuid, uid, (StatementCancelCommand) cmd);
 				} else {
-					// All other commands must be executed synchronously which is
-					// done by calling the synchronous executeCommand-Method
 					result = connentry.executeCommand(uid, cmd, ctx);
 				}
 			} catch (final SQLException e) {

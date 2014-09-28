@@ -8,8 +8,6 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class TestServer implements Test {
 
-	private static final long	serialVersionUID	= 1L;
-
 	protected TestServer() throws RemoteException {
 
 	}

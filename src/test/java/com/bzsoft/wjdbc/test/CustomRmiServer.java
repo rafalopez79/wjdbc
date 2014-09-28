@@ -31,8 +31,8 @@ public class CustomRmiServer {
 			configHSql.setPassword("");
 			configHSql.setRowPacketSize(1000000);
 			configHSql.setConnectionPooling(false);
-			configHSql.setWjdbcPassword("a");
-			configHSql.setWjdbcUser("a");
+			configHSql.setWjdbcUser("distribucion");
+			configHSql.setWjdbcPassword("raHgTINI4FWo");
 			vjdbcConfig.addConnection(configHSql);
 
 			final ConnectionServer server = new ConnectionServer(vjdbcConfig);

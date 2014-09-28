@@ -8,57 +8,74 @@ import java.lang.reflect.Array;
 
 class FlattenedColumnValues implements Externalizable {
 
-	private static final long		serialVersionUID	= 3691039872299578672L;
+	private static final long	serialVersionUID	= 3691039872299578672L;
 
-	private Object						arrayOfValues;
-	private boolean[]					nullFlags;
+	private Object					array;
+	private boolean[]				nullFlags;
 
-	private transient Class<?>		clazz;
-	private transient ArrayAccess	arrayAccessor;
+	private Class<?>				clazz;
+	private int						size;
 
 	public FlattenedColumnValues() {
 		// empty
 	}
 
-	FlattenedColumnValues(final Class<?> clazz, final int size) {
+	protected FlattenedColumnValues(final Class<?> clazz, final int size) {
 		// Any of these types ? boolean, byte, char, short, int, long, float, and
 		// double
 		this.clazz = clazz;
 		if (clazz.isPrimitive()) {
-			arrayOfValues = Array.newInstance(clazz, size);
+			array = createPrimitiveTypeArray(clazz, size);
 			nullFlags = new boolean[size];
-			arrayAccessor = ArrayAccessors.getArrayAccessorForPrimitiveType(clazz);
 		} else {
-			arrayOfValues = Array.newInstance(clazz, size);
+			array = Array.newInstance(clazz, size);
 			nullFlags = null;
-			arrayAccessor = ArrayAccessors.getObjectArrayAccessor();
+		}
+		this.size = size;
+	}
+
+	private static final Object createPrimitiveTypeArray(final Class<?> clazz, final int size) {
+		if (clazz == int.class) {
+			return new int[size];
+		} else if (clazz == short.class) {
+			return new short[size];
+		} else if (clazz == boolean.class) {
+			return new boolean[size];
+		} else if (clazz == float.class) {
+			return new float[size];
+		} else if (clazz == double.class) {
+			return new double[size];
+		} else if (clazz == long.class) {
+			return new long[size];
+		} else if (clazz == char.class) {
+			return new char[size];
+		} else if (clazz == byte.class) {
+			return new byte[size];
+		} else {
+			return null;
 		}
 	}
 
 	@Override
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
-		arrayOfValues = in.readObject();
+		array = in.readObject();
+		clazz = array.getClass().getComponentType();
 		final boolean isNull = in.readBoolean();
 		if (isNull) {
 			nullFlags = null;
 		} else {
-			final int size = in.readInt();
-			nullFlags = new boolean[size];
-			for (int i = 0; i < size; i++) {
+			final int s = in.readInt();
+			nullFlags = new boolean[s];
+			for (int i = 0; i < s; i++) {
 				nullFlags[i] = in.readBoolean();
 			}
 		}
-		final Class<?> componentType = arrayOfValues.getClass().getComponentType();
-		if (componentType.isPrimitive()) {
-			arrayAccessor = ArrayAccessors.getArrayAccessorForPrimitiveType(componentType);
-		} else {
-			arrayAccessor = ArrayAccessors.getObjectArrayAccessor();
-		}
+		this.size = Array.getLength(array);
 	}
 
 	@Override
 	public void writeExternal(final ObjectOutput out) throws IOException {
-		out.writeObject(arrayOfValues);
+		out.writeObject(array);
 		if (nullFlags == null) {
 			out.writeBoolean(true);
 		} else {
@@ -73,42 +90,42 @@ class FlattenedColumnValues implements Externalizable {
 
 	void setObject(final int index, final Object value) {
 		ensureCapacity(index + 1);
-		Array.set(arrayOfValues, index, value);
+		Array.set(array, index, value);
 	}
 
 	void setBoolean(final int index, final boolean value) {
 		ensureCapacity(index + 1);
-		Array.setBoolean(arrayOfValues, index, value);
+		((boolean[]) array)[index] = value;
 	}
 
 	void setByte(final int index, final byte value) {
 		ensureCapacity(index + 1);
-		Array.setByte(arrayOfValues, index, value);
+		((byte[]) array)[index] = value;
 	}
 
 	void setShort(final int index, final short value) {
 		ensureCapacity(index + 1);
-		Array.setShort(arrayOfValues, index, value);
+		((short[]) array)[index] = value;
 	}
 
 	void setInt(final int index, final int value) {
 		ensureCapacity(index + 1);
-		Array.setInt(arrayOfValues, index, value);
+		((int[]) array)[index] = value;
 	}
 
 	void setLong(final int index, final long value) {
 		ensureCapacity(index + 1);
-		Array.setLong(arrayOfValues, index, value);
+		((long[]) array)[index] = value;
 	}
 
 	void setFloat(final int index, final float value) {
 		ensureCapacity(index + 1);
-		Array.setFloat(arrayOfValues, index, value);
+		((float[]) array)[index] = value;
 	}
 
 	void setDouble(final int index, final double value) {
 		ensureCapacity(index + 1);
-		Array.setDouble(arrayOfValues, index, value);
+		((double[]) array)[index] = value;
 	}
 
 	void setIsNull(final int index) {
@@ -119,24 +136,49 @@ class FlattenedColumnValues implements Externalizable {
 	}
 
 	Object getValue(final int index) {
-		return arrayAccessor.getValue(arrayOfValues, index, nullFlags);
+		if (nullFlags != null && nullFlags[index]) {
+			return null;
+		} else if (clazz == int.class) {
+			return ((int[]) array)[index];
+		} else if (clazz == short.class) {
+			return ((short[]) array)[index];
+		} else if (clazz == boolean.class) {
+			return ((boolean[]) array)[index];
+		} else if (clazz == float.class) {
+			return ((float[]) array)[index];
+		} else if (clazz == double.class) {
+			return ((double[]) array)[index];
+		} else if (clazz == long.class) {
+			return ((long[]) array)[index];
+		} else if (clazz == char.class) {
+			return ((char[]) array)[index];
+		} else if (clazz == byte.class) {
+			return ((byte[]) array)[index];
+		} else {
+			return ((Object[]) array)[index];
+		}
 	}
 
 	void ensureCapacity(final int minCapacity) {
-		final int oldCapacity = Array.getLength(arrayOfValues);
+		final int oldCapacity = size;
 		if (minCapacity > oldCapacity) {
 			int newCapacity = oldCapacity * 3 / 2 + 1;
 			if (newCapacity < minCapacity) {
 				newCapacity = minCapacity;
 			}
-			final Object tmpArrayOfValues = arrayOfValues;
-			arrayOfValues = Array.newInstance(tmpArrayOfValues.getClass().getComponentType(), newCapacity);
-			System.arraycopy(tmpArrayOfValues, 0, arrayOfValues, 0, Array.getLength(tmpArrayOfValues));
+			final Object tmpArrayOfValues = array;
+			if (clazz.isPrimitive()) {
+				array = createPrimitiveTypeArray(clazz, newCapacity);
+			} else {
+				array = Array.newInstance(clazz, newCapacity);
+			}
+			System.arraycopy(tmpArrayOfValues, 0, array, 0, size);
 			if (nullFlags != null) {
 				final boolean[] tmpNullFlags = nullFlags;
 				nullFlags = new boolean[newCapacity];
-				System.arraycopy(tmpNullFlags, 0, nullFlags, 0, tmpNullFlags.length);
+				System.arraycopy(tmpNullFlags, 0, nullFlags, 0, size);
 			}
+			size = newCapacity;
 		}
 	}
 
@@ -145,7 +187,7 @@ class FlattenedColumnValues implements Externalizable {
 		if (data.nullFlags != null) {
 			System.arraycopy(data.nullFlags, 0, out.nullFlags, 0, maxRows);
 		}
-		System.arraycopy(data.arrayOfValues, 0, out.arrayOfValues, 0, maxRows);
+		System.arraycopy(data.array, 0, out.array, 0, maxRows);
 		return out;
 	}
 }

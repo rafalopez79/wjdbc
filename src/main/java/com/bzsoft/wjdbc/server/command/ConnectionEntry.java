@@ -72,7 +72,6 @@ class ConnectionEntry implements ConnectionContext {
 		this.executor = executor;
 		this.rowPacketSize = rowPacketSize;
 		uid = connuid;
-		// Put the connection into the JDBC-Object map
 		jdbcObjects = new ConcurrentHashMap<Long, JdbcObjectHolder<?>>();
 		jdbcObjects.put(connuid, new JdbcObjectHolder<Connection>(conn, ctx, JdbcInterfaceType.CONNECTION));
 		commandCountMap = new ConcurrentHashMap<String, Integer>();
@@ -168,7 +167,7 @@ class ConnectionEntry implements ConnectionContext {
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized <R, V> R executeCommand(final long objectUID, final Command<R, V> cmd, final CallingContext ctx) throws SQLException {
+	public <R, V> R executeCommand(final long objectUID, final Command<R, V> cmd, final CallingContext ctx) throws SQLException {
 		try {
 			lock.lock();
 			active = true;
@@ -182,8 +181,7 @@ class ConnectionEntry implements ConnectionContext {
 				final V val = target.getJdbcObject();
 				// Execute the command on the target object
 				result = cmd.execute(val, this);
-				// Check if the result must be remembered on the server with a
-				// UID
+				// Check if the result must be remembered on the server with a UID
 				final R rr = (R) checkResult(result, counter);
 
 				if (rr instanceof JdbcObjectTransport) {
@@ -198,7 +196,6 @@ class ConnectionEntry implements ConnectionContext {
 					return rr;
 				}
 				// When the result is of type ResultSet then handle it specially
-
 				if (result instanceof ResultSet) {
 					boolean forwardOnly = false;
 					if (cmd instanceof ResultSetProducerCommand) {
@@ -294,8 +291,8 @@ class ConnectionEntry implements ConnectionContext {
 
 	public void traceConnectionStatistics() {
 		LOGGER.info("  Connection ........... " + connectionConfiguration.getId());
-		LOGGER.info("  IP address ........... " + clientInfo.getProperty("vjdbc-client.address", "n.a."));
-		LOGGER.info("  Host name ............ " + clientInfo.getProperty("vjdbc-client.name", "n.a."));
+		LOGGER.info("  IP address ........... " + clientInfo.getProperty("wjdbc-client.address", "n.a."));
+		LOGGER.info("  Host name ............ " + clientInfo.getProperty("wjdbc-client.name", "n.a."));
 		dumpClientInfoProperties();
 		LOGGER.info("  Last time of access .. " + new Date(lastAccessTimestamp));
 		LOGGER.info("  Processed commands ... " + numberOfProcessedCommands);
@@ -357,7 +354,7 @@ class ConnectionEntry implements ConnectionContext {
 			boolean printedHeader = false;
 			for (final Enumeration<Object> it = clientInfo.keys(); it.hasMoreElements();) {
 				final String key = (String) it.nextElement();
-				if (!key.startsWith("vjdbc")) {
+				if (!key.startsWith("wjdbc")) {
 					if (!printedHeader) {
 						printedHeader = true;
 						LOGGER.info("  Client-Properties ...");

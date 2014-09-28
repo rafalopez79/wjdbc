@@ -29,7 +29,7 @@ public class OcctConfiguration {
 	}
 
 	public long getTimeoutInMillis() {
-		return this.timeout;
+		return timeout;
 	}
 
 	public void setTimeoutInMillis(final long timeout) {
@@ -43,8 +43,8 @@ public class OcctConfiguration {
 	protected void log() {
 		if (checkingPeriod > 0) {
 			LOGGER.info("OrphanedConnectionCollectorTask-Configuration (OCCT)");
-			LOGGER.info("  Checking-Period........... " + ConfigurationUtil.getStringFromMillis(this.checkingPeriod));
-			LOGGER.info("  Timeout................... " + ConfigurationUtil.getStringFromMillis(this.timeout));
+			LOGGER.info("  Checking-Period........... " + ConfigurationUtil.getStringFromMillis(checkingPeriod));
+			LOGGER.info("  Timeout................... " + ConfigurationUtil.getStringFromMillis(timeout));
 		} else {
 			LOGGER.info("OrphanedConnectionCollectorTask-Configuration (OCCT): off");
 		}

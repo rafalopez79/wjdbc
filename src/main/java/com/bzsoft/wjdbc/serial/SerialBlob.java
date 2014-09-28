@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 
+import com.bzsoft.wjdbc.util.StreamCloser;
+
 public class SerialBlob implements Blob, Externalizable {
 	private static final long	serialVersionUID	= 3258134639489857079L;
 
@@ -21,9 +23,10 @@ public class SerialBlob implements Blob, Externalizable {
 	}
 
 	public SerialBlob(final Blob other) throws SQLException {
+		InputStream is = null;
 		try {
 			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			final InputStream is = other.getBinaryStream();
+			is = other.getBinaryStream();
 			final byte[] buff = new byte[1024];
 			int len;
 			while ((len = is.read(buff)) > 0) {
@@ -33,6 +36,8 @@ public class SerialBlob implements Blob, Externalizable {
 			other.free();
 		} catch (final IOException e) {
 			throw new SQLException("Can't retrieve contents of Blob", e.toString());
+		} finally {
+			StreamCloser.close(is);
 		}
 	}
 
