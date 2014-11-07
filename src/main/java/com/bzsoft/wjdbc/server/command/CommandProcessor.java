@@ -122,7 +122,7 @@ public class CommandProcessor {
 				// StatementCancelCommand can be executed asynchronously to
 				// terminate a running query
 				if (cmd instanceof StatementCancelCommand) {
-					connentry.cancelCurrentStatementExecution(connuid, uid, (StatementCancelCommand) cmd);
+					connentry.cancelCurrentStatementExecution(uid, (StatementCancelCommand) cmd);
 				} else {
 					result = connentry.executeCommand(uid, cmd, ctx);
 				}
@@ -197,14 +197,14 @@ public class CommandProcessor {
 	private static boolean validate(final ConnectionConfiguration conf, final Properties clientInfo) {
 		boolean valid = false;
 		try {
-			// vjdbc info access
-			final String vjdbcUser = conf.getWjdbcUser();
-			final String vjdbcPass = conf.getWjdbcPassword();
+			// wjdbc info access
+			final String wjdbcUser = conf.getWjdbcUser();
+			final String wjdbcPass = conf.getWjdbcPassword();
 			// client credentials
 			final String clientUser = clientInfo.getProperty("user");
 			final String clientPass = clientInfo.getProperty("password");
 
-			valid = vjdbcUser.equals(clientUser) && vjdbcPass.equals(clientPass) ? true : false;
+			valid = wjdbcUser.equals(clientUser) && wjdbcPass.equals(clientPass) ? true : false;
 
 			LOGGER.info("received login request from {user=" + clientInfo.getProperty("user") + ", wjdbc-client.name="
 					+ clientInfo.getProperty("wjdbc-client.name") + ", wjdbc-client.address=" + clientInfo.getProperty("wjdbc-client.address")

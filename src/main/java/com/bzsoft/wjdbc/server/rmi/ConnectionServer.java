@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.server.rmi;
 
 import java.io.FileInputStream;
@@ -39,7 +35,7 @@ public class ConnectionServer {
 	public void serve() throws IOException {
 		RmiConfiguration rmiConf = config.getRmiConfiguration();
 		if (rmiConf == null) {
-			LOGGER.debug("No RMI-Configuration specified in VJdbc-Configuration, using default configuration");
+			LOGGER.debug("No RMI-Configuration specified in WJdbc-Configuration, using default configuration");
 			rmiConf = new RmiConfiguration();
 		}
 		final RMISocketFactory socketFactory;

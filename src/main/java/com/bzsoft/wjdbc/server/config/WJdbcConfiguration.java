@@ -73,7 +73,7 @@ public class WJdbcConfiguration {
 			}
 			return config;
 		} catch (final Exception e) {
-			final String msg = "VJdbc-Configuration failed";
+			final String msg = "WJdbc-Configuration failed";
 			LOGGER.error(msg, e);
 			throw new ConfigurationException(msg, e);
 		}
@@ -94,7 +94,7 @@ public class WJdbcConfiguration {
 			}
 			return config;
 		} catch (final Exception e) {
-			final String msg = "VJdbc-Configuration failed";
+			final String msg = "WJdbc-Configuration failed";
 			LOGGER.error(msg, e);
 			throw new ConfigurationException(msg, e);
 		}

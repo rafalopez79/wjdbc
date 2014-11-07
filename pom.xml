@@ -77,7 +77,28 @@
             <exclude>**/junit/**/*.java</exclude>
           </excludes>
         </configuration>
-      </plugin>
+      </plugin>    
+      
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>1.4</version>                
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>                          
+                        <artifactSet>
+                          <includes>
+                            <include>com.ning</include>
+                          </includes>                          
+                        </artifactSet>                      
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
     </plugins>
   </build>
 
@@ -219,6 +240,10 @@
       <artifactId>log4j</artifactId>
       <version>1.2.8</version>
     </dependency>
-
+    <dependency>
+        <groupId>com.ning</groupId>
+        <artifactId>compress-lzf</artifactId>  
+        <version>1.0.4-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>

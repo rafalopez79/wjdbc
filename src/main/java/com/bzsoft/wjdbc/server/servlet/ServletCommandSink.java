@@ -162,7 +162,7 @@ public class ServletCommandSink extends HttpServlet {
 							final Connection conn = connectionConfiguration.create(props);
 							objectToReturn = processor.registerConnection(conn, connectionConfiguration, clientInfo, ctx);
 						} else {
-							objectToReturn = new SQLException("VJDBC-Connection " + url + " not found");
+							objectToReturn = new SQLException("WJDBC-Connection " + url + " not found");
 						}
 					}
 				} catch (final Throwable t) {
@@ -177,7 +177,7 @@ public class ServletCommandSink extends HttpServlet {
 
 				httpServletResponse.flushBuffer();
 			} else {
-				// No VJDBC-Method ? Then we redirect the stupid browser user to
+				// No WJDBC-Method ? Then we redirect the stupid browser user to
 				// some information page :-)
 				httpServletResponse.sendRedirect("index.html");
 			}

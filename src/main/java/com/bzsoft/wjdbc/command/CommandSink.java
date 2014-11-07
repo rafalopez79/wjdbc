@@ -5,10 +5,6 @@ import java.util.Properties;
 
 import com.bzsoft.wjdbc.serial.CallingContext;
 
-/**
- * Interface which each CommandSink must implement to be used for VJDBC
- * client-server communication.
- */
 public interface CommandSink {
 
 	ConnectResult connect(String database, Properties props, Properties clientInfo, CallingContext ctx) throws SQLException;
