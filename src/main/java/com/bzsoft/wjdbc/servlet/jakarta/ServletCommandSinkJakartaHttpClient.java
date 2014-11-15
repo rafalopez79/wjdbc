@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.servlet.jakarta;
 
 import java.io.BufferedInputStream;
@@ -25,11 +21,10 @@ import com.bzsoft.wjdbc.servlet.ServletCommandSinkIdentifier;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 import com.bzsoft.wjdbc.util.StreamCloser;
 
-
 /**
  * ServletCommandSinkClient implementation which uses Jakarta-HttpClient to
  * communicate with the web server.
- * 
+ *
  * @author Mike
  */
 public class ServletCommandSinkJakartaHttpClient extends AbstractServletCommandSinkClient {

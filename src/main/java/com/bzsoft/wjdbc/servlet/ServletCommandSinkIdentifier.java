@@ -1,15 +1,11 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.servlet;
 
 /**
  * Common identifiers which are used in the Http-Header to route the requests to
  * the corresponding handler.
- * 
+ *
  * @author Mike
- * 
+ *
  */
 public final class ServletCommandSinkIdentifier {
 

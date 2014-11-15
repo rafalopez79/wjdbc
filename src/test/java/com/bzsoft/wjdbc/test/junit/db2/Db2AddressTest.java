@@ -1,48 +1,48 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.test.junit.db2;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 import com.bzsoft.wjdbc.test.junit.VJdbcTest;
 import com.bzsoft.wjdbc.test.junit.general.AddressTest;
 
 public class Db2AddressTest extends AddressTest {
-    public static Test suite() throws Exception {
-        TestSuite suite = new TestSuite();
-        
-        VJdbcTest.addAllTestMethods(suite, Db2AddressTest.class);
+	public static Test suite() throws Exception {
+		final TestSuite suite = new TestSuite();
 
-        TestSetup wrapper = new TestSetup(suite) {
-            protected void setUp() throws Exception {
-                new Db2AddressTest("").oneTimeSetup();
-            }
+		VJdbcTest.addAllTestMethods(suite, Db2AddressTest.class);
 
-            protected void tearDown() throws Exception {
-                new Db2AddressTest("").oneTimeTearDown();
-            }
-        };
+		final TestSetup wrapper = new TestSetup(suite) {
+			@Override
+			protected void setUp() throws Exception {
+				new Db2AddressTest("").oneTimeSetup();
+			}
 
-        return wrapper;
-    }
+			@Override
+			protected void tearDown() throws Exception {
+				new Db2AddressTest("").oneTimeTearDown();
+			}
+		};
 
-    public Db2AddressTest(String s) {
-        super(s);
-    }
+		return wrapper;
+	}
 
-    protected Connection createNativeDatabaseConnection() throws Exception {
-        Class.forName("com.ibm.db2.jcc.DB2Driver");
-        return DriverManager.getConnection("jdbc:db2://mikepc:50000/VJDBC", "db2admin", "db2admin");
-    }
+	public Db2AddressTest(final String s) {
+		super(s);
+	}
 
-    protected String getVJdbcDatabaseShortcut() {
-        return "DB2DB";
-    }
+	@Override
+	protected Connection createNativeDatabaseConnection() throws Exception {
+		Class.forName("com.ibm.db2.jcc.DB2Driver");
+		return DriverManager.getConnection("jdbc:db2://mikepc:50000/VJDBC", "db2admin", "db2admin");
+	}
+
+	@Override
+	protected String getVJdbcDatabaseShortcut() {
+		return "DB2DB";
+	}
 }

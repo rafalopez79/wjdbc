@@ -1,48 +1,48 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.test.junit.hsqldb;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 import com.bzsoft.wjdbc.test.junit.VJdbcTest;
 import com.bzsoft.wjdbc.test.junit.general.AddressTest;
 
 public class HSqlDbAddressTestDataSource extends AddressTest {
-    public static Test suite() throws Exception {
-        TestSuite suite = new TestSuite();
-        
-        VJdbcTest.addAllTestMethods(suite, HSqlDbAddressTestDataSource.class);
-        
-        TestSetup wrapper = new TestSetup(suite) {
-            protected void setUp() throws Exception {
-                new HSqlDbAddressTestDataSource("").oneTimeSetup();
-            }
+	public static Test suite() throws Exception {
+		final TestSuite suite = new TestSuite();
 
-            protected void tearDown() throws Exception {
-                new HSqlDbAddressTestDataSource("").oneTimeTearDown();
-            }
-        };
+		VJdbcTest.addAllTestMethods(suite, HSqlDbAddressTestDataSource.class);
 
-        return wrapper;
-    }
+		final TestSetup wrapper = new TestSetup(suite) {
+			@Override
+			protected void setUp() throws Exception {
+				new HSqlDbAddressTestDataSource("").oneTimeSetup();
+			}
 
-    public HSqlDbAddressTestDataSource(String s) {
-        super(s);
-    }
+			@Override
+			protected void tearDown() throws Exception {
+				new HSqlDbAddressTestDataSource("").oneTimeTearDown();
+			}
+		};
 
-    protected Connection createNativeDatabaseConnection() throws Exception {
-        Class.forName("org.hsqldb.jdbcDriver");
-        return DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/HSqlDb", "sa", "");
-    }
-    
-    protected String getVJdbcDatabaseShortcut() {
-        return "HSqlDB-DataSource";
-    }
+		return wrapper;
+	}
+
+	public HSqlDbAddressTestDataSource(final String s) {
+		super(s);
+	}
+
+	@Override
+	protected Connection createNativeDatabaseConnection() throws Exception {
+		Class.forName("org.hsqldb.jdbcDriver");
+		return DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/HSqlDb", "sa", "");
+	}
+
+	@Override
+	protected String getVJdbcDatabaseShortcut() {
+		return "HSqlDB-DataSource";
+	}
 }

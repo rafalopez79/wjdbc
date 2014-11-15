@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.servlet;
 
 import java.io.IOException;
@@ -11,12 +7,11 @@ import java.sql.SQLException;
 import com.bzsoft.wjdbc.command.CommandSink;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 
-
 /**
- * Abstract base class for clients of VJDBC in Servlet-Mode.
- * 
+ * Abstract base class for clients of WJDBC in Servlet-Mode.
+ *
  * @author Mike
- * 
+ *
  */
 public abstract class AbstractServletCommandSinkClient implements CommandSink {
 

@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.test;
 
 import java.util.zip.Deflater;
@@ -15,8 +11,7 @@ public class CustomRmiServer {
 
 	public static void main(final String[] args) {
 		try {
-			// Initialize VJDBC programmatically
-			System.out.println("Initializing VJDBC");
+			System.out.println("Initializing WJDBC");
 			final WJdbcConfiguration vjdbcConfig = new WJdbcConfiguration();
 			final RmiConfiguration rmiConfig = new RmiConfiguration("wjdbc", 20000);
 			rmiConfig.setRemotingPort(20001);

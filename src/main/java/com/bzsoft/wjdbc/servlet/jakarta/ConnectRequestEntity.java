@@ -1,7 +1,3 @@
-// VJDBC - Virtual JDBC
-// Written by Michael Link
-// Website: http://vjdbc.sourceforge.net
-
 package com.bzsoft.wjdbc.servlet.jakarta;
 
 import java.io.IOException;
@@ -13,43 +9,47 @@ import org.apache.commons.httpclient.methods.RequestEntity;
 
 import com.bzsoft.wjdbc.serial.CallingContext;
 
-
 /**
- * RequestEntity implementation which streams all of the parameters necessary for
- * a connect request. 
+ * RequestEntity implementation which streams all of the parameters necessary
+ * for a connect request.
+ * 
  * @author Mike
  */
 class ConnectRequestEntity implements RequestEntity {
-    private String _database;
-    private Properties _props;
-    private Properties _clientInfo;
-    private CallingContext _ctx;
-    
-    public ConnectRequestEntity(String database, Properties props, Properties clientInfo, CallingContext ctx) {
-        _database = database;
-        _props = props;
-        _clientInfo = clientInfo;
-        _ctx = ctx;
-    }
-    
-    public long getContentLength() {
-        return -1; // Don't know the length in advance
-    }
+	private final String				_database;
+	private final Properties		_props;
+	private final Properties		_clientInfo;
+	private final CallingContext	_ctx;
 
-    public String getContentType() {
-        return "binary/x-java-serialized";
-    }
+	public ConnectRequestEntity(final String database, final Properties props, final Properties clientInfo, final CallingContext ctx) {
+		_database = database;
+		_props = props;
+		_clientInfo = clientInfo;
+		_ctx = ctx;
+	}
 
-    public boolean isRepeatable() {
-        return true;
-    }
+	@Override
+	public long getContentLength() {
+		return -1; // Don't know the length in advance
+	}
 
-    public void writeRequest(OutputStream os) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(os);
-        oos.writeUTF(_database);
-        oos.writeObject(_props);
-        oos.writeObject(_clientInfo);
-        oos.writeObject(_ctx);
-        oos.flush();
-    }
+	@Override
+	public String getContentType() {
+		return "binary/x-java-serialized";
+	}
+
+	@Override
+	public boolean isRepeatable() {
+		return true;
+	}
+
+	@Override
+	public void writeRequest(final OutputStream os) throws IOException {
+		final ObjectOutputStream oos = new ObjectOutputStream(os);
+		oos.writeUTF(_database);
+		oos.writeObject(_props);
+		oos.writeObject(_clientInfo);
+		oos.writeObject(_ctx);
+		oos.flush();
+	}
 }
