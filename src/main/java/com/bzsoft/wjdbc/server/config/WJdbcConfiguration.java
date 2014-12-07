@@ -3,7 +3,9 @@ package com.bzsoft.wjdbc.server.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.digester.Digester;
@@ -17,31 +19,32 @@ import com.bzsoft.wjdbc.server.concurrent.impl.BaseExecutor;
 
 public class WJdbcConfiguration {
 
-	private static final Logger						LOGGER					= Logger.getLogger(WJdbcConfiguration.class);
-	private static final int							SCHEDTHREADPOOLSIZE	= 1;
-	private static final int							MAXTHREADPOOLSIZE		= 200;
+	private static final Logger												LOGGER					= Logger.getLogger(WJdbcConfiguration.class);
+	private static final int													SCHEDTHREADPOOLSIZE	= 1;
+	private static final int													MAXTHREADPOOLSIZE		= 200;
 
-	private OcctConfiguration							occtConfiguration		= new OcctConfiguration();
-	private RmiConfiguration							rmiConfiguration;
-	private final List<ConnectionConfiguration>	connections;
-	private final Executor								pooledExecutor;
+	private OcctConfiguration													occtConfiguration;
+	private RmiConfiguration													rmiConfiguration;
+	private final List<ConnectionConfiguration>							connections;
+	private final Executor														pooledExecutor;
+	private final Map<String, SharedConnectionPoolConfiguration>	sharedPoolMap;
 
 	public WJdbcConfiguration() {
 		pooledExecutor = new BaseExecutor(SCHEDTHREADPOOLSIZE, MAXTHREADPOOLSIZE);
 		connections = new ArrayList<ConnectionConfiguration>();
+		sharedPoolMap = new LinkedHashMap<String, SharedConnectionPoolConfiguration>();
+		occtConfiguration = new OcctConfiguration();
 	}
 
 	private WJdbcConfiguration(final InputStream configResource, final Properties vars) throws IOException, SAXException, ConfigurationException {
-		pooledExecutor = new BaseExecutor(SCHEDTHREADPOOLSIZE, MAXTHREADPOOLSIZE);
-		connections = new ArrayList<ConnectionConfiguration>();
+		this();
 		final Digester digester = createDigester(vars);
 		digester.parse(configResource);
 		validateConnections();
 	}
 
 	private WJdbcConfiguration(final String configResource, final Properties vars) throws IOException, SAXException, ConfigurationException {
-		pooledExecutor = new BaseExecutor(SCHEDTHREADPOOLSIZE, MAXTHREADPOOLSIZE);
-		connections = new ArrayList<ConnectionConfiguration>();
+		this();
 		final Digester digester = createDigester(vars);
 		digester.parse(configResource);
 		validateConnections();
@@ -111,6 +114,10 @@ public class WJdbcConfiguration {
 
 	public Executor getExecutor() {
 		return pooledExecutor;
+	}
+
+	public void addSharedPoolConfiguration(final SharedConnectionPoolConfiguration scp) {
+		sharedPoolMap.put(scp.getId(), scp);
 	}
 
 	/**
@@ -214,6 +221,11 @@ public class WJdbcConfiguration {
 		digester.addCallParam("wjdbc-configuration/connection/query-filters/allow", 1, "type");
 		digester.addSetNext("wjdbc-configuration/connection/query-filters", "setQueryFilters", QueryFilterConfiguration.class.getName());
 
+		// Shared pools
+		digester.addObjectCreate("wjdbc-configuration/shared-pool", SharedConnectionPoolConfiguration.class);
+		digester.addSetProperties("wjdbc-configuration/shared-pool");
+		digester.addSetNext("wjdbc-configuration/shared-pool", "addSharedPoolConfiguration", SharedConnectionPoolConfiguration.class.getName());
+
 		return digester;
 	}
 
@@ -224,6 +236,9 @@ public class WJdbcConfiguration {
 		occtConfiguration.log();
 		for (final ConnectionConfiguration connectionConfiguration : connections) {
 			connectionConfiguration.log();
+		}
+		for (final SharedConnectionPoolConfiguration scp : sharedPoolMap.values()) {
+			scp.log();
 		}
 	}
 }

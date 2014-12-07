@@ -24,6 +24,7 @@ public class ConnectionConfiguration {
 
 	// Basic properties
 	protected String								id;
+	protected String								sharedPoolId;
 	protected String								driver;
 	protected String								url;
 	protected String								dataSourceProvider;
@@ -62,6 +63,14 @@ public class ConnectionConfiguration {
 
 	public void setId(final String id) {
 		this.id = id;
+	}
+
+	public void setSharedPoolId(final String sharedPoolId) {
+		this.sharedPoolId = sharedPoolId;
+	}
+
+	public String getSharedPoolId() {
+		return sharedPoolId;
 	}
 
 	public String getDriver() {
@@ -239,6 +248,7 @@ public class ConnectionConfiguration {
 		LOGGER.info("  Row-Packetsize ............. " + rowPacketSize);
 		LOGGER.info("  Charset .................... " + charset);
 		LOGGER.info("  Connection-Pool ............ " + (connectionPooling ? "on" : "off"));
+		LOGGER.info("  Shared-Pool ................ " + (sharedPoolId != null ? sharedPoolId : "null"));
 		LOGGER.info("  Pre-Fetch ResultSetMetaData  " + (prefetchResultSetMetaData ? "on" : "off"));
 		LOGGER.info("  Trace Command-Counts ....... " + traceCommandCount);
 		LOGGER.info("  Trace Orphaned-Objects ..... " + traceOrphanedObjects);
@@ -259,9 +269,7 @@ public class ConnectionConfiguration {
 
 	protected Connection createConnectionViaDataSource() throws SQLException {
 		Connection result;
-
 		LOGGER.debug("Creating DataSourceFactory from class " + dataSourceProvider);
-
 		try {
 			final Class<?> clsDataSourceProvider = Class.forName(dataSourceProvider);
 			final DataSourceProvider dsp = (DataSourceProvider) clsDataSourceProvider.newInstance();
@@ -287,7 +295,6 @@ public class ConnectionConfiguration {
 			LOGGER.error(msg, e);
 			throw new SQLException(msg);
 		}
-
 		return result;
 	}
 
