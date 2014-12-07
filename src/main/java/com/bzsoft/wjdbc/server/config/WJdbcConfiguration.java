@@ -3,6 +3,7 @@ package com.bzsoft.wjdbc.server.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,6 +119,10 @@ public class WJdbcConfiguration {
 
 	public void addSharedPoolConfiguration(final SharedConnectionPoolConfiguration scp) {
 		sharedPoolMap.put(scp.getId(), scp);
+	}
+
+	public Map<String, SharedConnectionPoolConfiguration> getSharedPoolConfiguration() {
+		return Collections.unmodifiableMap(sharedPoolMap);
 	}
 
 	/**

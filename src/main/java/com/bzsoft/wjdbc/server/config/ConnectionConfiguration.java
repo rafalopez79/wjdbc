@@ -298,6 +298,7 @@ public class ConnectionConfiguration {
 		return result;
 	}
 
+	// TODO: shared pool creation
 	protected Connection createConnectionViaDriverManager(final Properties props) throws SQLException {
 		// Try to load the driver
 		if (!driverInitialized && driver != null) {

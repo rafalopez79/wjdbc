@@ -63,11 +63,11 @@ public class CommandProcessor {
 			throws SQLException {
 		final ConnectionConfiguration connectionConfiguration = config.getConnection(url);
 		if (connectionConfiguration != null) {
-			final Properties propAux = new Properties(clientInfo);
-			propAux.putAll(props);
-			final boolean b = validate(connectionConfiguration, propAux);
-			propAux.clear();
-			if (!b) {
+			final Properties auxProperties = new Properties(clientInfo);
+			auxProperties.putAll(props);
+			final boolean valid = validate(connectionConfiguration, auxProperties);
+			auxProperties.clear();
+			if (!valid) {
 				throw new SQLException("Use a valid user/password, please.");
 			}
 			LOGGER.debug("Found connection configuration " + connectionConfiguration.getId());
@@ -203,18 +203,14 @@ public class CommandProcessor {
 			// client credentials
 			final String clientUser = clientInfo.getProperty("user");
 			final String clientPass = clientInfo.getProperty("password");
-
 			valid = wjdbcUser.equals(clientUser) && wjdbcPass.equals(clientPass) ? true : false;
-
 			LOGGER.info("received login request from {user=" + clientInfo.getProperty("user") + ", wjdbc-client.name="
 					+ clientInfo.getProperty("wjdbc-client.name") + ", wjdbc-client.address=" + clientInfo.getProperty("wjdbc-client.address")
 					+ "} Validation was " + valid);
-
 		} catch (final Exception e) {
 			valid = false;
 			LOGGER.error("login properties don't found. You can't access the system.");
 		}
-
 		return valid;
 	}
 }
