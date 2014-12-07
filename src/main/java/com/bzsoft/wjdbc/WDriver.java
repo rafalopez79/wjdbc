@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
-import java.util.zip.Deflater;
 
 import com.bzsoft.wjdbc.command.CallingContextFactory;
 import com.bzsoft.wjdbc.command.CommandSink;
@@ -125,12 +124,11 @@ public final class WDriver implements Driver {
 
 	private static CommandSink createRmiCommandSink(final String rminame, final boolean useSSL) throws Exception {
 		final RMISocketFactory socketFactory;
-		final int compressionMode = Deflater.BEST_SPEED;
 		if (useSSL) {
 			final SecureSocketFactory ssf = new SecureSocketFactory();
-			socketFactory = new CompressedRMISocketFactory(ssf, ssf, compressionMode);
+			socketFactory = new CompressedRMISocketFactory(ssf, ssf);
 		} else {
-			socketFactory = new CompressedRMISocketFactory(compressionMode);
+			socketFactory = new CompressedRMISocketFactory();
 		}
 		return new ReconnectableCommandSinkRmiProxy(rminame, socketFactory);
 	}

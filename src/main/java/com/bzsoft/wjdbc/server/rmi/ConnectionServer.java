@@ -11,7 +11,6 @@ import java.rmi.registry.Registry;
 import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Properties;
-import java.util.zip.Deflater;
 
 import org.apache.log4j.Logger;
 
@@ -39,15 +38,12 @@ public class ConnectionServer {
 			rmiConf = new RmiConfiguration();
 		}
 		final RMISocketFactory socketFactory;
-		final int compressionMode = rmiConf.getCompressionModeAsInt();
 		if (rmiConf.isUseSSL()) {
 			LOGGER.info("Using SSL sockets for communication");
 			final SecureSocketFactory ssf = new SecureSocketFactory();
-			socketFactory = new CompressedRMISocketFactory(ssf, ssf, compressionMode);
-		} else if (compressionMode == Deflater.BEST_SPEED || compressionMode == Deflater.BEST_COMPRESSION) {
-			socketFactory = new CompressedRMISocketFactory(compressionMode);
+			socketFactory = new CompressedRMISocketFactory(ssf, ssf);
 		} else {
-			socketFactory = RMISocketFactory.getDefaultSocketFactory();
+			socketFactory = new CompressedRMISocketFactory();
 		}
 		final Registry registry;
 		if (rmiConf.isCreateRegistry()) {

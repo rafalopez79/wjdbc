@@ -14,6 +14,7 @@ import javax.sql.PooledConnection;
 import javax.sql.StatementEvent;
 import javax.sql.StatementEventListener;
 
+//TODO: rewrite synchronization
 public class Connection2PooledConnection implements PooledConnection, PooledConnectionSubject, StatementEventListener {
 
 	private Connection4ConnectionPooled		connection;
@@ -39,7 +40,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -71,7 +72,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see javax.sql.PooledConnection#getConnection()
 	 */
 	@Override
@@ -81,7 +82,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see javax.sql.PooledConnection#addConnectionEventListener(javax.sql.
 	 *      ConnectionEventListener)
 	 */
@@ -96,7 +97,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see javax.sql.PooledConnection#removeConnectionEventListener(javax.sql.
 	 *      ConnectionEventListener)
 	 */
@@ -111,7 +112,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see javax.sql.PooledConnection#addStatementEventListener(javax.sql.
 	 *      StatementEventListener)
 	 */
@@ -122,12 +123,11 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 			list.add(listener);
 			statementEventListeners = list;
 		}
-
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see javax.sql.PooledConnection#removeStatementEventListener(javax.sql.
 	 *      StatementEventListener)
 	 */
@@ -142,7 +142,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see PooledConnectionSubject#connectionClosed (javax.sql.ConnectionEvent)
 	 */
 	@Override
@@ -160,7 +160,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see PooledConnectionSubject#
 	 *      connectionErrorOccurred(javax.sql.ConnectionEvent)
 	 */
@@ -178,7 +178,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see PooledConnectionSubject#statementClosed (javax.sql.StatementEvent)
 	 */
 	@Override
@@ -195,7 +195,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see PooledConnectionSubject#addStatement(java.sql.PreparedStatement)
 	 */
 	@Override
@@ -203,13 +203,12 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 		if (null == preparedStatements) {
 			return;
 		}
-		// FIXME!!! Aqu� empieza el cach�
 		System.out.println("addStatement(" + pstmt + ")");
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see javax.sql.StatementEventListener#statementClosed(javax.sql.StatementEvent
 	 *      )
 	 */
@@ -226,7 +225,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see javax.sql.StatementEventListener#statementErrorOccurred(javax.sql.StatementEvent)
 	 */
 	@Override
@@ -236,7 +235,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see PooledConnectionSubject#statementErrorOccurred
 	 *      (javax.sql.StatementEvent)
 	 */
@@ -254,7 +253,7 @@ public class Connection2PooledConnection implements PooledConnection, PooledConn
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see javax.sql.PooledConnection#close()
 	 */
 	@Override

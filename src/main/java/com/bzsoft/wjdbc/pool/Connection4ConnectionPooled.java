@@ -20,22 +20,17 @@ import java.util.Properties;
 
 public class Connection4ConnectionPooled implements Connection {
 
-	private PooledConnectionSubject	subject;
-	private Connection					connection;
-
-	private Connection4ConnectionPooled() {
-
-	}
+	private final PooledConnectionSubject	subject;
+	private final Connection					connection;
 
 	public Connection4ConnectionPooled(final Connection connection, final PooledConnectionSubject subject) {
-		this();
 		this.connection = connection;
 		this.subject = subject;
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -57,7 +52,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Wrapper#unwrap(java.lang.Class)
 	 */
 	@Override
@@ -67,7 +62,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Wrapper#isWrapperFor(java.lang.Class)
 	 */
 	@Override
@@ -77,7 +72,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#createStatement()
 	 */
 	@Override
@@ -102,7 +97,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#prepareStatement(java.lang.String)
 	 */
 	@Override
@@ -128,7 +123,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#prepareCall(java.lang.String)
 	 */
 	@Override
@@ -154,7 +149,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#nativeSQL(java.lang.String)
 	 */
 	@Override
@@ -177,7 +172,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#setAutoCommit(boolean)
 	 */
 	@Override
@@ -200,7 +195,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#getAutoCommit()
 	 */
 	@Override
@@ -223,7 +218,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#commit()
 	 */
 	@Override
@@ -246,7 +241,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#rollback()
 	 */
 	@Override
@@ -269,7 +264,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#close()
 	 */
 	@Override
@@ -279,7 +274,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#isClosed()
 	 */
 	@Override
@@ -302,7 +297,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#getMetaData()
 	 */
 	@Override
@@ -325,7 +320,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#setReadOnly(boolean)
 	 */
 	@Override
@@ -348,7 +343,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#isReadOnly()
 	 */
 	@Override
@@ -371,7 +366,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#setCatalog(java.lang.String)
 	 */
 	@Override
@@ -394,7 +389,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#getCatalog()
 	 */
 	@Override
@@ -417,7 +412,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#setTransactionIsolation(int)
 	 */
 	@Override
@@ -440,7 +435,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#getTransactionIsolation()
 	 */
 	@Override
@@ -463,7 +458,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#getWarnings()
 	 */
 	@Override
@@ -486,7 +481,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#clearWarnings()
 	 */
 	@Override
@@ -509,7 +504,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#createStatement(int, int)
 	 */
 	@Override
@@ -534,7 +529,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#prepareStatement(java.lang.String, int, int)
 	 */
 	@Override
@@ -560,7 +555,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#prepareCall(java.lang.String, int, int)
 	 */
 	@Override
@@ -586,7 +581,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#getTypeMap()
 	 */
 	@Override
@@ -609,7 +604,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#setTypeMap(java.util.Map)
 	 */
 	@Override
@@ -632,7 +627,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#setHoldability(int)
 	 */
 	@Override
@@ -655,7 +650,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#getHoldability()
 	 */
 	@Override
@@ -678,7 +673,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#setSavepoint()
 	 */
 	@Override
@@ -701,7 +696,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#setSavepoint(java.lang.String)
 	 */
 	@Override
@@ -724,7 +719,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#rollback(java.sql.Savepoint)
 	 */
 	@Override
@@ -747,7 +742,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#releaseSavepoint(java.sql.Savepoint)
 	 */
 	@Override
@@ -770,7 +765,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#createStatement(int, int, int)
 	 */
 	@Override
@@ -795,7 +790,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#prepareStatement(java.lang.String, int, int, int)
 	 */
 	@Override
@@ -822,7 +817,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#prepareCall(java.lang.String, int, int, int)
 	 */
 	@Override
@@ -849,7 +844,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#prepareStatement(java.lang.String, int)
 	 */
 	@Override
@@ -875,7 +870,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#prepareStatement(java.lang.String, int[])
 	 */
 	@Override
@@ -901,7 +896,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#prepareStatement(java.lang.String,
 	 *      java.lang.String[])
 	 */
@@ -928,7 +923,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#createClob()
 	 */
 	@Override
@@ -951,7 +946,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#createBlob()
 	 */
 	@Override
@@ -974,7 +969,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#createNClob()
 	 */
 	@Override
@@ -997,7 +992,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#createSQLXML()
 	 */
 	@Override
@@ -1020,7 +1015,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#isValid(int)
 	 */
 	@Override
@@ -1043,7 +1038,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#setClientInfo(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -1067,7 +1062,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#setClientInfo(java.util.Properties)
 	 */
 	@Override
@@ -1091,7 +1086,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#getClientInfo(java.lang.String)
 	 */
 	@Override
@@ -1119,7 +1114,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#getClientInfo()
 	 */
 	@Override
@@ -1150,7 +1145,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#createArrayOf(java.lang.String,
 	 *      java.lang.Object[])
 	 */
@@ -1174,7 +1169,7 @@ public class Connection4ConnectionPooled implements Connection {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.sql.Connection#createStruct(java.lang.String,
 	 *      java.lang.Object[])
 	 */
