@@ -160,6 +160,15 @@ public class WJdbcConfiguration {
 		return null;
 	}
 
+	public ConnectionConfiguration getConnectionBySharedPoolId(final String sharedPoolId) {
+		for (final ConnectionConfiguration connectionConfiguration : connections) {
+			if (sharedPoolId.equals(connectionConfiguration.getSharedPoolId())) {
+				return connectionConfiguration;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Adds a ConnectionConfiguration.
 	 *
@@ -188,9 +197,8 @@ public class WJdbcConfiguration {
 	}
 
 	private void validateConnections() throws ConfigurationException {
-		// Call the validation method of the configuration
 		for (final ConnectionConfiguration connectionConfiguration : connections) {
-			connectionConfiguration.validate();
+			connectionConfiguration.validate(sharedPoolMap);
 		}
 	}
 

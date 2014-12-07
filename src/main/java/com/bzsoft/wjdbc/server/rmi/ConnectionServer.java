@@ -10,6 +10,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -18,7 +19,9 @@ import com.bzsoft.wjdbc.rmi.ConnectionBrokerRmi;
 import com.bzsoft.wjdbc.rmi.SecureSocketFactory;
 import com.bzsoft.wjdbc.rmi.sf.CompressedRMISocketFactory;
 import com.bzsoft.wjdbc.server.command.CommandProcessor;
+import com.bzsoft.wjdbc.server.config.ConnectionConfiguration;
 import com.bzsoft.wjdbc.server.config.RmiConfiguration;
+import com.bzsoft.wjdbc.server.config.SharedConnectionPoolConfiguration;
 import com.bzsoft.wjdbc.server.config.WJdbcConfiguration;
 
 public class ConnectionServer {
@@ -52,6 +55,20 @@ public class ConnectionServer {
 		} else {
 			LOGGER.info("Using RMI-Registry on port " + rmiConf.getPort());
 			registry = LocateRegistry.getRegistry(rmiConf.getPort());
+		}
+		final Map<String, SharedConnectionPoolConfiguration> sharedConnMap = config.getSharedPoolConfiguration();
+		if (!sharedConnMap.isEmpty()) {
+			LOGGER.info("Creating shared-pools ...");
+			for (final SharedConnectionPoolConfiguration scp : sharedConnMap.values()) {
+				final String poolurlid = scp.createSharedConnectionPool();
+				if (poolurlid != null) {
+					final String id = scp.getId();
+					final ConnectionConfiguration cc = config.getConnectionBySharedPoolId(id);
+					if (cc != null) {
+						cc.setSharedPoolUrl(poolurlid);
+					}
+				}
+			}
 		}
 		final CommandProcessor commandProcessor = new CommandProcessor(config);
 		LOGGER.info("Binding remote object to '" + rmiConf.getObjectName() + "'");

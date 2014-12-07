@@ -1,8 +1,12 @@
 package com.bzsoft.wjdbc.server.config;
 
+import static com.bzsoft.wjdbc.server.config.ConnectionConstants.DBCPDRIVER;
+import static com.bzsoft.wjdbc.server.config.ConnectionConstants.DBCPID;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -20,11 +24,11 @@ import com.bzsoft.wjdbc.server.DataSourceProvider;
 public class ConnectionConfiguration {
 
 	private static final Logger				LOGGER								= Logger.getLogger(ConnectionConfiguration.class);
-	private static final String				DBCPID								= "jdbc:apache:commons:dbcp:";
 
 	// Basic properties
 	protected String								id;
 	protected String								sharedPoolId;
+	protected String								sharedPoolUrl;
 	protected String								driver;
 	protected String								url;
 	protected String								dataSourceProvider;
@@ -71,6 +75,14 @@ public class ConnectionConfiguration {
 
 	public String getSharedPoolId() {
 		return sharedPoolId;
+	}
+
+	public void setSharedPoolUrl(final String sharedPoolUrl) {
+		this.sharedPoolUrl = sharedPoolUrl;
+	}
+
+	public String getSharedPoolUrl() {
+		return sharedPoolUrl;
 	}
 
 	public String getDriver() {
@@ -194,21 +206,26 @@ public class ConnectionConfiguration {
 		this.queryFilters = queryFilters;
 	}
 
-	protected void validate() throws ConfigurationException {
-		if (url == null && dataSourceProvider == null) {
-			final String msg = "Connection-Entry " + id + ": neither URL nor DataSourceProvider is provided";
+	protected void validate(final Map<String, SharedConnectionPoolConfiguration> sharedPoolMap) throws ConfigurationException {
+		if (url == null && dataSourceProvider == null && sharedPoolId == null) {
+			final String msg = "Connection-Entry " + id + ": neither URL nor sharedPoolId nor DataSourceProvider is provided";
 			LOGGER.error(msg);
 			throw new ConfigurationException(msg);
 		}
 		// When connection pooling is used, the user/password combination must be
 		// provided in the configuration as otherwise user-accounts are mixed up
-		if (dataSourceProvider == null) {
+		if (dataSourceProvider == null && sharedPoolId == null) {
 			if (connectionPooling && user == null) {
 				final String msg = "Connection-Entry " + id
 						+ ": connection pooling can only be used when a dedicated user is specified for the connection";
 				LOGGER.error(msg);
 				throw new ConfigurationException(msg);
 			}
+		}
+		if (sharedPoolId != null && !sharedPoolMap.containsKey(sharedPoolId)) {
+			final String msg = "Connection-Entry " + id + ": shared-pool " + sharedPoolId + " not found.";
+			LOGGER.error(msg);
+			throw new ConfigurationException(msg);
 		}
 	}
 
@@ -298,8 +315,10 @@ public class ConnectionConfiguration {
 		return result;
 	}
 
-	// TODO: shared pool creation
 	protected Connection createConnectionViaDriverManager(final Properties props) throws SQLException {
+		if (sharedPoolUrl != null) {
+			return DriverManager.getConnection(sharedPoolUrl);
+		}
 		// Try to load the driver
 		if (!driverInitialized && driver != null) {
 			try {
@@ -340,7 +359,7 @@ public class ConnectionConfiguration {
 			} else {
 				try {
 					// Try to load the DBCP-Driver
-					Class.forName("org.apache.commons.dbcp.PoolingDriver");
+					Class.forName(DBCPDRIVER);
 					// Populate configuration object
 					if (connectionPoolConfiguration != null) {
 						final GenericObjectPool.Config poolConfig = new GenericObjectPool.Config();

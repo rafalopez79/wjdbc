@@ -1,5 +1,15 @@
 package com.bzsoft.wjdbc.server.config;
 
+import static com.bzsoft.wjdbc.server.config.ConnectionConstants.DBCPDRIVER;
+import static com.bzsoft.wjdbc.server.config.ConnectionConstants.DBCPID;
+
+import java.sql.DriverManager;
+
+import org.apache.commons.dbcp.ConnectionFactory;
+import org.apache.commons.dbcp.DriverManagerConnectionFactory;
+import org.apache.commons.dbcp.PoolableConnectionFactory;
+import org.apache.commons.dbcp.PoolingDriver;
+import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
 
 public class SharedConnectionPoolConfiguration {
@@ -135,5 +145,33 @@ public class SharedConnectionPoolConfiguration {
 		LOGGER.info("    Max. waiting time for connections .... " + ConfigurationUtil.getStringFromMillis(maxWait));
 		LOGGER.info("    Time between eviction runs ........... " + ConfigurationUtil.getStringFromMillis(timeBetweenEvictionRunsMillis));
 		LOGGER.info("    Min. idle time before eviction ....... " + ConfigurationUtil.getStringFromMillis(minEvictableIdleTimeMillis));
+	}
+
+	public String createSharedConnectionPool() {
+		final String dbcpId = DBCPID + id;
+		// Try to load the DBCP-Driver
+		try {
+			Class.forName(DBCPDRIVER);
+			Class.forName(driver);
+			// Populate configuration object
+			final GenericObjectPool.Config poolConfig = new GenericObjectPool.Config();
+			poolConfig.maxActive = getMaxActive();
+			poolConfig.maxIdle = getMaxIdle();
+			poolConfig.maxWait = getMaxWait();
+			poolConfig.minIdle = getMinIdle();
+			poolConfig.minEvictableIdleTimeMillis = getMinEvictableIdleTimeMillis();
+			poolConfig.timeBetweenEvictionRunsMillis = getTimeBetweenEvictionRunsMillis();
+			final GenericObjectPool connectionPool = new LoggingGenericObjectPool(id, poolConfig);
+			final ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(getUrl(), getUser(), getPassword());
+			new PoolableConnectionFactory(connectionFactory, connectionPool, null, null, false, true);
+			final PoolingDriver dbcpDriver = (PoolingDriver) DriverManager.getDriver(DBCPID);
+			// Register pool with connection id
+			dbcpDriver.registerPool(id, connectionPool);
+			LOGGER.debug("Shared Connection-Pooling successfully initialized for pool " + id);
+			return dbcpId;
+		} catch (final Exception e) {
+			LOGGER.error("Cannot initialize shared pool " + id, e);
+			return null;
+		}
 	}
 }
