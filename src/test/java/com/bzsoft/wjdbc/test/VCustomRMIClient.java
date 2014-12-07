@@ -5,22 +5,23 @@ import java.sql.Driver;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.bzsoft.wjdbc.WDriver;
+import de.simplicit.vjdbc.VirtualDriver;
 
-public class CustomRMIClient {
+public class VCustomRMIClient {
 
 	private static final List<Double> process(final Driver driver, final int i) throws Exception {
 		final Properties prop = new Properties();
 		prop.put("user", "distribucion");
 		prop.put("password", "raHgTINI4FWo");
 		// prop.setProperty(WJdbcProperties.RMI_SSL, "true");
-		final Connection conn = driver.connect("jdbc:wjdbc:rmi://127.0.0.1:20000/wjdbc;H2", prop);
+		final Connection conn = driver.connect("jdbc:vjdbc:rmi://127.0.0.1:20000/wjdbc;H2", prop);
 		System.out.println("Connected!");
-		// final Statement stmt = conn.createStatement();
+		final Statement stmt = conn.createStatement();
 		//
 		// stmt.executeUpdate("DROP TABLE IF EXISTS TEST" + i);
 		// stmt.executeUpdate("CREATE TABLE TEST" + i +
@@ -69,7 +70,7 @@ public class CustomRMIClient {
 	 * @throws SQLException
 	 */
 	public static void main(final String[] args) throws Exception {
-		final Driver driver = new WDriver();
+		final Driver driver = new VirtualDriver();
 		final int iter = 1;
 		final List<Double> times = new ArrayList<Double>(iter);
 		for (int i = 0; i < iter; i++) {

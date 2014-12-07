@@ -210,7 +210,15 @@ public class ConnectionConfiguration {
 			for (int i = 0; i < password.length(); i++) {
 				hiddenPassword[i] = '*';
 			}
-			usedPassword = new String(hiddenPassword);
+			usedPassword = String.valueOf(hiddenPassword);
+		}
+		String userWJDBCPassword = null;
+		if (wjdbcPassword != null) {
+			final char[] hiddenPassword = new char[wjdbcPassword.length()];
+			for (int i = 0; i < wjdbcPassword.length(); i++) {
+				hiddenPassword[i] = '*';
+			}
+			userWJDBCPassword = String.valueOf(hiddenPassword);
 		}
 		LOGGER.info("Connection-Configuration '" + id + "'");
 		// We must differentiate between the DataSource-API and the older
@@ -226,6 +234,8 @@ public class ConnectionConfiguration {
 		}
 		LOGGER.info("  User ....................... " + (user != null ? user : "provided by client"));
 		LOGGER.info("  Password ................... " + usedPassword);
+		LOGGER.info("  WJDBCUser .................. " + (wjdbcUser != null ? wjdbcUser : "provided by client"));
+		LOGGER.info("  WJDBPassword ............... " + userWJDBCPassword);
 		LOGGER.info("  Row-Packetsize ............. " + rowPacketSize);
 		LOGGER.info("  Charset .................... " + charset);
 		LOGGER.info("  Connection-Pool ............ " + (connectionPooling ? "on" : "off"));

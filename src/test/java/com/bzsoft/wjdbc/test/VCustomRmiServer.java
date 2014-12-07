@@ -2,19 +2,21 @@ package com.bzsoft.wjdbc.test;
 
 import java.sql.DriverManager;
 
-import com.bzsoft.wjdbc.server.config.ConnectionConfiguration;
-import com.bzsoft.wjdbc.server.config.RmiConfiguration;
-import com.bzsoft.wjdbc.server.config.WJdbcConfiguration;
-import com.bzsoft.wjdbc.server.rmi.ConnectionServer;
 import com.bzsoft.wjdbc.test.mock.MockDriver;
 
-public class CustomRmiServer {
+import de.simplicit.vjdbc.server.config.ConnectionConfiguration;
+import de.simplicit.vjdbc.server.config.RmiConfiguration;
+import de.simplicit.vjdbc.server.config.VJdbcConfiguration;
+import de.simplicit.vjdbc.server.rmi.ConnectionServer;
+
+public class VCustomRmiServer {
 
 	public static void main(final String[] args) {
 		try {
 			DriverManager.registerDriver(new MockDriver());
-			System.out.println("Initializing WJDBC");
-			final WJdbcConfiguration vjdbcConfig = new WJdbcConfiguration();
+			System.out.println("Initializing VJDBC");
+			final VJdbcConfiguration vjdbcConfig = new VJdbcConfiguration();
+			VJdbcConfiguration.init(vjdbcConfig);
 			final RmiConfiguration rmiConfig = new RmiConfiguration("wjdbc", 20000);
 			rmiConfig.setRemotingPort(20001);
 			// rmiConfig.setUseSSL(true);
@@ -32,11 +34,11 @@ public class CustomRmiServer {
 			configHSql.setPassword("");
 			configHSql.setRowPacketSize(10000);
 			configHSql.setConnectionPooling(false);
-			configHSql.setWjdbcUser("distribucion");
-			configHSql.setWjdbcPassword("raHgTINI4FWo");
+			// configHSql.setWjdbcUser("distribucion");
+			// configHSql.setWjdbcPassword("raHgTINI4FWo");
 			vjdbcConfig.addConnection(configHSql);
 
-			final ConnectionServer server = new ConnectionServer(vjdbcConfig);
+			final ConnectionServer server = new ConnectionServer();
 			server.serve();
 		} catch (final Exception e) {
 			e.printStackTrace();
