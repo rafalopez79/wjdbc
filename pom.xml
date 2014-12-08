@@ -107,6 +107,13 @@
     </plugins>
   </build>
 
+	<licenses>
+	  <license>
+	    <name>GNU Lesser General Public License</name>
+	    <url>https://www.gnu.org/licenses/lgpl.html</url>
+	  </license>
+	</licenses>
+
   <developers>
     <developer>
       <id>sfcat</id>
