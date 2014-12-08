@@ -1,16 +1,34 @@
 <wjdbc-configuration>
-    <rmi compressionMode="bestspeed" registryPort="40000" remotingPort="40001"/>
+    <rmi registryPort="40000" remotingPort="40001"/>
 	<connection 
-		id="h2" 
-		driver="org.h2.Driver" 
-		url="jdbc:h2:~/test"
-		user="sa"
-       	password="">       	
-    	<connection-pool
-                   maxActive="20"
-                   maxIdle="10"
-                   maxWait="10000"
-                   timeBetweenEvictionRunsMillis="5000"
-                   minEvictableIdleTimeMillis="10000"/>
+		id="h2" 		
+       	sharedPoolId="pool1"
+       	wjdbcUser="pp"
+       	wjdbcPassword="pepa">      	    	
 	</connection>
+	
+	<shared-pool
+	    id="pool1"
+	    driver="org.h2.Driver" 
+        url="jdbc:h2:~/test"
+        user="sa"
+        password="" 
+        maxActive="20"
+        maxIdle="10"
+        maxWait="10000"
+        timeBetweenEvictionRunsMillis="5000"
+        minEvictableIdleTimeMillis="10000">   	   
+	</shared-pool>
+	<shared-pool
+        id="pool2"
+        driver="org.h2.Driver" 
+        url="jdbc:h2:~/test"
+        user="sa"
+        password=""
+        maxActive="20"
+        maxIdle="10"
+        maxWait="10000"
+        timeBetweenEvictionRunsMillis="5000"
+        minEvictableIdleTimeMillis="10000">               
+    </shared-pool>
 </wjdbc-configuration>
