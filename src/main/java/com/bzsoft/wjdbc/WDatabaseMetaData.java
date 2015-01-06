@@ -1150,7 +1150,7 @@ public class WDatabaseMetaData extends WBase implements DatabaseMetaData {
 	protected <T> ResultSet queryResultSet(final Command<ResultSet, T> cmd) throws SQLException {
 		Validate.isFalse(connection.isClosed(), "Connection closed");
 		try {
-			final StreamingResultSet rs = (StreamingResultSet) sink.process(objectUid, cmd, true);
+			final StreamingResultSet rs = (StreamingResultSet) sink.process(objectUid, cmd);
 			rs.setCommandSink(sink);
 			return rs;
 		} catch (final Exception e) {

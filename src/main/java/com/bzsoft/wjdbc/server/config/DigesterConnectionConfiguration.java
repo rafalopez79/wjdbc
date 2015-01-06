@@ -6,10 +6,6 @@ public class DigesterConnectionConfiguration extends ConnectionConfiguration {
 		this.traceCommandCount = ConfigurationUtil.getBooleanFromString(traceCommandCount);
 	}
 
-	public void setTraceOrphanedObjects(final String traceOrphandedObjects) {
-		this.traceOrphanedObjects = ConfigurationUtil.getBooleanFromString(traceOrphandedObjects);
-	}
-
 	public void setConnectionPooling(final String connectionPooling) {
 		this.connectionPooling = ConfigurationUtil.getBooleanFromString(connectionPooling);
 	}

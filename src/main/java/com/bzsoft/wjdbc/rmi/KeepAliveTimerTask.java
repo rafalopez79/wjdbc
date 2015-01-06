@@ -16,7 +16,7 @@ import com.bzsoft.wjdbc.command.PingCommand;
  */
 public final class KeepAliveTimerTask implements CommandSinkListener, Runnable {
 
-	private static final Command<Void, Connection>	DUMMYCOMMAND	= new PingCommand();
+	private static final Command<Void, Connection>	PINGCOMMAND	= new PingCommand();
 
 	private volatile boolean								ignoreNextPing;
 	private final DecoratedCommandSink					sink;
@@ -45,7 +45,7 @@ public final class KeepAliveTimerTask implements CommandSinkListener, Runnable {
 			ignoreNextPing = false;
 		} else {
 			try {
-				sink.process(connuid, DUMMYCOMMAND);
+				sink.process(connuid, PINGCOMMAND);
 			} catch (final SQLException e) {
 				// Ignore it, sink is already closed
 			}

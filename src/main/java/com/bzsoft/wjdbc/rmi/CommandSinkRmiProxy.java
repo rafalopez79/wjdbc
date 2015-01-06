@@ -6,8 +6,6 @@ import java.util.Properties;
 
 import com.bzsoft.wjdbc.command.Command;
 import com.bzsoft.wjdbc.command.CommandSink;
-import com.bzsoft.wjdbc.command.ConnectResult;
-import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 
 public class CommandSinkRmiProxy implements CommandSink {
@@ -19,10 +17,10 @@ public class CommandSinkRmiProxy implements CommandSink {
 	}
 
 	@Override
-	public ConnectResult connect(final String url, final Properties props, final Properties clientInfo, final CallingContext ctx) throws SQLException {
+	public long connect(final String url, final Properties props, final Properties clientInfo) throws SQLException {
 		if (targetSink != null) {
 			try {
-				return targetSink.connect(url, props, clientInfo, ctx);
+				return targetSink.connect(url, props, clientInfo);
 			} catch (final RemoteException e) {
 				throw SQLExceptionHelper.wrap(e);
 			}
@@ -31,10 +29,10 @@ public class CommandSinkRmiProxy implements CommandSink {
 	}
 
 	@Override
-	public <R, P> R process(final long connuid, final long uid, final Command<R, P> cmd, final CallingContext ctx) throws SQLException {
+	public <R, P> R process(final long connuid, final long uid, final Command<R, P> cmd) throws SQLException {
 		if (targetSink != null) {
 			try {
-				return targetSink.process(connuid, uid, cmd, ctx);
+				return targetSink.process(connuid, uid, cmd);
 			} catch (final RemoteException e) {
 				throw SQLExceptionHelper.wrap(e);
 			}

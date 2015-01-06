@@ -17,10 +17,8 @@ import org.apache.log4j.Logger;
 
 import com.bzsoft.wjdbc.WJdbcException;
 import com.bzsoft.wjdbc.command.Command;
-import com.bzsoft.wjdbc.command.ConnectResult;
 import com.bzsoft.wjdbc.command.DestroyCommand;
 import com.bzsoft.wjdbc.command.StatementCancelCommand;
-import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.server.concurrent.Executor;
 import com.bzsoft.wjdbc.server.config.ConnectionConfiguration;
 import com.bzsoft.wjdbc.server.config.OcctConfiguration;
@@ -59,8 +57,7 @@ public class CommandProcessor {
 		}
 	}
 
-	public ConnectResult createConnection(final String url, final Properties props, final Properties clientInfo, final CallingContext ctx)
-			throws SQLException {
+	public long createConnection(final String url, final Properties props, final Properties clientInfo) throws SQLException {
 		final ConnectionConfiguration connectionConfiguration = config.getConnection(url);
 		if (connectionConfiguration != null) {
 			final Properties auxProperties = new Properties(clientInfo);
@@ -78,11 +75,11 @@ public class CommandProcessor {
 				throw SQLExceptionHelper.wrap(e);
 			}
 			LOGGER.debug("Created connection, registering it now ...");
-			final ConnectResult cr = registerConnection(conn, connectionConfiguration, clientInfo, ctx);
+			final long connuid = registerConnection(conn, connectionConfiguration, clientInfo);
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Registered " + conn.getClass().getName() + " with UID " + cr.getUid());
+				LOGGER.debug("Registered " + conn.getClass().getName() + " with UID " + connuid);
 			}
-			return cr;
+			return connuid;
 		}
 		throw new SQLException("Can't find connection configuration for " + url);
 	}
@@ -91,13 +88,11 @@ public class CommandProcessor {
 		return connectionEntries.get(connid);
 	}
 
-	public ConnectResult registerConnection(final Connection conn, final ConnectionConfiguration configuration, final Properties clientInfo,
-			final CallingContext ctx) {
+	public long registerConnection(final Connection conn, final ConnectionConfiguration configuration, final Properties clientInfo) {
 		final long connid = COUNTER.getAndIncrement();
-		final ConnectResult result = new ConnectResult(connid, configuration.isTraceOrphanedObjects());
 		connectionEntries.put(connid,
-				new ConnectionEntry(connid, conn, configuration, clientInfo, ctx, COUNTER, config.getExecutor(), configuration.getRowPacketSize()));
-		return result;
+				new ConnectionEntry(connid, conn, configuration, clientInfo, COUNTER, config.getExecutor(), configuration.getRowPacketSize()));
+		return connid;
 	}
 
 	public void destroy() {
@@ -111,7 +106,7 @@ public class CommandProcessor {
 		LOGGER.info("CommandProcessor successfully destroyed");
 	}
 
-	public <R, V> R process(final long connuid, final long uid, final Command<R, V> cmd, final CallingContext ctx) throws SQLException {
+	public <R, V> R process(final long connuid, final long uid, final Command<R, V> cmd) throws SQLException {
 		R result = null;
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug(cmd);
@@ -119,12 +114,10 @@ public class CommandProcessor {
 		final ConnectionEntry connentry = connectionEntries.get(connuid);
 		if (connentry != null) {
 			try {
-				// StatementCancelCommand can be executed asynchronously to
-				// terminate a running query
 				if (cmd instanceof StatementCancelCommand) {
 					connentry.cancelCurrentStatementExecution(uid, (StatementCancelCommand) cmd);
 				} else {
-					result = connentry.executeCommand(uid, cmd, ctx);
+					result = connentry.executeCommand(uid, cmd);
 				}
 			} catch (final SQLException e) {
 				if (LOGGER.isDebugEnabled()) {

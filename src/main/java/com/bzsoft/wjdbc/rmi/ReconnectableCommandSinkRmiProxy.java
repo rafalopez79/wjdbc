@@ -9,8 +9,6 @@ import java.util.Properties;
 import com.bzsoft.wjdbc.WJdbcSqlException;
 import com.bzsoft.wjdbc.command.Command;
 import com.bzsoft.wjdbc.command.CommandSink;
-import com.bzsoft.wjdbc.command.ConnectResult;
-import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 
 public class ReconnectableCommandSinkRmiProxy implements CommandSink {
@@ -28,11 +26,10 @@ public class ReconnectableCommandSinkRmiProxy implements CommandSink {
 	}
 
 	@Override
-	public ConnectResult connect(final String database, final Properties props, final Properties clientInfo, final CallingContext ctx)
-			throws SQLException {
+	public long connect(final String database, final Properties props, final Properties clientInfo) throws SQLException {
 		if (rmiSink != null) {
 			try {
-				return rmiSink.connect(database, props, clientInfo, ctx);
+				return rmiSink.connect(database, props, clientInfo);
 			} catch (final NoSuchObjectException e) {
 				ConnectionBrokerRmi broker;
 				try {
@@ -50,10 +47,10 @@ public class ReconnectableCommandSinkRmiProxy implements CommandSink {
 	}
 
 	@Override
-	public <R, P> R process(final long connuid, final long uid, final Command<R, P> cmd, final CallingContext ctx) throws SQLException {
+	public <R, P> R process(final long connuid, final long uid, final Command<R, P> cmd) throws SQLException {
 		if (rmiSink != null) {
 			try {
-				return rmiSink.process(connuid, uid, cmd, ctx);
+				return rmiSink.process(connuid, uid, cmd);
 			} catch (final NoSuchObjectException e) {
 				ConnectionBrokerRmi broker;
 				try {

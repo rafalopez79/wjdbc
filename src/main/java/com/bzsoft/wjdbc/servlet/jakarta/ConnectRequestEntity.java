@@ -7,25 +7,21 @@ import java.util.Properties;
 
 import org.apache.commons.httpclient.methods.RequestEntity;
 
-import com.bzsoft.wjdbc.serial.CallingContext;
-
 /**
  * RequestEntity implementation which streams all of the parameters necessary
  * for a connect request.
- * 
+ *
  * @author Mike
  */
 class ConnectRequestEntity implements RequestEntity {
-	private final String				_database;
-	private final Properties		_props;
-	private final Properties		_clientInfo;
-	private final CallingContext	_ctx;
+	private final String			_database;
+	private final Properties	_props;
+	private final Properties	_clientInfo;
 
-	public ConnectRequestEntity(final String database, final Properties props, final Properties clientInfo, final CallingContext ctx) {
+	public ConnectRequestEntity(final String database, final Properties props, final Properties clientInfo) {
 		_database = database;
 		_props = props;
 		_clientInfo = clientInfo;
-		_ctx = ctx;
 	}
 
 	@Override
@@ -49,7 +45,6 @@ class ConnectRequestEntity implements RequestEntity {
 		oos.writeUTF(_database);
 		oos.writeObject(_props);
 		oos.writeObject(_clientInfo);
-		oos.writeObject(_ctx);
 		oos.flush();
 	}
 }

@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.bzsoft.wjdbc.command.Command;
-import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.server.command.CommandProcessor;
 import com.bzsoft.wjdbc.server.config.ConfigurationException;
 import com.bzsoft.wjdbc.server.config.ConnectionConfiguration;
@@ -147,20 +146,18 @@ public class ServletCommandSink extends HttpServlet {
 						final long connuid = ois.readLong();
 						final long uid = ois.readLong();
 						final Command<?, ?> cmd = (Command<?, ?>) ois.readObject();
-						final CallingContext ctx = (CallingContext) ois.readObject();
 						// Delegate execution to the CommandProcessor
-						objectToReturn = processor.process(connuid, uid, cmd, ctx);
+						objectToReturn = processor.process(connuid, uid, cmd);
 					} else if (method.equals(ServletCommandSinkIdentifier.CONNECT_COMMAND)) {
 						final String url = ois.readUTF();
 						final Properties props = (Properties) ois.readObject();
 						final Properties clientInfo = (Properties) ois.readObject();
-						final CallingContext ctx = (CallingContext) ois.readObject();
 
 						final ConnectionConfiguration connectionConfiguration = config.getConnection(url);
 
 						if (connectionConfiguration != null) {
 							final Connection conn = connectionConfiguration.create(props);
-							objectToReturn = processor.registerConnection(conn, connectionConfiguration, clientInfo, ctx);
+							objectToReturn = processor.registerConnection(conn, connectionConfiguration, clientInfo);
 						} else {
 							objectToReturn = new SQLException("WJDBC-Connection " + url + " not found");
 						}

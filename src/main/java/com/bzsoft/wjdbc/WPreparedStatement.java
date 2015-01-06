@@ -75,8 +75,8 @@ public class WPreparedStatement extends WStatement implements PreparedStatement 
 	private PreparedStatementParameter[]					paramList	= new PreparedStatementParameter[10];
 	private int														maxIndex		= 0;
 
-	public WPreparedStatement(final long uid, final Connection connection, final DecoratedCommandSink sink, final int resultSetType,
-			final int maxRows, final int queryTimeout) {
+	WPreparedStatement(final long uid, final Connection connection, final DecoratedCommandSink sink, final int resultSetType, final int maxRows,
+			final int queryTimeout) {
 		super(uid, connection, sink, resultSetType, maxRows, queryTimeout);
 		batchCollector = new ArrayList<PreparedStatementParameter[]>();
 	}
@@ -87,7 +87,7 @@ public class WPreparedStatement extends WStatement implements PreparedStatement 
 		StreamingResultSet result = null;
 		try {
 			reduceParam();
-			result = (StreamingResultSet) sink.process(objectUid, new PreparedStatementQueryCommand(paramList, resultSetType), true);
+			result = (StreamingResultSet) sink.process(objectUid, new PreparedStatementQueryCommand(paramList, resultSetType));
 			result.setStatement(this);
 			result.setCommandSink(sink);
 		} catch (final Exception e) {

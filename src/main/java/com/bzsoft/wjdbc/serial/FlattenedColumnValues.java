@@ -4,7 +4,6 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.lang.reflect.Array;
 
 class FlattenedColumnValues implements Externalizable {
 
@@ -21,14 +20,12 @@ class FlattenedColumnValues implements Externalizable {
 	}
 
 	protected FlattenedColumnValues(final Class<?> clazz, final int size) {
-		// Any of these types ? boolean, byte, char, short, int, long, float, and
-		// double
 		this.clazz = clazz;
 		if (clazz.isPrimitive()) {
 			array = createPrimitiveTypeArray(clazz, size);
 			nullFlags = new boolean[size];
 		} else {
-			array = Array.newInstance(clazz, size);
+			array = new Object[size];
 			nullFlags = null;
 		}
 		this.size = size;
@@ -60,6 +57,7 @@ class FlattenedColumnValues implements Externalizable {
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
 		array = in.readObject();
 		clazz = array.getClass().getComponentType();
+		size = in.readInt();
 		final boolean isNull = in.readBoolean();
 		if (isNull) {
 			nullFlags = null;
@@ -70,12 +68,12 @@ class FlattenedColumnValues implements Externalizable {
 				nullFlags[i] = in.readBoolean();
 			}
 		}
-		this.size = Array.getLength(array);
 	}
 
 	@Override
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeObject(array);
+		out.writeInt(size);
 		if (nullFlags == null) {
 			out.writeBoolean(true);
 		} else {
@@ -88,54 +86,54 @@ class FlattenedColumnValues implements Externalizable {
 
 	}
 
-	void setObject(final int index, final Object value) {
+	final void setObject(final int index, final Object value) {
 		ensureCapacity(index + 1);
-		Array.set(array, index, value);
+		((Object[]) array)[index] = value;
 	}
 
-	void setBoolean(final int index, final boolean value) {
+	final void setBoolean(final int index, final boolean value) {
 		ensureCapacity(index + 1);
 		((boolean[]) array)[index] = value;
 	}
 
-	void setByte(final int index, final byte value) {
+	final void setByte(final int index, final byte value) {
 		ensureCapacity(index + 1);
 		((byte[]) array)[index] = value;
 	}
 
-	void setShort(final int index, final short value) {
+	final void setShort(final int index, final short value) {
 		ensureCapacity(index + 1);
 		((short[]) array)[index] = value;
 	}
 
-	void setInt(final int index, final int value) {
+	final void setInt(final int index, final int value) {
 		ensureCapacity(index + 1);
 		((int[]) array)[index] = value;
 	}
 
-	void setLong(final int index, final long value) {
+	final void setLong(final int index, final long value) {
 		ensureCapacity(index + 1);
 		((long[]) array)[index] = value;
 	}
 
-	void setFloat(final int index, final float value) {
+	final void setFloat(final int index, final float value) {
 		ensureCapacity(index + 1);
 		((float[]) array)[index] = value;
 	}
 
-	void setDouble(final int index, final double value) {
+	final void setDouble(final int index, final double value) {
 		ensureCapacity(index + 1);
 		((double[]) array)[index] = value;
 	}
 
-	void setIsNull(final int index) {
+	final void setIsNull(final int index) {
 		ensureCapacity(index + 1);
 		if (nullFlags != null) {
 			nullFlags[index] = true;
 		}
 	}
 
-	Object getValue(final int index) {
+	final Object getValue(final int index) {
 		if (nullFlags != null && nullFlags[index]) {
 			return null;
 		} else if (clazz == int.class) {
@@ -159,7 +157,7 @@ class FlattenedColumnValues implements Externalizable {
 		}
 	}
 
-	void ensureCapacity(final int minCapacity) {
+	final void ensureCapacity(final int minCapacity) {
 		final int oldCapacity = size;
 		if (minCapacity > oldCapacity) {
 			int newCapacity = oldCapacity * 3 / 2 + 1;
@@ -170,7 +168,7 @@ class FlattenedColumnValues implements Externalizable {
 			if (clazz.isPrimitive()) {
 				array = createPrimitiveTypeArray(clazz, newCapacity);
 			} else {
-				array = Array.newInstance(clazz, newCapacity);
+				array = new Object[newCapacity];
 			}
 			System.arraycopy(tmpArrayOfValues, 0, array, 0, size);
 			if (nullFlags != null) {
@@ -182,7 +180,7 @@ class FlattenedColumnValues implements Externalizable {
 		}
 	}
 
-	static FlattenedColumnValues compress(final FlattenedColumnValues data, final int maxRows) {
+	static final FlattenedColumnValues compact(final FlattenedColumnValues data, final int maxRows) {
 		final FlattenedColumnValues out = new FlattenedColumnValues(data.clazz, maxRows);
 		if (data.nullFlags != null) {
 			System.arraycopy(data.nullFlags, 0, out.nullFlags, 0, maxRows);

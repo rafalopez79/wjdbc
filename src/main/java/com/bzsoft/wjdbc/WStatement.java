@@ -66,7 +66,7 @@ public class WStatement extends WBase implements Statement {
 		Validate.isFalse(connection.isClosed(), "Connection closed");
 		Validate.isFalse(isClosed, "Statement closed");
 		try {
-			final StreamingResultSet srs = (StreamingResultSet) sink.process(objectUid, new StatementQueryCommand(sql, resultSetType), true);
+			final StreamingResultSet srs = (StreamingResultSet) sink.process(objectUid, new StatementQueryCommand(sql, resultSetType));
 			srs.setStatement(this);
 			srs.setCommandSink(sink);
 			currentResultSet = srs;
@@ -207,7 +207,7 @@ public class WStatement extends WBase implements Statement {
 		Validate.isFalse(isClosed, "Statement closed");
 		if (currentResultSet == null) {
 			try {
-				currentResultSet = (StreamingResultSet) sink.process(objectUid, new StatementGetResultSetCommand(), true);
+				currentResultSet = (StreamingResultSet) sink.process(objectUid, new StatementGetResultSetCommand());
 				currentResultSet.setStatement(this);
 				currentResultSet.setCommandSink(sink);
 			} catch (final Exception e) {
@@ -319,7 +319,7 @@ public class WStatement extends WBase implements Statement {
 		Validate.isFalse(connection.isClosed(), "Connection closed");
 		Validate.isFalse(isClosed, "Statement closed");
 		try {
-			final StreamingResultSet srs = (StreamingResultSet) sink.process(objectUid, new StatementGetGeneratedKeysCommand(), true);
+			final StreamingResultSet srs = (StreamingResultSet) sink.process(objectUid, new StatementGetGeneratedKeysCommand());
 			srs.setStatement(this);
 			srs.setCommandSink(sink);
 			return srs;

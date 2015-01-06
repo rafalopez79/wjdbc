@@ -10,16 +10,11 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import com.bzsoft.wjdbc.command.CallingContextFactory;
 import com.bzsoft.wjdbc.command.CommandSink;
-import com.bzsoft.wjdbc.command.ConnectResult;
 import com.bzsoft.wjdbc.command.DecoratedCommandSink;
-import com.bzsoft.wjdbc.command.NullCallingContextFactory;
-import com.bzsoft.wjdbc.command.StandardCallingContextFactory;
 import com.bzsoft.wjdbc.rmi.ReconnectableCommandSinkRmiProxy;
 import com.bzsoft.wjdbc.rmi.SecureSocketFactory;
 import com.bzsoft.wjdbc.rmi.sf.CompressedRMISocketFactory;
-import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.server.concurrent.Executor;
 import com.bzsoft.wjdbc.server.concurrent.impl.BaseExecutor;
 import com.bzsoft.wjdbc.servlet.RequestEnhancer;
@@ -73,22 +68,9 @@ public final class WDriver implements Driver {
 					throw new SQLException("Unknown protocol identifier " + realUrl);
 				}
 				// Connect with the sink
-				final ConnectResult cr = sink.connect(urlparts[1], props,
-						ClientInfo.getProperties(props.getProperty(WJdbcProperties.CLIENTINFO_PROPERTIES)), new CallingContext());
-
-				CallingContextFactory ctxFactory;
-				// The value 1 signals that every remote call shall provide a
-				// calling context. This should only
-				// be used for debugging purposes as sending of these objects is
-				// quite expensive.
-				if (cr.isTrace()) {
-					ctxFactory = new StandardCallingContextFactory();
-				} else {
-					ctxFactory = new NullCallingContextFactory();
-				}
+				final long uid = sink.connect(urlparts[1], props, ClientInfo.getProperties(props.getProperty(WJdbcProperties.CLIENTINFO_PROPERTIES)));
 				final Executor executor = new BaseExecutor(1, 5);
-				final long uid = cr.getUid();
-				final DecoratedCommandSink decosink = new DecoratedCommandSink(uid, sink, ctxFactory, executor);
+				final DecoratedCommandSink decosink = new DecoratedCommandSink(uid, sink, executor);
 				result = new WConnection(uid, decosink, executor);
 			} catch (final Exception e) {
 				throw SQLExceptionHelper.wrap(e);

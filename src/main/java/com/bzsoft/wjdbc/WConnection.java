@@ -61,7 +61,7 @@ public class WConnection extends WBase implements Connection {
 
 	private final Executor		executor;
 
-	public WConnection(final long connuid, final DecoratedCommandSink sink, final Executor exec) {
+	WConnection(final long connuid, final DecoratedCommandSink sink, final Executor exec) {
 		super(connuid, sink);
 		isClosed = false;
 		isAutoCommit = null;
@@ -84,7 +84,7 @@ public class WConnection extends WBase implements Connection {
 	public Statement createStatement() throws SQLException {
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcStatementTransport<Statement> srt = sink.process(objectUid,
-				ReflectiveCommand.<JdbcStatementTransport<Statement>, Object> of(JdbcInterfaceType.CONNECTION, "createStatement"), true);
+				ReflectiveCommand.<JdbcStatementTransport<Statement>, Object> of(JdbcInterfaceType.CONNECTION, "createStatement"));
 		return new WStatement(srt.getUID(), this, sink, ResultSet.TYPE_FORWARD_ONLY, srt.getMaxRows(), srt.getQueryTimeout());
 	}
 
@@ -92,7 +92,7 @@ public class WConnection extends WBase implements Connection {
 	public PreparedStatement prepareStatement(final String sql) throws SQLException {
 		Validate.notNull(sql, "SQL sentence is null");
 		Validate.isFalse(isClosed, "Connection closed");
-		final JdbcStatementTransport<PreparedStatement> result = sink.process(objectUid, new ConnectionPrepareStatementCommand(sql), true);
+		final JdbcStatementTransport<PreparedStatement> result = sink.process(objectUid, new ConnectionPrepareStatementCommand(sql));
 		return new WPreparedStatement(result.getUID(), this, sink, ResultSet.TYPE_FORWARD_ONLY, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -100,7 +100,7 @@ public class WConnection extends WBase implements Connection {
 	public CallableStatement prepareCall(final String sql) throws SQLException {
 		Validate.notNull(sql, "SQL sentence is null");
 		Validate.isFalse(isClosed, "Connection closed");
-		final JdbcStatementTransport<CallableStatement> result = sink.process(objectUid, new ConnectionPrepareCallCommand(sql), true);
+		final JdbcStatementTransport<CallableStatement> result = sink.process(objectUid, new ConnectionPrepareCallCommand(sql));
 		return new WCallableStatement(result.getUID(), this, sink, ResultSet.TYPE_FORWARD_ONLY, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -168,7 +168,7 @@ public class WConnection extends WBase implements Connection {
 		Validate.isFalse(isClosed, "Connection closed");
 		if (databaseMetaData == null) {
 			final JdbcObjectTransport<DatabaseMetaData> metadataUid = sink.process(objectUid,
-					ReflectiveCommand.<JdbcObjectTransport<DatabaseMetaData>, Object> of(JdbcInterfaceType.CONNECTION, "getMetaData"), true);
+					ReflectiveCommand.<JdbcObjectTransport<DatabaseMetaData>, Object> of(JdbcInterfaceType.CONNECTION, "getMetaData"));
 			databaseMetaData = new WDatabaseMetaData(this, metadataUid.getUID(), sink);
 		}
 		return databaseMetaData;
@@ -253,7 +253,7 @@ public class WConnection extends WBase implements Connection {
 		final JdbcStatementTransport<Statement> result = sink.process(
 				objectUid,
 				ReflectiveCommand.<JdbcStatementTransport<Statement>, Object> of(JdbcInterfaceType.CONNECTION, "createStatement",
-						new Object[] { Integer.valueOf(resultSetType), Integer.valueOf(resultSetConcurrency) }, ParameterTypeCombinations.INTINT), true);
+						new Object[] { Integer.valueOf(resultSetType), Integer.valueOf(resultSetConcurrency) }, ParameterTypeCombinations.INTINT));
 		return new WStatement(result.getUID(), this, sink, resultSetType, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -262,7 +262,7 @@ public class WConnection extends WBase implements Connection {
 		Validate.notNull(sql, "SQL sentence is null");
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcStatementTransport<PreparedStatement> result = sink.process(objectUid, new ConnectionPrepareStatementCommand(sql, resultSetType,
-				resultSetConcurrency), true);
+				resultSetConcurrency));
 		return new WPreparedStatement(result.getUID(), this, sink, resultSetType, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -271,7 +271,7 @@ public class WConnection extends WBase implements Connection {
 		Validate.notNull(sql, "SQL sentence is null");
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcStatementTransport<CallableStatement> result = sink.process(objectUid, new ConnectionPrepareCallCommand(sql, resultSetType,
-				resultSetConcurrency), true);
+				resultSetConcurrency));
 		return new WCallableStatement(result.getUID(), this, sink, resultSetType, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -308,7 +308,7 @@ public class WConnection extends WBase implements Connection {
 	public Savepoint setSavepoint() throws SQLException {
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcObjectTransport<WSavepoint> result = sink.process(objectUid,
-				ReflectiveCommand.<JdbcObjectTransport<WSavepoint>, Object> of(JdbcInterfaceType.CONNECTION, "setSavepoint"), true);
+				ReflectiveCommand.<JdbcObjectTransport<WSavepoint>, Object> of(JdbcInterfaceType.CONNECTION, "setSavepoint"));
 		return new WSavepoint(result.getUID(), sink);
 	}
 
@@ -317,7 +317,7 @@ public class WConnection extends WBase implements Connection {
 		Validate.notNull(name, "Savepoint name is null");
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcObjectTransport<WSavepoint> result = sink.process(objectUid, ReflectiveCommand.<JdbcObjectTransport<WSavepoint>, Object> of(
-				JdbcInterfaceType.CONNECTION, "setSavepoint", new Object[] { name }, ParameterTypeCombinations.STR), true);
+				JdbcInterfaceType.CONNECTION, "setSavepoint", new Object[] { name }, ParameterTypeCombinations.STR));
 		return new WSavepoint(result.getUID(), sink);
 	}
 
@@ -348,7 +348,7 @@ public class WConnection extends WBase implements Connection {
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcStatementTransport<Statement> result = sink.process(objectUid, ReflectiveCommand.<JdbcStatementTransport<Statement>, Object> of(
 				JdbcInterfaceType.CONNECTION, "createStatement", new Object[] { Integer.valueOf(resultSetType), Integer.valueOf(resultSetConcurrency),
-						Integer.valueOf(resultSetHoldability) }, ParameterTypeCombinations.INTINTINT), true);
+						Integer.valueOf(resultSetHoldability) }, ParameterTypeCombinations.INTINTINT));
 		return new WStatement(result.getUID(), this, sink, resultSetType, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -358,7 +358,7 @@ public class WConnection extends WBase implements Connection {
 		Validate.notNull(sql, "SQL sentence is null");
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcStatementTransport<PreparedStatement> result = sink.process(objectUid, new ConnectionPrepareStatementCommand(sql, resultSetType,
-				resultSetConcurrency, resultSetHoldability), true);
+				resultSetConcurrency, resultSetHoldability));
 		return new WPreparedStatement(result.getUID(), this, sink, resultSetType, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -368,7 +368,7 @@ public class WConnection extends WBase implements Connection {
 		Validate.notNull(sql, "SQL sentence is null");
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcStatementTransport<CallableStatement> result = sink.process(objectUid, new ConnectionPrepareCallCommand(sql, resultSetType,
-				resultSetConcurrency, resultSetHoldability), true);
+				resultSetConcurrency, resultSetHoldability));
 		return new WCallableStatement(result.getUID(), this, sink, resultSetType, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -377,7 +377,7 @@ public class WConnection extends WBase implements Connection {
 		Validate.notNull(sql, "SQL sentence is null");
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcStatementTransport<PreparedStatement> result = sink.process(objectUid, new ConnectionPrepareStatementExtendedCommand(sql,
-				autoGeneratedKeys), true);
+				autoGeneratedKeys));
 		return new WPreparedStatement(result.getUID(), this, sink, ResultSet.TYPE_FORWARD_ONLY, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -386,7 +386,7 @@ public class WConnection extends WBase implements Connection {
 		Validate.notNull(sql, "SQL sentence is null");
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcStatementTransport<PreparedStatement> result = sink.process(objectUid, new ConnectionPrepareStatementExtendedCommand(sql,
-				columnIndexes), true);
+				columnIndexes));
 		return new WPreparedStatement(result.getUID(), this, sink, ResultSet.TYPE_FORWARD_ONLY, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -395,7 +395,7 @@ public class WConnection extends WBase implements Connection {
 		Validate.notNull(sql, "SQL sentence is null");
 		Validate.isFalse(isClosed, "Connection closed");
 		final JdbcStatementTransport<PreparedStatement> result = sink.process(objectUid,
-				new ConnectionPrepareStatementExtendedCommand(sql, columnNames), true);
+				new ConnectionPrepareStatementExtendedCommand(sql, columnNames));
 		return new WPreparedStatement(result.getUID(), this, sink, ResultSet.TYPE_FORWARD_ONLY, result.getMaxRows(), result.getQueryTimeout());
 	}
 
@@ -461,8 +461,7 @@ public class WConnection extends WBase implements Connection {
 		clientProps.put(name, value);
 		try {
 			sink.process(objectUid,
-					ReflectiveCommand.of(JdbcInterfaceType.CONNECTION, "setClientInfo", new Object[] { name, value }, ParameterTypeCombinations.STRSTR),
-					true);
+					ReflectiveCommand.of(JdbcInterfaceType.CONNECTION, "setClientInfo", new Object[] { name, value }, ParameterTypeCombinations.STRSTR));
 		} catch (final SQLClientInfoException e) {
 			throw e;
 		} catch (final SQLException sqle) {
@@ -488,8 +487,7 @@ public class WConnection extends WBase implements Connection {
 			return value;
 		}
 		final String ret = sink.process(objectUid,
-				ReflectiveCommand.<String, Void> of(JdbcInterfaceType.CONNECTION, "getClientInfo", new Object[] { name }, ParameterTypeCombinations.STR),
-				true);
+				ReflectiveCommand.<String, Void> of(JdbcInterfaceType.CONNECTION, "getClientInfo", new Object[] { name }, ParameterTypeCombinations.STR));
 		if (ret != null) {
 			clientProps.setProperty(name, ret);
 		}
@@ -538,15 +536,14 @@ public class WConnection extends WBase implements Connection {
 	public void setSchema(final String schema) throws SQLException {
 		Validate.isFalse(isClosed, "Connection closed");
 		sink.process(objectUid,
-				ReflectiveCommand.<Void, String> of(JdbcInterfaceType.CONNECTION, "setSchema", new Object[] { schema }, ParameterTypeCombinations.STR),
-				true);
+				ReflectiveCommand.<Void, String> of(JdbcInterfaceType.CONNECTION, "setSchema", new Object[] { schema }, ParameterTypeCombinations.STR));
 		this.schema = schema;
 	}
 
 	public String getSchema() throws SQLException {
 		if (schema == null) {
 			Validate.isFalse(isClosed, "Connection closed");
-			schema = sink.process(objectUid, ReflectiveCommand.<String, Void> of(JdbcInterfaceType.CONNECTION, "getSchema", new Object[] {}, 0), true);
+			schema = sink.process(objectUid, ReflectiveCommand.<String, Void> of(JdbcInterfaceType.CONNECTION, "getSchema", new Object[] {}, 0));
 			return schema;
 		}
 		return schema;

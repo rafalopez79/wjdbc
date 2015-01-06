@@ -38,7 +38,6 @@ public class ConnectionConfiguration {
 	protected String								wjdbcPassword;
 	// Trace properties
 	protected boolean								traceCommandCount					= false;
-	protected boolean								traceOrphanedObjects				= false;
 	// Row-Packet size defines the number of rows that is transported in one
 	// packet
 	protected int									rowPacketSize						= 200;
@@ -147,14 +146,6 @@ public class ConnectionConfiguration {
 
 	public void setTraceCommandCount(final boolean traceCommandCount) {
 		this.traceCommandCount = traceCommandCount;
-	}
-
-	public boolean isTraceOrphanedObjects() {
-		return traceOrphanedObjects;
-	}
-
-	public void setTraceOrphanedObjects(final boolean traceOrphanedObjects) {
-		this.traceOrphanedObjects = traceOrphanedObjects;
 	}
 
 	public int getRowPacketSize() {
@@ -268,7 +259,6 @@ public class ConnectionConfiguration {
 		LOGGER.info("  Shared-Pool ................ " + (sharedPoolId != null ? sharedPoolId : "null"));
 		LOGGER.info("  Pre-Fetch ResultSetMetaData  " + (prefetchResultSetMetaData ? "on" : "off"));
 		LOGGER.info("  Trace Command-Counts ....... " + traceCommandCount);
-		LOGGER.info("  Trace Orphaned-Objects ..... " + traceOrphanedObjects);
 		if (connectionPoolConfiguration != null) {
 			connectionPoolConfiguration.log();
 		}

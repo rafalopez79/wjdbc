@@ -5,26 +5,25 @@ import java.sql.Driver;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import com.bzsoft.wjdbc.WDriver;
 
-public class CustomRMIClient {
+public class FileCustomRMIClient {
 
 	private static final List<Double> process(final Driver driver, final int i) throws Exception {
 		final Properties prop = new Properties();
-		prop.put("user", "distribucion");
-		prop.put("password", "raHgTINI4FWo");
+		prop.put("user", "pp");
+		prop.put("password", "pepa");
 		// prop.setProperty(WJdbcProperties.RMI_SSL, "true");
-		final Connection conn = driver.connect("jdbc:wjdbc:rmi://127.0.0.1:20000/wjdbc;H2", prop);
+		final Connection conn = driver.connect("jdbc:wjdbc:rmi://127.0.0.1:40000/WJdbc;h2", prop);
 		System.out.println("Connected!");
-		// final Statement stmt = conn.createStatement();
-		//
-		// stmt.executeUpdate("DROP TABLE IF EXISTS TEST" + i);
-		// stmt.executeUpdate("CREATE TABLE TEST" + i +
-		// " (a int, b varchar(50))");
+		final Statement stmt = conn.createStatement();
+		stmt.executeUpdate("DROP TABLE IF EXISTS TEST" + i);
+		stmt.executeUpdate("CREATE TABLE TEST" + i + " (a int, b varchar(50))");
 		// System.out.println(conn.isValid(10000));
 		// stmt.executeUpdate("DELETE FROM TEST" + i);
 		// final PreparedStatement pstmt =
@@ -42,7 +41,7 @@ public class CustomRMIClient {
 		final List<Double> list = new ArrayList<Double>();
 
 		final PreparedStatement pstmt2 = conn.prepareStatement("SELECT a, b FROM TEST" + i);
-		for (int l = 0; l < 5; l++) {
+		for (int l = 0; l < 10; l++) {
 			final long tini = System.currentTimeMillis();
 			final ResultSet rset2 = pstmt2.executeQuery();
 			int b = 0;

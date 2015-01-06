@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import com.bzsoft.wjdbc.command.Command;
-import com.bzsoft.wjdbc.command.ConnectResult;
-import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 import com.bzsoft.wjdbc.util.StreamCloser;
 
@@ -19,8 +17,7 @@ public class ServletCommandSinkJdkHttpClient extends AbstractServletCommandSinkC
 	}
 
 	@Override
-	public ConnectResult connect(final String database, final Properties props, final Properties clientInfo, final CallingContext ctx)
-			throws SQLException {
+	public long connect(final String database, final Properties props, final Properties clientInfo) throws SQLException {
 		HttpURLConnection conn = null;
 		ObjectOutputStream oos = null;
 		ObjectInputStream ois = null;
@@ -44,7 +41,6 @@ public class ServletCommandSinkJdkHttpClient extends AbstractServletCommandSinkC
 			oos.writeUTF(database);
 			oos.writeObject(props);
 			oos.writeObject(clientInfo);
-			oos.writeObject(ctx);
 			oos.flush();
 			// Connect ...
 			conn.connect();
@@ -55,7 +51,7 @@ public class ServletCommandSinkJdkHttpClient extends AbstractServletCommandSinkC
 			if (result instanceof SQLException) {
 				throw (SQLException) result;
 			}
-			return (ConnectResult) result;
+			return (Long) result;
 		} catch (final SQLException e) {
 			throw e;
 		} catch (final Exception e) {
@@ -73,7 +69,7 @@ public class ServletCommandSinkJdkHttpClient extends AbstractServletCommandSinkC
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <R, P> R process(final long connuid, final long uid, final Command<R, P> cmd, final CallingContext ctx) throws SQLException {
+	public <R, P> R process(final long connuid, final long uid, final Command<R, P> cmd) throws SQLException {
 		HttpURLConnection conn = null;
 		ObjectOutputStream oos = null;
 		ObjectInputStream ois = null;
@@ -94,7 +90,6 @@ public class ServletCommandSinkJdkHttpClient extends AbstractServletCommandSinkC
 			oos.writeObject(connuid);
 			oos.writeObject(uid);
 			oos.writeObject(cmd);
-			oos.writeObject(ctx);
 			oos.flush();
 
 			ois = new ObjectInputStream(conn.getInputStream());

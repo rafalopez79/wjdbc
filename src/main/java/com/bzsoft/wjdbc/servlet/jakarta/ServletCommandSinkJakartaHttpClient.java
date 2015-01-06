@@ -13,8 +13,6 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.PostMethod;
 
 import com.bzsoft.wjdbc.command.Command;
-import com.bzsoft.wjdbc.command.ConnectResult;
-import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.servlet.AbstractServletCommandSinkClient;
 import com.bzsoft.wjdbc.servlet.RequestEnhancer;
 import com.bzsoft.wjdbc.servlet.ServletCommandSinkIdentifier;
@@ -38,7 +36,6 @@ public class ServletCommandSinkJakartaHttpClient extends AbstractServletCommandS
 		_urlExternalForm = this.url.toExternalForm();
 		_multiThreadedHttpConnectionManager = new MultiThreadedHttpConnectionManager();
 		_httpClient = new HttpClient(_multiThreadedHttpConnectionManager);
-
 		_httpClient.getParams().setBooleanParameter("http.connection.stalecheck", false);
 	}
 
@@ -49,8 +46,7 @@ public class ServletCommandSinkJakartaHttpClient extends AbstractServletCommandS
 	}
 
 	@Override
-	public ConnectResult connect(final String database, final Properties props, final Properties clientInfo, final CallingContext ctx)
-			throws SQLException {
+	public long connect(final String database, final Properties props, final Properties clientInfo) throws SQLException {
 		PostMethod post = null;
 		final ObjectOutputStream oos = null;
 		ObjectInputStream ois = null;
@@ -67,7 +63,7 @@ public class ServletCommandSinkJakartaHttpClient extends AbstractServletCommandS
 				requestEnhancer.enhanceConnectRequest(new RequestModifierJakartaHttpClient(post));
 			}
 			// Write the parameter objects using a ConnectRequestEntity
-			post.setRequestEntity(new ConnectRequestEntity(database, props, clientInfo, ctx));
+			post.setRequestEntity(new ConnectRequestEntity(database, props, clientInfo));
 
 			// Call ...
 			_httpClient.executeMethod(post);
@@ -83,7 +79,7 @@ public class ServletCommandSinkJakartaHttpClient extends AbstractServletCommandS
 			if (result instanceof SQLException) {
 				throw (SQLException) result;
 			}
-			return (ConnectResult) result;
+			return (Long) result;
 
 		} catch (final SQLException e) {
 			throw e;
@@ -101,7 +97,7 @@ public class ServletCommandSinkJakartaHttpClient extends AbstractServletCommandS
 	}
 
 	@Override
-	public <R, P> R process(final long connuid, final long uid, final Command<R, P> cmd, final CallingContext ctx) throws SQLException {
+	public <R, P> R process(final long connuid, final long uid, final Command<R, P> cmd) throws SQLException {
 		PostMethod post = null;
 		final ObjectOutputStream oos = null;
 		ObjectInputStream ois = null;
@@ -117,7 +113,7 @@ public class ServletCommandSinkJakartaHttpClient extends AbstractServletCommandS
 				requestEnhancer.enhanceProcessRequest(new RequestModifierJakartaHttpClient(post));
 			}
 			// Write the parameter objects using a ProcessRequestEntity
-			post.setRequestEntity(new ProcessRequestEntity(connuid, uid, cmd, ctx));
+			post.setRequestEntity(new ProcessRequestEntity(connuid, uid, cmd));
 
 			// Call ...
 			_httpClient.executeMethod(post);

@@ -7,21 +7,17 @@ import java.io.OutputStream;
 import org.apache.commons.httpclient.methods.RequestEntity;
 
 import com.bzsoft.wjdbc.command.Command;
-import com.bzsoft.wjdbc.serial.CallingContext;
-
 
 public class ProcessRequestEntity implements RequestEntity {
 
-	private final Long				_connuid;
-	private final Long				_uid;
-	private final Command			_cmd;
-	private final CallingContext	_ctx;
+	private final Long		_connuid;
+	private final Long		_uid;
+	private final Command	_cmd;
 
-	public ProcessRequestEntity(final Long connuid, final Long uid, final Command cmd, final CallingContext ctx) {
+	public ProcessRequestEntity(final Long connuid, final Long uid, final Command cmd) {
 		_connuid = connuid;
 		_uid = uid;
 		_cmd = cmd;
-		_ctx = ctx;
 	}
 
 	@Override
@@ -45,7 +41,6 @@ public class ProcessRequestEntity implements RequestEntity {
 		oos.writeObject(_connuid);
 		oos.writeObject(_uid);
 		oos.writeObject(_cmd);
-		oos.writeObject(_ctx);
 		oos.flush();
 	}
 }

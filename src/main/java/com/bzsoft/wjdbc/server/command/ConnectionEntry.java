@@ -31,7 +31,6 @@ import com.bzsoft.wjdbc.command.DestroyCommand;
 import com.bzsoft.wjdbc.command.JdbcInterfaceType;
 import com.bzsoft.wjdbc.command.ResultSetProducerCommand;
 import com.bzsoft.wjdbc.command.StatementCancelCommand;
-import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.serial.SerialResultSetMetaData;
 import com.bzsoft.wjdbc.serial.StreamingResultSet;
 import com.bzsoft.wjdbc.server.concurrent.Executor;
@@ -64,7 +63,7 @@ class ConnectionEntry implements ConnectionContext {
 	private final Lock									lock;
 
 	protected ConnectionEntry(final long connuid, final Connection conn, final ConnectionConfiguration config, final Properties clientInfo,
-			final CallingContext ctx, final AtomicLong counter, final Executor executor, final int rowPacketSize) {
+			final AtomicLong counter, final Executor executor, final int rowPacketSize) {
 		connection = conn;
 		connectionConfiguration = config;
 		this.clientInfo = clientInfo;
@@ -73,7 +72,7 @@ class ConnectionEntry implements ConnectionContext {
 		this.rowPacketSize = rowPacketSize;
 		uid = connuid;
 		jdbcObjects = new ConcurrentHashMap<Long, JdbcObjectHolder<?>>();
-		jdbcObjects.put(connuid, new JdbcObjectHolder<Connection>(conn, ctx, JdbcInterfaceType.CONNECTION));
+		jdbcObjects.put(connuid, new JdbcObjectHolder<Connection>(conn, JdbcInterfaceType.CONNECTION));
 		commandCountMap = new ConcurrentHashMap<String, Integer>();
 		active = false;
 		lastAccessTimestamp = System.currentTimeMillis();
@@ -138,7 +137,7 @@ class ConnectionEntry implements ConnectionContext {
 	@Override
 	public void addJDBCObject(final long key, final Object partner) {
 		final int jdbcInterfaceType = getJdbcInterfaceTypeFromObject(partner);
-		jdbcObjects.put(key, new JdbcObjectHolder<Object>(partner, null, jdbcInterfaceType));
+		jdbcObjects.put(key, new JdbcObjectHolder<Object>(partner, jdbcInterfaceType));
 	}
 
 	@Override
@@ -167,7 +166,7 @@ class ConnectionEntry implements ConnectionContext {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <R, V> R executeCommand(final long objectUID, final Command<R, V> cmd, final CallingContext ctx) throws SQLException {
+	public <R, V> R executeCommand(final long objectUID, final Command<R, V> cmd) throws SQLException {
 		try {
 			lock.lock();
 			active = true;
@@ -189,7 +188,7 @@ class ConnectionEntry implements ConnectionContext {
 					final JdbcObjectTransport<?> transport = (JdbcObjectTransport<?>) rr;
 					final int jdbcInterfaceType = getJdbcInterfaceTypeFromObject(transport.getJDBCObject());
 					final long ruid = transport.getUID();
-					jdbcObjects.put(ruid, new JdbcObjectHolder<V>((V) transport.getJDBCObject(), ctx, jdbcInterfaceType));
+					jdbcObjects.put(ruid, new JdbcObjectHolder<V>((V) transport.getJDBCObject(), jdbcInterfaceType));
 					if (LOGGER.isDebugEnabled()) {
 						LOGGER.debug("Registered " + result.getClass().getName() + " with UID " + ruid);
 					}
@@ -204,7 +203,7 @@ class ConnectionEntry implements ConnectionContext {
 						LOGGER.debug("Command " + cmd.toString() + " doesn't implement "
 								+ "ResultSetProducer-Interface, assuming ResultSet is scroll insensitive");
 					}
-					result = (R) handleResultSet((ResultSet) result, forwardOnly, ctx);
+					result = (R) handleResultSet((ResultSet) result, forwardOnly);
 				} else if (result instanceof ResultSetMetaData) {
 					result = (R) handleResultSetMetaData((ResultSetMetaData) result);
 				} else if (LOGGER.isDebugEnabled()) {
@@ -300,11 +299,6 @@ class ConnectionEntry implements ConnectionContext {
 			LOGGER.info("  Remaining objects .... " + jdbcObjects.size());
 			for (final JdbcObjectHolder<?> jdbcObjectHolder : jdbcObjects.values()) {
 				LOGGER.info("  - " + jdbcObjectHolder.getJdbcObject().getClass().getName());
-				if (connectionConfiguration.isTraceOrphanedObjects()) {
-					if (jdbcObjectHolder.getCallingContext() != null) {
-						LOGGER.info(jdbcObjectHolder.getCallingContext().getStackTrace());
-					}
-				}
 			}
 		}
 		if (!commandCountMap.isEmpty()) {
@@ -328,7 +322,7 @@ class ConnectionEntry implements ConnectionContext {
 		}
 	}
 
-	private StreamingResultSet handleResultSet(final ResultSet result, final boolean forwardOnly, final CallingContext ctx) throws SQLException {
+	private StreamingResultSet handleResultSet(final ResultSet result, final boolean forwardOnly) throws SQLException {
 		// Populate a StreamingResultSet
 		final StreamingResultSet srs = new StreamingResultSet(connectionConfiguration.getRowPacketSize(), forwardOnly,
 				connectionConfiguration.isPrefetchResultSetMetaData(), connectionConfiguration.getCharset());
@@ -337,7 +331,7 @@ class ConnectionEntry implements ConnectionContext {
 		// Remember the ResultSet and put the UID in the StreamingResultSet
 		final long id = counter.getAndIncrement();
 		srs.setRemainingResultSetUID(id);
-		jdbcObjects.put(id, new JdbcObjectHolder<ResultSetHolder>(new ResultSetHolder(result, executor, rowPacketSize, lastPartReached), ctx,
+		jdbcObjects.put(id, new JdbcObjectHolder<ResultSetHolder>(new ResultSetHolder(result, executor, rowPacketSize, lastPartReached),
 				JdbcInterfaceType.RESULTSETHOLDER));
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Registered ResultSet with UID " + id);

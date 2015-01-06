@@ -7,8 +7,8 @@ import com.ning.compress.lzf.LZFInputStream;
 
 public class LZFCompressingInputStream extends LZFInputStream {
 
-    public LZFCompressingInputStream(final InputStream inputStream) throws IOException {
-        super(inputStream);
+    public LZFCompressingInputStream(final InputStream is) throws IOException {
+        super(is);
     }
 
 }

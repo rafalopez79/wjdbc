@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.bzsoft.wjdbc.WJdbcSqlException;
 import com.bzsoft.wjdbc.rmi.KeepAliveTimerTask;
-import com.bzsoft.wjdbc.serial.CallingContext;
 import com.bzsoft.wjdbc.server.concurrent.Executor;
 
 /**
@@ -18,25 +17,22 @@ import com.bzsoft.wjdbc.server.concurrent.Executor;
  */
 public class DecoratedCommandSink {
 
-	private final long						connectionUid;
-	private final CommandSink				targetSink;
-	private final CallingContextFactory	callingContextFactory;
+	private final long				connectionUid;
+	private final CommandSink		targetSink;
 
-	private CommandSinkListener			listener;
-	private Future<?>							future;
+	private CommandSinkListener	listener;
+	private Future<?>					future;
 
-	private volatile boolean				valid;
+	private volatile boolean		valid;
 
-	public DecoratedCommandSink(final long connuid, final CommandSink sink, final CallingContextFactory ctxFactory, final Executor executor) {
-		this(connuid, sink, ctxFactory, 60000l, executor);
+	public DecoratedCommandSink(final long connuid, final CommandSink sink, final Executor executor) {
+		this(connuid, sink, 60000l, executor);
 		valid = true;
 	}
 
-	public DecoratedCommandSink(final long connuid, final CommandSink sink, final CallingContextFactory ctxFactory, final long pingPeriod,
-			final Executor executor) {
+	public DecoratedCommandSink(final long connuid, final CommandSink sink, final long pingPeriod, final Executor executor) {
 		connectionUid = connuid;
 		targetSink = sink;
-		callingContextFactory = ctxFactory;
 		listener = new NullCommandSinkListener();
 		valid = true;
 		if (pingPeriod > 0) {
@@ -47,9 +43,9 @@ public class DecoratedCommandSink {
 		}
 	}
 
-	public ConnectResult connect(final String url, final Properties props, final Properties clientInfo, final CallingContext ctx) throws SQLException {
+	public long connect(final String url, final Properties props, final Properties clientInfo) throws SQLException {
 		try {
-			return targetSink.connect(url, props, clientInfo, ctx);
+			return targetSink.connect(url, props, clientInfo);
 		} catch (final WJdbcSqlException e) {
 			valid = false;
 			close();
@@ -57,16 +53,12 @@ public class DecoratedCommandSink {
 		}
 	}
 
-	public <R, P> R process(final long uid, final Command<R, P> cmd, final boolean withCallingContext) throws SQLException {
+	public <R, P> R process(final long uid, final Command<R, P> cmd) throws SQLException {
 		validateReincarnation();
 		try {
-			CallingContext ctx = null;
-			if (withCallingContext) {
-				ctx = callingContextFactory.create();
-			}
 			listener.preExecution(cmd);
 			try {
-				return targetSink.process(connectionUid, uid, cmd, ctx);
+				return targetSink.process(connectionUid, uid, cmd);
 			} catch (final WJdbcSqlException e) {
 				valid = false;
 				close();
@@ -106,22 +98,10 @@ public class DecoratedCommandSink {
 		}
 	}
 
-	public <R, P> R process(final long uid, final Command<R, P> cmd) throws SQLException {
-		return process(uid, cmd, false);
-	}
-
 	public <P> int processWithIntResult(final long uid, final Command<Integer, P> cmd) throws SQLException {
-		return processWithIntResult(uid, cmd, false);
-	}
-
-	public <P> int processWithIntResult(final long uid, final Command<Integer, P> cmd, final boolean withCallingContext) throws SQLException {
 		try {
-			CallingContext ctx = null;
-			if (withCallingContext) {
-				ctx = callingContextFactory.create();
-			}
 			listener.preExecution(cmd);
-			final Integer n = targetSink.process(connectionUid, uid, cmd, ctx);
+			final Integer n = targetSink.process(connectionUid, uid, cmd);
 			return n.intValue();
 		} finally {
 			listener.postExecution(cmd);
@@ -129,17 +109,9 @@ public class DecoratedCommandSink {
 	}
 
 	public <P> boolean processWithBooleanResult(final long uid, final Command<Boolean, P> cmd) throws SQLException {
-		return processWithBooleanResult(uid, cmd, false);
-	}
-
-	public <P> boolean processWithBooleanResult(final long uid, final Command<Boolean, P> cmd, final boolean withCallingContext) throws SQLException {
 		try {
-			CallingContext ctx = null;
-			if (withCallingContext) {
-				ctx = callingContextFactory.create();
-			}
 			listener.preExecution(cmd);
-			final Boolean b = targetSink.process(connectionUid, uid, cmd, ctx);
+			final Boolean b = targetSink.process(connectionUid, uid, cmd);
 			return b.booleanValue();
 		} finally {
 			listener.postExecution(cmd);
@@ -147,17 +119,9 @@ public class DecoratedCommandSink {
 	}
 
 	public <P> byte processWithByteResult(final long uid, final Command<Byte, P> cmd) throws SQLException {
-		return processWithByteResult(uid, cmd, false);
-	}
-
-	public <P> byte processWithByteResult(final long uid, final Command<Byte, P> cmd, final boolean withCallingContext) throws SQLException {
 		try {
-			CallingContext ctx = null;
-			if (withCallingContext) {
-				ctx = callingContextFactory.create();
-			}
 			listener.preExecution(cmd);
-			final Byte b = targetSink.process(connectionUid, uid, cmd, ctx);
+			final Byte b = targetSink.process(connectionUid, uid, cmd);
 			return b.byteValue();
 		} finally {
 			listener.postExecution(cmd);
@@ -165,17 +129,9 @@ public class DecoratedCommandSink {
 	}
 
 	public <P> short processWithShortResult(final long uid, final Command<Short, P> cmd) throws SQLException {
-		return processWithShortResult(uid, cmd, false);
-	}
-
-	public <P> short processWithShortResult(final long uid, final Command<Short, P> cmd, final boolean withCallingContext) throws SQLException {
 		try {
-			CallingContext ctx = null;
-			if (withCallingContext) {
-				ctx = callingContextFactory.create();
-			}
 			listener.preExecution(cmd);
-			final Short b = targetSink.process(connectionUid, uid, cmd, ctx);
+			final Short b = targetSink.process(connectionUid, uid, cmd);
 			return b.shortValue();
 		} finally {
 			listener.postExecution(cmd);
@@ -183,17 +139,9 @@ public class DecoratedCommandSink {
 	}
 
 	public <P> long processWithLongResult(final long uid, final Command<Long, P> cmd) throws SQLException {
-		return processWithLongResult(uid, cmd, false);
-	}
-
-	public <P> long processWithLongResult(final long uid, final Command<Long, P> cmd, final boolean withCallingContext) throws SQLException {
 		try {
-			CallingContext ctx = null;
-			if (withCallingContext) {
-				ctx = callingContextFactory.create();
-			}
 			listener.preExecution(cmd);
-			final Long b = targetSink.process(connectionUid, uid, cmd, ctx);
+			final Long b = targetSink.process(connectionUid, uid, cmd);
 			return b.longValue();
 		} finally {
 			listener.postExecution(cmd);
@@ -201,17 +149,9 @@ public class DecoratedCommandSink {
 	}
 
 	public <P> float processWithFloatResult(final long uid, final Command<Float, P> cmd) throws SQLException {
-		return processWithFloatResult(uid, cmd, false);
-	}
-
-	public <P> float processWithFloatResult(final long uid, final Command<Float, P> cmd, final boolean withCallingContext) throws SQLException {
 		try {
-			CallingContext ctx = null;
-			if (withCallingContext) {
-				ctx = callingContextFactory.create();
-			}
 			listener.preExecution(cmd);
-			final Float b = targetSink.process(connectionUid, uid, cmd, ctx);
+			final Float b = targetSink.process(connectionUid, uid, cmd);
 			return b.floatValue();
 		} finally {
 			listener.postExecution(cmd);
@@ -219,17 +159,9 @@ public class DecoratedCommandSink {
 	}
 
 	public <P> double processWithDoubleResult(final long uid, final Command<Double, P> cmd) throws SQLException {
-		return processWithDoubleResult(uid, cmd, false);
-	}
-
-	public <P> double processWithDoubleResult(final long uid, final Command<Double, P> cmd, final boolean withCallingContext) throws SQLException {
 		try {
-			CallingContext ctx = null;
-			if (withCallingContext) {
-				ctx = callingContextFactory.create();
-			}
 			listener.preExecution(cmd);
-			final Double b = targetSink.process(connectionUid, uid, cmd, ctx);
+			final Double b = targetSink.process(connectionUid, uid, cmd);
 			return b.doubleValue();
 		} finally {
 			listener.postExecution(cmd);
