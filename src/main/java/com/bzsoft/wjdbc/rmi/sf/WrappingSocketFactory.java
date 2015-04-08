@@ -17,9 +17,9 @@ import java.rmi.server.RMISocketFactory;
 /**
  * A base class for RMI socket factories which do their work by wrapping the
  * streams of Sockets from another Socket factory.
- * 
+ *
  * Subclasses have to overwrite the {@link #wrap} method.
- * 
+ *
  * Instances of this class can be used as both client and server socket
  * factories, or as only one of them.
  */
@@ -63,7 +63,7 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 
 	/**
 	 * Creates a WrappingSocketFactory based on a pair of socket factories.
-	 * 
+	 *
 	 * @param cFac
 	 *           the base socket factory used for creating client sockets. This
 	 *           may be {@code null}, then we will use the
@@ -83,9 +83,9 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 
 	/**
 	 * Creates a WrappingSocketFactory based on a socket factory.
-	 * 
+	 *
 	 * This constructor is equivalent to {@code WrappingSocketFactory(fac, fac)}.
-	 * 
+	 *
 	 * @param fac
 	 *           the factory to be used as a base for both client and server
 	 *           socket. This should be either serializable or {@code null} (then
@@ -99,7 +99,7 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 	/**
 	 * Creates a WrappingSocketFactory based on the
 	 * {@link RMISocketFactory#getSocketFactory global socket factory}.
-	 * 
+	 *
 	 * This uses the global socket factory at the time of the constructor call.
 	 * If this is {@code null}, we will use the
 	 * {@linkplain RMISocketFactory#getDefault() default socket factory} instead.
@@ -111,7 +111,7 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 	/**
 	 * Wraps a pair of streams. Subclasses must implement this method to do the
 	 * actual work.
-	 * 
+	 *
 	 * @param input
 	 *           the input stream from the base socket.
 	 * @param output
@@ -150,10 +150,10 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 
 	/**
 	 * Creates a client socket and connects it to the given host/port pair.
-	 * 
+	 *
 	 * This retrieves a socket to the host/port from the base client socket
 	 * factory and then wraps a new socket (with a custom SocketImpl) around it.
-	 * 
+	 *
 	 * @param host
 	 *           the host we want to be connected with.
 	 * @param port
@@ -165,7 +165,6 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 	@Override
 	public Socket createSocket(final String host, final int port) throws IOException {
 		final Socket baseSocket = getClientSocketFactory().createSocket(host, port);
-		// baseSocket.setSoTimeout(60000);
 		final StreamPair streams = wrap(baseSocket.getInputStream(), baseSocket.getOutputStream());
 		final SocketImpl wrappingImpl = new WrappingSocketImpl(streams, baseSocket);
 		return new Socket(wrappingImpl) {
@@ -178,12 +177,12 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 
 	/**
 	 * Creates a server socket listening on the given port.
-	 * 
+	 *
 	 * This retrieves a ServerSocket listening on the given port from the base
 	 * server socket factory, and then creates a custom server socket, which on
 	 * {@link ServerSocket#accept accept} wraps new Sockets (with a custom
 	 * SocketImpl) around the sockets from the base server socket.
-	 * 
+	 *
 	 * @param host
 	 *           the host we want to be connected with.
 	 * @param port
@@ -202,7 +201,7 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 	/**
 	 * A server socket subclass which wraps our custom sockets around the sockets
 	 * retrieves by a base server socket.
-	 * 
+	 *
 	 * We only override enough methods to work. Basically, this is a unbound
 	 * server socket, which handles {@link #accept} specially.
 	 */
@@ -262,11 +261,11 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 
 	/**
 	 * A SocketImpl implementation which works on a pair of streams.
-	 * 
+	 *
 	 * A instance of this class represents an already connected socket, thus all
 	 * the methods relating to connecting, accepting and such are not
 	 * implemented.
-	 * 
+	 *
 	 * The implemented methods are {@link #getInputStream},
 	 * {@link #getOutputStream}, {@link #available} and the shutdown methods
 	 * {@link #close}, {@link #shutdownInput}, {@link #shutdownOutput}.
