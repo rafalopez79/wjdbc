@@ -34,4 +34,14 @@ public class StatementGetResultSetCommand extends BaseCommand<ResultSet, Stateme
 	public String toString() {
 		return "StatementGetResultSetCommand";
 	}
+
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof StatementGetResultSetCommand;
+	}
 }

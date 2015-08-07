@@ -1076,4 +1076,23 @@ public class WCallableStatementAdapter implements CallableStatement {
 		cstmt.setNClob(parameterName, reader);
 	}
 
+	@Override
+	public boolean isCloseOnCompletion() throws SQLException {
+		return cstmt.isCloseOnCompletion();
+	}
+
+	@Override
+	public void closeOnCompletion() throws SQLException {
+		cstmt.closeOnCompletion();
+	}
+
+	@Override
+	public <T> T getObject(final int col, final Class<T> clazz) throws SQLException {
+		return cstmt.getObject(col, clazz);
+	}
+
+	@Override
+	public <T> T getObject(final String col, final Class<T> clazz) throws SQLException {
+		return cstmt.getObject(col, clazz);
+	}
 }

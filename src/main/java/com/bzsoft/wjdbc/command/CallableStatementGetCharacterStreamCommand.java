@@ -8,6 +8,7 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.serial.StreamSerializer;
+import com.bzsoft.wjdbc.util.StreamCloser;
 
 public class CallableStatementGetCharacterStreamCommand extends BaseCommand<char[], CallableStatement> {
 
@@ -50,6 +51,7 @@ public class CallableStatementGetCharacterStreamCommand extends BaseCommand<char
 		}
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public char[] execute(final CallableStatement cstmt, final ConnectionContext ctx) throws SQLException {
 		Reader result;
@@ -63,6 +65,44 @@ public class CallableStatementGetCharacterStreamCommand extends BaseCommand<char
 			return StreamSerializer.toCharArray(result);
 		} catch (final IOException ioe) {
 			throw new SQLException(ioe);
+		}finally{
+			StreamCloser.close(result);
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + index;
+		result = prime * result + (parameterName == null ? 0 : parameterName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final CallableStatementGetCharacterStreamCommand other = (CallableStatementGetCharacterStreamCommand) obj;
+		if (index != other.index) {
+			return false;
+		}
+		if (parameterName == null) {
+			if (other.parameterName != null) {
+				return false;
+			}
+		} else if (!parameterName.equals(other.parameterName)) {
+			return false;
+		}
+		return true;
+	}
+
+
 }

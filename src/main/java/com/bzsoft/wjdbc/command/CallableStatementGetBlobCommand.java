@@ -60,4 +60,40 @@ public class CallableStatementGetBlobCommand extends BaseCommand<Blob, CallableS
 		}
 		return new SerialBlob(result);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + index;
+		result = prime * result + (parameterName == null ? 0 : parameterName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final CallableStatementGetBlobCommand other = (CallableStatementGetBlobCommand) obj;
+		if (index != other.index) {
+			return false;
+		}
+		if (parameterName == null) {
+			if (other.parameterName != null) {
+				return false;
+			}
+		} else if (!parameterName.equals(other.parameterName)) {
+			return false;
+		}
+		return true;
+	}
+
+
 }

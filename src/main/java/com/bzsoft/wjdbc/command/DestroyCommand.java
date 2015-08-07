@@ -58,4 +58,36 @@ public class DestroyCommand extends BaseCommand<Void, Object> {
 		}
 		return null;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + interfaceType;
+		result = prime * result + (int) (uid ^ uid >>> 32);
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final DestroyCommand other = (DestroyCommand) obj;
+		if (interfaceType != other.interfaceType) {
+			return false;
+		}
+		if (uid != other.uid) {
+			return false;
+		}
+		return true;
+	}
+
+
 }

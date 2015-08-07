@@ -6,6 +6,7 @@ import java.io.ObjectOutput;
 import java.io.Reader;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import com.bzsoft.wjdbc.serial.StreamSerializer;
 
@@ -79,7 +80,50 @@ public class CallableStatementSetNCharacterStreamCommand extends BaseCommand<Voi
 		} else {
 			cstmt.setNCharacterStream(index, reader, length);
 		}
-
 		return null;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(charArray);
+		result = prime * result + index;
+		result = prime * result + length;
+		result = prime * result + (parameterName == null ? 0 : parameterName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final CallableStatementSetNCharacterStreamCommand other = (CallableStatementSetNCharacterStreamCommand) obj;
+		if (!Arrays.equals(charArray, other.charArray)) {
+			return false;
+		}
+		if (index != other.index) {
+			return false;
+		}
+		if (length != other.length) {
+			return false;
+		}
+		if (parameterName == null) {
+			if (other.parameterName != null) {
+				return false;
+			}
+		} else if (!parameterName.equals(other.parameterName)) {
+			return false;
+		}
+		return true;
+	}
+
+
 }

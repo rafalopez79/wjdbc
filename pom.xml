@@ -75,12 +75,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.13</version>
         <configuration>
-          <includes>
-            <include>**/SQLExceptionHelperTest.java</include>
-          </includes>
-          <excludes>
-            <exclude>**/junit/**/*.java</exclude>
-          </excludes>
+          
         </configuration>
       </plugin>    
       
@@ -190,12 +185,7 @@
       <groupId>commons-digester</groupId>
       <artifactId>commons-digester</artifactId>
       <version>1.7</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <version>3.0.1</version>
-    </dependency>
+    </dependency>    
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
@@ -210,7 +200,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.1</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -221,7 +211,7 @@
     <dependency>
         <groupId>com.ning</groupId>
         <artifactId>compress-lzf</artifactId>  
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.0.3</version>
     </dependency>
   </dependencies>
 </project>

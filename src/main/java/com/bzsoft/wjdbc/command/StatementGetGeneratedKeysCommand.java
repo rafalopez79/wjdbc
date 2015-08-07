@@ -12,6 +12,7 @@ public class StatementGetGeneratedKeysCommand extends BaseCommand<ResultSet, Sta
 	private static final long	serialVersionUID	= -6529413105195105196L;
 
 	public StatementGetGeneratedKeysCommand() {
+		// empty
 	}
 
 	@Override
@@ -32,5 +33,15 @@ public class StatementGetGeneratedKeysCommand extends BaseCommand<ResultSet, Sta
 	@Override
 	public ResultSet execute(final Statement target, final ConnectionContext ctx) throws SQLException {
 		return target.getGeneratedKeys();
+	}
+
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof StatementGetGeneratedKeysCommand;
 	}
 }

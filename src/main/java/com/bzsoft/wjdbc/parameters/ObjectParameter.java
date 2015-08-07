@@ -59,4 +59,52 @@ public class ObjectParameter implements PreparedStatementParameter {
 	public String toString() {
 		return "Object: " + value;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (scale == null ? 0 : scale.hashCode());
+		result = prime * result + (targetSqlType == null ? 0 : targetSqlType.hashCode());
+		result = prime * result + (value == null ? 0 : value.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ObjectParameter other = (ObjectParameter) obj;
+		if (scale == null) {
+			if (other.scale != null) {
+				return false;
+			}
+		} else if (!scale.equals(other.scale)) {
+			return false;
+		}
+		if (targetSqlType == null) {
+			if (other.targetSqlType != null) {
+				return false;
+			}
+		} else if (!targetSqlType.equals(other.targetSqlType)) {
+			return false;
+		}
+		if (value == null) {
+			if (other.value != null) {
+				return false;
+			}
+		} else if (!value.equals(other.value)) {
+			return false;
+		}
+		return true;
+	}
+
+
 }

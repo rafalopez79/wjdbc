@@ -1255,12 +1255,12 @@ public final class StreamingResultSet implements ResultSet, Externalizable {
 		throw new UnsupportedOperationException("getObject");
 	}
 
-	@SuppressWarnings("static-method")
+	@Override
 	public <T> T getObject(final String columnName, final Class<T> clazz) {
 		throw new UnsupportedOperationException("getObject(String, Class)");
 	}
 
-	@SuppressWarnings("static-method")
+	@Override
 	public <T> T getObject(final int columnIndex, final Class<T> clazz) {
 		throw new UnsupportedOperationException("getObject(int, Class)");
 	}

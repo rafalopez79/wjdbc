@@ -226,4 +226,14 @@ public class WStatementAdapter implements Statement {
 		return stmt.isPoolable();
 	}
 
+	@Override
+	public void closeOnCompletion() throws SQLException {
+		stmt.closeOnCompletion();
+	}
+
+	@Override
+	public boolean isCloseOnCompletion() throws SQLException {
+		return stmt.isCloseOnCompletion();
+	}
+
 }

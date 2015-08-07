@@ -28,4 +28,15 @@ public class PingCommand extends BaseCommand<Void, Connection> {
 	public Void execute(final Connection target, final ConnectionContext ctx) throws SQLException {
 		return null;
 	}
+
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof PingCommand;
+	}
+
 }

@@ -5,7 +5,9 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import com.bzsoft.wjdbc.WDriver;
 
@@ -59,6 +61,11 @@ public class WDriverAdapter implements Driver {
 	@Override
 	public boolean jdbcCompliant() {
 		return realDriver.jdbcCompliant();
+	}
+
+	@Override
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		return realDriver.getParentLogger();
 	}
 
 	private static String getBaseURL(final String url){

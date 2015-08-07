@@ -17,6 +17,7 @@ import java.sql.Clob;
 import java.sql.SQLException;
 
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
+import com.bzsoft.wjdbc.util.StreamCloser;
 
 public class SerialClob implements Clob, Externalizable {
 
@@ -29,9 +30,10 @@ public class SerialClob implements Clob, Externalizable {
 	}
 
 	public SerialClob(final Clob other) throws SQLException {
+		Reader rd = null;
 		try {
 			final StringBuilder sw = new StringBuilder();
-			final Reader rd = other.getCharacterStream();
+			rd = other.getCharacterStream();
 			final char[] buff = new char[1024];
 			int len;
 			while ((len = rd.read(buff)) > 0) {
@@ -41,6 +43,8 @@ public class SerialClob implements Clob, Externalizable {
 			other.free();
 		} catch (final IOException e) {
 			throw new SQLException("Can't retrieve contents of Clob", e.toString());
+		}finally{
+			StreamCloser.close(rd);
 		}
 	}
 

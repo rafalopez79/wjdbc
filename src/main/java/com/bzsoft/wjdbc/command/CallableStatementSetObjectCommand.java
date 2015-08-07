@@ -96,4 +96,64 @@ public class CallableStatementSetObjectCommand extends BaseCommand<Void, Callabl
 		}
 		return null;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + index;
+		result = prime * result + (paramName == null ? 0 : paramName.hashCode());
+		result = prime * result + (scale == null ? 0 : scale.hashCode());
+		result = prime * result + (targetSqlType == null ? 0 : targetSqlType.hashCode());
+		result = prime * result + (transport == null ? 0 : transport.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final CallableStatementSetObjectCommand other = (CallableStatementSetObjectCommand) obj;
+		if (index != other.index) {
+			return false;
+		}
+		if (paramName == null) {
+			if (other.paramName != null) {
+				return false;
+			}
+		} else if (!paramName.equals(other.paramName)) {
+			return false;
+		}
+		if (scale == null) {
+			if (other.scale != null) {
+				return false;
+			}
+		} else if (!scale.equals(other.scale)) {
+			return false;
+		}
+		if (targetSqlType == null) {
+			if (other.targetSqlType != null) {
+				return false;
+			}
+		} else if (!targetSqlType.equals(other.targetSqlType)) {
+			return false;
+		}
+		if (transport == null) {
+			if (other.transport != null) {
+				return false;
+			}
+		} else if (!transport.equals(other.transport)) {
+			return false;
+		}
+		return true;
+	}
+
+
 }

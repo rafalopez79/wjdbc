@@ -28,6 +28,7 @@ public class ByteStreamParameter implements PreparedStatementParameter {
 		// empty
 	}
 
+	@SuppressWarnings("resource")
 	public ByteStreamParameter(final int type, final InputStream x, final long length) throws SQLException {
 		this.type = type;
 		this.length = length;

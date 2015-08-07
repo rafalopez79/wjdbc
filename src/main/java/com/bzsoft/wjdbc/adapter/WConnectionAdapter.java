@@ -17,6 +17,7 @@ import java.sql.Statement;
 import java.sql.Struct;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 public class WConnectionAdapter implements Connection{
 
@@ -273,4 +274,28 @@ public class WConnectionAdapter implements Connection{
 		return conn.createStruct(typeName, attributes);
 	}
 
+	@Override
+	public String getSchema() throws SQLException {
+		return conn.getSchema();
+	}
+
+	@Override
+	public void setSchema(final String schema) throws SQLException {
+		conn.setSchema(schema);
+	}
+
+	@Override
+	public int getNetworkTimeout() throws SQLException {
+		return conn.getNetworkTimeout();
+	}
+
+	@Override
+	public void setNetworkTimeout(final Executor ex, final int timeout) throws SQLException {
+		conn.setNetworkTimeout(ex, timeout);
+	}
+
+	@Override
+	public void abort(final Executor ex) throws SQLException {
+		conn.abort(ex);
+	}
 }

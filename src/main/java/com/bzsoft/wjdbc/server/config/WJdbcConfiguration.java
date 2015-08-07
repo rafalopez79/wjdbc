@@ -30,7 +30,7 @@ public class WJdbcConfiguration {
 	private final Executor														pooledExecutor;
 	private final Map<String, SharedConnectionPoolConfiguration>	sharedPoolMap;
 
-	public WJdbcConfiguration() {
+	private WJdbcConfiguration() {
 		pooledExecutor = new BaseExecutor(SCHEDTHREADPOOLSIZE, MAXTHREADPOOLSIZE);
 		connections = new ArrayList<ConnectionConfiguration>();
 		sharedPoolMap = new LinkedHashMap<String, SharedConnectionPoolConfiguration>();
@@ -58,8 +58,8 @@ public class WJdbcConfiguration {
 	 *           Resource to be loaded by the ClassLoader
 	 * @throws ConfigurationException
 	 */
-	public static WJdbcConfiguration init(final String configResource) throws ConfigurationException {
-		return init(configResource, null);
+	public static WJdbcConfiguration of(final String configResource) throws ConfigurationException {
+		return of(configResource, null);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class WJdbcConfiguration {
 	 *           Resource to be loaded by the ClassLoader
 	 * @throws ConfigurationException
 	 */
-	public static WJdbcConfiguration init(final String configResource, final Properties configVariables) throws ConfigurationException {
+	public static WJdbcConfiguration of(final String configResource, final Properties configVariables) throws ConfigurationException {
 		try {
 			final WJdbcConfiguration config = new WJdbcConfiguration(configResource, configVariables);
 			if (LOGGER.isInfoEnabled()) {
@@ -90,7 +90,7 @@ public class WJdbcConfiguration {
 	 *           InputStream
 	 * @throws ConfigurationException
 	 */
-	public static WJdbcConfiguration init(final InputStream configResourceInputStream, final Properties configVariables) throws ConfigurationException {
+	public static WJdbcConfiguration of(final InputStream configResourceInputStream, final Properties configVariables) throws ConfigurationException {
 		try {
 			final WJdbcConfiguration config = new WJdbcConfiguration(configResourceInputStream, configVariables);
 			if (LOGGER.isInfoEnabled()) {

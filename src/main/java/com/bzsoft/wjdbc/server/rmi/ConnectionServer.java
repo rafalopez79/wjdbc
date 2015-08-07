@@ -107,7 +107,7 @@ public class ConnectionServer {
 		try {
 			final WJdbcConfiguration config;
 			if (args.length == 1) {
-				config = WJdbcConfiguration.init(args[0]);
+				config = WJdbcConfiguration.of(args[0]);
 			} else if (args.length == 2) {
 				// Second argument is a properties file with variables that are
 				// replaced by Digester when the configuration is read in
@@ -116,7 +116,7 @@ public class ConnectionServer {
 				try {
 					is = new FileInputStream(args[1]);
 					props.load(is);
-					config = WJdbcConfiguration.init(args[0], props);
+					config = WJdbcConfiguration.of(args[0], props);
 				} finally {
 					if (is != null) {
 						is.close();

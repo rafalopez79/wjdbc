@@ -47,4 +47,6 @@ public class SQLXMLParameter implements PreparedStatementParameter {
 		}
 		return "SQLXML: fail";
 	}
+
+
 }

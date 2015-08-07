@@ -519,4 +519,13 @@ public class WPreparedStatementAdapter implements PreparedStatement {
 		pstmt.setNClob(parameterIndex, reader);
 	}
 
+	@Override
+	public boolean isCloseOnCompletion() throws SQLException {
+		return pstmt.isCloseOnCompletion();
+	}
+
+	@Override
+	public void closeOnCompletion() throws SQLException {
+		pstmt.closeOnCompletion();
+	}
 }

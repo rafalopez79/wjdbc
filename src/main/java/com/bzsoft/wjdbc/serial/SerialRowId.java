@@ -73,4 +73,6 @@ public class SerialRowId implements RowId, Externalizable {
 		str = in.readUTF();
 		hashCode = in.readInt();
 	}
+
+
 }

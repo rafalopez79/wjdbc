@@ -31,4 +31,13 @@ public class NextRowPacketCommand extends BaseCommand<RowPacket, ResultSetHolder
 		return rsh.nextRowPacket();
 	}
 
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof NextRowPacketCommand;
+	}
 }

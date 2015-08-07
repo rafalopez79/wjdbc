@@ -29,4 +29,14 @@ public class ConnectionCommitCommand extends BaseCommand<Boolean, Connection> {
 		conn.commit();
 		return conn.getWarnings() != null ? Boolean.TRUE : Boolean.FALSE;
 	}
+
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof ConnectionCommitCommand;
+	}
 }

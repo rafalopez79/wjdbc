@@ -5,10 +5,12 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import com.bzsoft.wjdbc.parameters.PreparedStatementParameter;
 
 public class PreparedStatementUpdateCommand extends BaseCommand<Integer, PreparedStatement> {
+
 	private static final long					serialVersionUID	= 8987200111317750567L;
 
 	protected PreparedStatementParameter[]	params;
@@ -40,4 +42,32 @@ public class PreparedStatementUpdateCommand extends BaseCommand<Integer, Prepare
 		}
 		return Integer.valueOf(pstmt.executeUpdate());
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(params);
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final PreparedStatementUpdateCommand other = (PreparedStatementUpdateCommand) obj;
+		if (!Arrays.equals(params, other.params)) {
+			return false;
+		}
+		return true;
+	}
+
+
 }

@@ -228,23 +228,12 @@ public class WConnection extends WBase implements Connection {
 
 	@Override
 	public SQLWarning getWarnings() throws SQLException {
-		/*
-		 * if(sink.lastProcessedCommandKindOf(ConnectionCommitCommand.class) &&
-		 * _lastCommitWithoutWarning) { _anyWarnings = false; return null; } else
-		 * { SQLWarning warnings = (SQLWarning)sink.process(objectUid,
-		 * ReflectiveCommand.of("getWarnings")); // Remember if any warnings were
-		 * reported _anyWarnings = warnings != null; return warnings; }
-		 */
 		return null;
 	}
 
 	@Override
 	public void clearWarnings() throws SQLException {
-		// Ignore the call if the previous getWarnings()-Call returned null
-		/*
-		 * if(_anyWarnings) { sink.process(objectUid,
-		 * ReflectiveCommand.of("clearWarnings")); }
-		 */
+		//empty
 	}
 
 	@Override
@@ -533,6 +522,7 @@ public class WConnection extends WBase implements Connection {
 		return (T) this;
 	}
 
+	@Override
 	public void setSchema(final String schema) throws SQLException {
 		Validate.isFalse(isClosed, "Connection closed");
 		sink.process(objectUid,
@@ -540,6 +530,7 @@ public class WConnection extends WBase implements Connection {
 		this.schema = schema;
 	}
 
+	@Override
 	public String getSchema() throws SQLException {
 		if (schema == null) {
 			Validate.isFalse(isClosed, "Connection closed");
@@ -549,37 +540,21 @@ public class WConnection extends WBase implements Connection {
 		return schema;
 	}
 
-	public void abort(final Executor exec) throws SQLException {
-		final Callable<SQLException> r = new Callable<SQLException>() {
-			@Override
-			public SQLException call() {
-				try {
-					close();
-					return null;
-				} catch (final SQLException e) {
-					return e;
-				}
-			}
-		};
-		final Future<SQLException> future = exec.execute(r);
-		SQLException e = null;
-		try {
-			e = future.get();
-		} catch (final Exception ex) {
-			throw new SQLException(ex);
-		}
-		if (e != null) {
-			throw e;
-		}
+	@Override
+	public void abort(final java.util.concurrent.Executor exec) throws SQLException {
+		//TODO: review
+		close();
 	}
 
-	@SuppressWarnings("static-method")
-	public void setNetworkTimeout(final Executor executor, final int milliseconds) throws SQLException {
+	@Override
+	public void setNetworkTimeout(final java.util.concurrent.Executor executor, final int milliseconds) throws SQLException {
 		throw new UnsupportedOperationException("setNetworkTimeout");
 	}
 
+	@Override
 	public int getNetworkTimeout() throws SQLException {
 		Validate.isFalse(isClosed, "Connection closed");
 		return sink.processWithIntResult(objectUid, ReflectiveCommand.<Integer, Object> of(JdbcInterfaceType.CONNECTION, "getNetworkTimeout"));
 	}
+
 }

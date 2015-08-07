@@ -17,10 +17,7 @@ import com.bzsoft.wjdbc.rmi.SecureSocketFactory;
 import com.bzsoft.wjdbc.rmi.sf.CompressedRMISocketFactory;
 import com.bzsoft.wjdbc.server.concurrent.Executor;
 import com.bzsoft.wjdbc.server.concurrent.impl.BaseExecutor;
-import com.bzsoft.wjdbc.servlet.RequestEnhancer;
-import com.bzsoft.wjdbc.servlet.RequestEnhancerFactory;
-import com.bzsoft.wjdbc.servlet.ServletCommandSinkJdkHttpClient;
-import com.bzsoft.wjdbc.servlet.jakarta.ServletCommandSinkJakartaHttpClient;
+import com.bzsoft.wjdbc.servlet.ServletCommandSink;
 import com.bzsoft.wjdbc.util.ClientInfo;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 
@@ -60,11 +57,10 @@ public final class WDriver implements Driver {
 					final String propSSL = props.getProperty(WJdbcProperties.RMI_SSL);
 					useSSL = propSSL != null && propSSL.equalsIgnoreCase("true");
 					sink = createRmiCommandSink(urlparts[0], useSSL);
-					// Servlet-Connection
-				} else if (realUrl.startsWith(SERVLET_IDENTIFIER)) {
+				}else  if (realUrl.startsWith(SERVLET_IDENTIFIER)) {
 					urlparts = split(realUrl.substring(SERVLET_IDENTIFIER.length()));
-					sink = createServletCommandSink(urlparts[0], props);
-				} else {
+					sink = createServletCommandSink(urlparts[0]);
+				}else {
 					throw new SQLException("Unknown protocol identifier " + realUrl);
 				}
 				// Connect with the sink
@@ -115,21 +111,11 @@ public final class WDriver implements Driver {
 		return new ReconnectableCommandSinkRmiProxy(rminame, socketFactory);
 	}
 
-	private static CommandSink createServletCommandSink(final String url, final Properties props) throws Exception {
-		RequestEnhancer requestEnhancer = null;
-		final String requestEnhancerFactoryClassName = props.getProperty(WJdbcProperties.SERVLET_REQUEST_ENHANCER_FACTORY);
-		if (requestEnhancerFactoryClassName != null) {
-			final Class<?> requestEnhancerFactoryClass = Class.forName(requestEnhancerFactoryClassName);
-			final RequestEnhancerFactory requestEnhancerFactory = (RequestEnhancerFactory) requestEnhancerFactoryClass.newInstance();
-			requestEnhancer = requestEnhancerFactory.create();
-		}
-		// Decide here if we should use Jakarta-HTTP-Client
-		final String useJakartaHttpClient = props.getProperty(WJdbcProperties.SERVLET_USE_JAKARTA_HTTP_CLIENT);
-		if (useJakartaHttpClient != null && useJakartaHttpClient.equals("true")) {
-			return new ServletCommandSinkJakartaHttpClient(url, requestEnhancer);
-		}
-		return new ServletCommandSinkJdkHttpClient(url, requestEnhancer);
+
+	private static CommandSink createServletCommandSink(final String url) throws Exception {
+		return new ServletCommandSink(url);
 	}
+
 
 	private static String[] split(final String url) {
 		final char[] splitChars = { ',', ';', '#', '$' };
@@ -142,6 +128,7 @@ public final class WDriver implements Driver {
 		return new String[] { url, "" };
 	}
 
+	@Override
 	@SuppressWarnings("static-method")
 	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
 		throw new SQLFeatureNotSupportedException("getParentLogger");

@@ -99,4 +99,6 @@ public class SerialSQLXML implements SQLXML, Externalizable {
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
 		xml.append(in.readUTF());
 	}
+
+
 }

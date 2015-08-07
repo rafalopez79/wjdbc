@@ -11,4 +11,10 @@ public interface PreparedStatementParameter extends Externalizable {
 
 	void setParameter(PreparedStatement pstmt, int index) throws SQLException;
 
+	@Override
+	int hashCode();
+
+	@Override
+	boolean equals(Object obj);
+
 }

@@ -61,4 +61,48 @@ public class CallableStatementSetRowIdCommand extends BaseCommand<Void, Callable
 		}
 		return null;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + index;
+		result = prime * result + (parameterName == null ? 0 : parameterName.hashCode());
+		result = prime * result + (rowId == null ? 0 : rowId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final CallableStatementSetRowIdCommand other = (CallableStatementSetRowIdCommand) obj;
+		if (index != other.index) {
+			return false;
+		}
+		if (parameterName == null) {
+			if (other.parameterName != null) {
+				return false;
+			}
+		} else if (!parameterName.equals(other.parameterName)) {
+			return false;
+		}
+		if (rowId == null) {
+			if (other.rowId != null) {
+				return false;
+			}
+		} else if (!rowId.equals(other.rowId)) {
+			return false;
+		}
+		return true;
+	}
+
+
 }

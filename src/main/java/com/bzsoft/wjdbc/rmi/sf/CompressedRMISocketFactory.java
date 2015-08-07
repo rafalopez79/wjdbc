@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.RMISocketFactory;
-import java.util.zip.Deflater;
 
 /**
  * An RMISocketFactory which enables compressed transmission. We use
@@ -20,8 +19,6 @@ public class CompressedRMISocketFactory extends WrappingSocketFactory {
 
 	private static final long		serialVersionUID	= 1;
 
-	private static final boolean	USELZF				= true;
-
 	public CompressedRMISocketFactory(final RMIClientSocketFactory cFac, final RMIServerSocketFactory sFac) {
 		super(cFac, sFac);
 	}
@@ -30,11 +27,9 @@ public class CompressedRMISocketFactory extends WrappingSocketFactory {
 		// empty
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	protected StreamPair wrap(final InputStream in, final OutputStream out) throws IOException {
-		if (USELZF) {
-			return new StreamPair(new LZFCompressingInputStream(in), new LZFCompressingOutputStream(out));
-		}
-		return new StreamPair(new DecompressingInputStream(in), new CompressingOutputStream(out, Deflater.BEST_SPEED));
+		return new StreamPair(new LZFCompressingInputStream(in), new LZFCompressingOutputStream(out));
 	}
 }

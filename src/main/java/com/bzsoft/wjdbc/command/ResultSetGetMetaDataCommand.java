@@ -30,4 +30,14 @@ public class ResultSetGetMetaDataCommand extends BaseCommand<ResultSetMetaData, 
 	public ResultSetMetaData execute(final ResultSetHolder rsh, final ConnectionContext ctx) throws SQLException {
 		return rsh.getMetaData();
 	}
+
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof ResultSetGetMetaDataCommand;
+	}
 }
