@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -29,6 +28,10 @@ public class ConnectionServer {
 	private static final Logger		LOGGER	= Logger.getLogger(ConnectionServer.class);
 
 	private final WJdbcConfiguration	config;
+	private RmiConfiguration rmiConf;
+	private Registry registry;
+	private CommandProcessor cproc;
+	private ConnectionBrokerRmi broker;
 
 	public ConnectionServer(final WJdbcConfiguration config) {
 		this.config = config;
@@ -48,13 +51,13 @@ public class ConnectionServer {
 		} else {
 			socketFactory = new CompressedRMISocketFactory();
 		}
-		final Registry registry;
+		final Registry reg;
 		if (rmiConf.isCreateRegistry()) {
 			LOGGER.info("Starting RMI-Registry on port " + rmiConf.getPort());
-			registry = LocateRegistry.createRegistry(rmiConf.getPort(), socketFactory, socketFactory);
+			reg = LocateRegistry.createRegistry(rmiConf.getPort(), socketFactory, socketFactory);
 		} else {
 			LOGGER.info("Using RMI-Registry on port " + rmiConf.getPort());
-			registry = LocateRegistry.getRegistry(rmiConf.getPort());
+			reg = LocateRegistry.getRegistry(rmiConf.getPort());
 		}
 		final Map<String, SharedConnectionPoolConfiguration> sharedConnMap = config.getSharedPoolConfiguration();
 		if (!sharedConnMap.isEmpty()) {
@@ -72,33 +75,45 @@ public class ConnectionServer {
 		}
 		final CommandProcessor commandProcessor = new CommandProcessor(config);
 		LOGGER.info("Binding remote object to '" + rmiConf.getObjectName() + "'");
-		final ConnectionBrokerRmi broker = new ConnectionBrokerRmiImpl(commandProcessor, socketFactory, rmiConf.getRemotingPort());
-		registry.rebind(rmiConf.getObjectName(), broker);
-		installShutdownHook(rmiConf, registry, commandProcessor, broker);
+		final ConnectionBrokerRmi brk = new ConnectionBrokerRmiImpl(commandProcessor, socketFactory, rmiConf.getRemotingPort());
+		reg.rebind(rmiConf.getObjectName(), brk);
+		this.broker = brk;
+		this.cproc = commandProcessor;
+		this.registry = reg;
+		this.rmiConf = rmiConf;
 	}
 
-	private static void installShutdownHook(final RmiConfiguration rmiConf, final Registry registry, final CommandProcessor cp, final Remote broker) {
+	public void shutdown(){
+		shutdown(rmiConf, registry, cproc, broker);
+	}
+
+	private static void shutdown(final RmiConfiguration rmiConf, final Registry registry, final CommandProcessor cp, final ConnectionBrokerRmi broker){
+		try {
+			LOGGER.info("Unbinding remote object");
+			registry.unbind(rmiConf.getObjectName());
+		} catch (final RemoteException e) {
+			LOGGER.error("Remote exception", e);
+		} catch (final NotBoundException e) {
+			LOGGER.error("Not bound exception", e);
+		}
+		try {
+			cp.destroy();
+		} catch (final Exception e) {
+			LOGGER.error("Error destroying command processor", e);
+		}
+		try {
+			broker.shutdown();
+			UnicastRemoteObject.unexportObject(broker, true);
+		} catch (final Exception e) {
+			LOGGER.error("Error destroying broker", e);
+		}
+	}
+
+	private static void installShutdownHook(final RmiConfiguration rmiConf, final Registry registry, final CommandProcessor cp, final ConnectionBrokerRmi broker) {
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					LOGGER.info("Unbinding remote object");
-					registry.unbind(rmiConf.getObjectName());
-				} catch (final RemoteException e) {
-					LOGGER.error("Remote exception", e);
-				} catch (final NotBoundException e) {
-					LOGGER.error("Not bound exception", e);
-				}
-				try {
-					cp.destroy();
-				} catch (final Exception e) {
-					LOGGER.error("Error destroying command processor", e);
-				}
-				try {
-					UnicastRemoteObject.unexportObject(broker, true);
-				} catch (final Exception e) {
-					LOGGER.error("Error destroying broker", e);
-				}
+				shutdown(rmiConf, registry, cp, broker);
 			}
 		}));
 	}
@@ -126,6 +141,7 @@ public class ConnectionServer {
 				throw new RuntimeException("You must specify a configuration file as the first parameter");
 			}
 			final ConnectionServer connectionServer = new ConnectionServer(config);
+			installShutdownHook(connectionServer.rmiConf, connectionServer.registry, connectionServer.cproc, connectionServer.broker);
 			connectionServer.serve();
 		} catch (final Throwable e) {
 			LOGGER.error(e.getMessage(), e);

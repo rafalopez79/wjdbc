@@ -1,9 +1,12 @@
 package com.bzsoft.wjdbc.server.rmi;
 
+import java.rmi.NoSuchObjectException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.bzsoft.wjdbc.rmi.CommandSinkRmi;
 import com.bzsoft.wjdbc.rmi.ConnectionBrokerRmi;
@@ -16,12 +19,14 @@ public class ConnectionBrokerRmiImpl extends UnicastRemoteObject implements Conn
 	private final CommandProcessor	processor;
 	private final RMISocketFactory	sf;
 	private final int						port;
+	private final Set<Remote>        remotes;
 
 	public ConnectionBrokerRmiImpl(final CommandProcessor cp, final RMISocketFactory sf, final int remotingPort) throws RemoteException {
 		super(remotingPort, sf, sf);
 		port = remotingPort;
 		processor = cp;
 		this.sf = sf;
+		remotes = new HashSet<Remote>();
 	}
 
 	@Override
@@ -33,6 +38,18 @@ public class ConnectionBrokerRmiImpl extends UnicastRemoteObject implements Conn
 		} else {
 			rem = UnicastRemoteObject.exportObject(cs, port);
 		}
+		remotes.add(rem);
 		return (CommandSinkRmi) rem;
+	}
+
+	@Override
+	public void shutdown() {
+		for(final Remote rem : remotes){
+			try {
+				UnicastRemoteObject.unexportObject(rem, true);
+			} catch (final NoSuchObjectException e) {
+				// empty
+			}
+		}
 	}
 }

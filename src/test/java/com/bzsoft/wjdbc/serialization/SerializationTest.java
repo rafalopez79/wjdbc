@@ -10,6 +10,7 @@ import com.bzsoft.wjdbc.BaseSerTest;
 import com.bzsoft.wjdbc.command.CallableStatementGetArrayCommand;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@SuppressWarnings("static-method")
 public class SerializationTest extends BaseSerTest{
 
 	private static final int MAXINT = Integer.MAX_VALUE;
