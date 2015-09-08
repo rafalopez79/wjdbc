@@ -26,6 +26,9 @@ import com.bzsoft.wjdbc.serial.StreamingResultSet;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 import com.bzsoft.wjdbc.util.Validate;
 
+/**
+ * The Class WStatement.
+ */
 public class WStatement extends WBase implements Statement {
 
 	private final List<String>		batchCollector;
@@ -40,6 +43,22 @@ public class WStatement extends WBase implements Statement {
 
 	protected Integer					maxFieldSize;
 
+	/**
+	 * Instantiates a new w statement.
+	 *
+	 * @param uid
+	 *           the uid
+	 * @param connection
+	 *           the connection
+	 * @param theSink
+	 *           the the sink
+	 * @param resultSetType
+	 *           the result set type
+	 * @param maxRows
+	 *           the max rows
+	 * @param queryTimeout
+	 *           the query timeout
+	 */
 	public WStatement(final long uid, final Connection connection, final DecoratedCommandSink theSink, final int resultSetType, final int maxRows,
 			final int queryTimeout) {
 		super(uid, theSink);
@@ -88,10 +107,10 @@ public class WStatement extends WBase implements Statement {
 
 	@Override
 	public void close() throws SQLException {
-		Validate.isFalse(connection.isClosed(), "Connection closed");
-		Validate.isFalse(isClosed, "Statement closed");
-		sink.process(objectUid, new DestroyCommand(objectUid, JdbcInterfaceType.STATEMENT));
-		isClosed = true;
+		if (!isClosed){
+			sink.process(objectUid, new DestroyCommand(objectUid, JdbcInterfaceType.STATEMENT));
+			isClosed = true;
+		}
 	}
 
 	@Override
@@ -414,10 +433,12 @@ public class WStatement extends WBase implements Statement {
 		return (T) this;
 	}
 
+	@Override
 	public void closeOnCompletion() throws SQLException {
 		isCloseOnCompletion = true;
 	}
 
+	@Override
 	public boolean isCloseOnCompletion() throws SQLException {
 		return isCloseOnCompletion;
 	}

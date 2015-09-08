@@ -37,11 +37,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 
 	}
 
-	/**
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
@@ -71,8 +66,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see javax.sql.PooledConnection#getConnection()
 	 */
 	@Override
 	public Connection getConnection() throws SQLException {
@@ -82,8 +75,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see javax.sql.PooledConnection#addConnectionEventListener(javax.sql.
-	 *      ConnectionEventListener)
 	 */
 	@Override
 	public void addConnectionEventListener(final ConnectionEventListener listener) {
@@ -95,8 +86,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see javax.sql.PooledConnection#removeConnectionEventListener(javax.sql.
-	 *      ConnectionEventListener)
 	 */
 	@Override
 	public void removeConnectionEventListener(final ConnectionEventListener listener) {
@@ -108,8 +97,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see javax.sql.PooledConnection#addStatementEventListener(javax.sql.
-	 *      StatementEventListener)
 	 */
 	@Override
 	public void addStatementEventListener(final StatementEventListener listener) {
@@ -121,8 +108,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see javax.sql.PooledConnection#removeStatementEventListener(javax.sql.
-	 *      StatementEventListener)
 	 */
 	@Override
 	public void removeStatementEventListener(final StatementEventListener listener) {
@@ -133,8 +118,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see PooledConnectionSubject#connectionClosed (javax.sql.ConnectionEvent)
 	 */
 	@Override
 	public void connectionClosed(final SQLException e) {
@@ -152,8 +135,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see PooledConnectionSubject#
-	 *      connectionErrorOccurred(javax.sql.ConnectionEvent)
 	 */
 	@Override
 	public void connectionErrorOccurred(final SQLException e) {
@@ -170,7 +151,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see PooledConnectionSubject#statementClosed (javax.sql.StatementEvent)
 	 */
 	@Override
 	public void statementClosed(final PreparedStatement stmt, final SQLException e) {
@@ -187,7 +167,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see PooledConnectionSubject#addStatement(java.sql.PreparedStatement)
 	 */
 	@Override
 	public void addStatement(final PreparedStatement pstmt) {
@@ -197,8 +176,7 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see javax.sql.StatementEventListener#statementClosed(javax.sql.StatementEvent
-	 *      )
+	 *
 	 */
 	@Override
 	public void statementClosed(final StatementEvent event) {
@@ -212,7 +190,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see javax.sql.StatementEventListener#statementErrorOccurred(javax.sql.StatementEvent)
 	 */
 	@Override
 	public void statementErrorOccurred(final StatementEvent event) {
@@ -222,8 +199,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see PooledConnectionSubject#statementErrorOccurred
-	 *      (javax.sql.StatementEvent)
 	 */
 	@Override
 	public void statementErrorOccurred(final PreparedStatement stmt, final SQLException e) {
@@ -240,7 +215,6 @@ public class WPooledConnection implements PooledConnection, PooledConnectionSubj
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see javax.sql.PooledConnection#close()
 	 */
 	@Override
 	public void close() throws SQLException {

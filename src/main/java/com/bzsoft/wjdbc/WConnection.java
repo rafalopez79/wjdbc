@@ -45,6 +45,9 @@ import com.bzsoft.wjdbc.transport.JdbcStatementTransport;
 import com.bzsoft.wjdbc.util.ClientInfo;
 import com.bzsoft.wjdbc.util.Validate;
 
+/**
+ * The Class WConnection.
+ */
 public class WConnection extends WBase implements Connection {
 
 	private static final int	MAX_TIMEOUT	= 20000;
@@ -61,6 +64,16 @@ public class WConnection extends WBase implements Connection {
 
 	private final Executor		executor;
 
+	/**
+	 * Instantiates a new w connection.
+	 *
+	 * @param connuid
+	 *           the connuid
+	 * @param sink
+	 *           the sink
+	 * @param exec
+	 *           the exec
+	 */
 	WConnection(final long connuid, final DecoratedCommandSink sink, final Executor exec) {
 		super(connuid, sink);
 		isClosed = false;
@@ -556,5 +569,4 @@ public class WConnection extends WBase implements Connection {
 		Validate.isFalse(isClosed, "Connection closed");
 		return sink.processWithIntResult(objectUid, ReflectiveCommand.<Integer, Object> of(JdbcInterfaceType.CONNECTION, "getNetworkTimeout"));
 	}
-
 }

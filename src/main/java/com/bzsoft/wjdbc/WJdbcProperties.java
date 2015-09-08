@@ -1,5 +1,8 @@
 package com.bzsoft.wjdbc;
 
+/**
+ * The Class WJdbcProperties.
+ */
 public final class WJdbcProperties {
 
 	private WJdbcProperties() {

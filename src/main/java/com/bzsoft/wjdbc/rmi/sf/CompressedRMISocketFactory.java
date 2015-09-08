@@ -9,7 +9,7 @@ import java.rmi.server.RMISocketFactory;
 
 /**
  * An RMISocketFactory which enables compressed transmission. We use
- * {@link #CompressingInputStream} and {@link #CompressingOutputStream} for
+ * {@link LZFCompressingInputStream} and {@link LZFCompressingOutputStream} for
  * this.
  *
  * As we extend WrappingSocketFactory, this can be used on top of another

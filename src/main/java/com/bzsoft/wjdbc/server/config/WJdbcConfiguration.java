@@ -56,7 +56,10 @@ public class WJdbcConfiguration {
 	 *
 	 * @param configResource
 	 *           Resource to be loaded by the ClassLoader
+	 * @return WJdbcConfiguration
+	 * 			 The configuration
 	 * @throws ConfigurationException
+	 *           The config exception
 	 */
 	public static WJdbcConfiguration of(final String configResource) throws ConfigurationException {
 		return of(configResource, null);
@@ -67,7 +70,12 @@ public class WJdbcConfiguration {
 	 *
 	 * @param configResource
 	 *           Resource to be loaded by the ClassLoader
+	 * @param configVariables
+	 * 			 The configVariables
+	 * @return WJdbcConfiguration
+	 * 			 The configuration
 	 * @throws ConfigurationException
+	 * 			 Configuration Exception
 	 */
 	public static WJdbcConfiguration of(final String configResource, final Properties configVariables) throws ConfigurationException {
 		try {
@@ -88,7 +96,12 @@ public class WJdbcConfiguration {
 	 *
 	 * @param configResourceInputStream
 	 *           InputStream
+	 * @param configVariables
+	 *  			 The config variables
+	 * @return WJdbcConfiguration
+	 * 			 The configuration
 	 * @throws ConfigurationException
+	 * 			 ConfigurationException
 	 */
 	public static WJdbcConfiguration of(final InputStream configResourceInputStream, final Properties configVariables) throws ConfigurationException {
 		try {
@@ -173,6 +186,7 @@ public class WJdbcConfiguration {
 	 * Adds a ConnectionConfiguration.
 	 *
 	 * @param connectionConfiguration
+	 * 			The connection configuration
 	 * @throws ConfigurationException
 	 *            Thrown when the connection identifier already exists
 	 */

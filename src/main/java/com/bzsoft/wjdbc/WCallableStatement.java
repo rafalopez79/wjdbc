@@ -53,8 +53,27 @@ import com.bzsoft.wjdbc.serial.StreamingResultSet;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 import com.bzsoft.wjdbc.util.Validate;
 
+/**
+ * The Class WCallableStatement.
+ */
 public class WCallableStatement extends WPreparedStatement implements CallableStatement {
 
+	/**
+	 * Instantiates a new w callable statement.
+	 *
+	 * @param uid
+	 *           the uid
+	 * @param connection
+	 *           the connection
+	 * @param sink
+	 *           the sink
+	 * @param resultSetType
+	 *           the result set type
+	 * @param maxRows
+	 *           the max rows
+	 * @param queryTimeout
+	 *           the query timeout
+	 */
 	WCallableStatement(final long uid, final Connection connection, final DecoratedCommandSink sink, final int resultSetType, final int maxRows,
 			final int queryTimeout) {
 		super(uid, connection, sink, resultSetType, maxRows, queryTimeout);
@@ -1040,6 +1059,7 @@ public class WCallableStatement extends WPreparedStatement implements CallableSt
 		}
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getObject(final int parameterIndex, final Class<T> clazz) throws SQLException {
 		Validate.isFalse(connection.isClosed(), "Connection closed");
@@ -1052,6 +1072,7 @@ public class WCallableStatement extends WPreparedStatement implements CallableSt
 		}
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getObject(final String parameterName, final Class<T> clazz) throws SQLException {
 		Validate.isFalse(connection.isClosed(), "Connection closed");

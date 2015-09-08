@@ -7,8 +7,19 @@ import com.bzsoft.wjdbc.command.DecoratedCommandSink;
 import com.bzsoft.wjdbc.command.JdbcInterfaceType;
 import com.bzsoft.wjdbc.command.ReflectiveCommand;
 
+/**
+ * The Class WSavepoint.
+ */
 public class WSavepoint extends WBase implements Savepoint {
 
+	/**
+	 * Instantiates a new w savepoint.
+	 *
+	 * @param uid
+	 *           the uid
+	 * @param sink
+	 *           the sink
+	 */
 	WSavepoint(final long uid, final DecoratedCommandSink sink) {
 		super(uid, sink);
 	}

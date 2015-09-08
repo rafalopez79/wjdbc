@@ -66,15 +66,13 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 	 *
 	 * @param cFac
 	 *           the base socket factory used for creating client sockets. This
-	 *           may be {@code null}, then we will use the
-	 *           {@linkplain RMISocketFactory#getDefault() default socket
-	 *           factory} of client system where this object is finally used for
+	 *           may be {@code null}, then we will use the default socket
+	 *           factory of client system where this object is finally used for
 	 *           creating sockets. If not null, it should be serializable.
 	 * @param sFac
 	 *           the base socket factory used for creating server sockets. This
-	 *           may be {@code null}, then we will use the
-	 *           {@linkplain RMISocketFactory#getDefault() default RMI Socket
-	 *           factory}. This will not be serialized to the client.
+	 *           may be {@code null}, then we will use the default RMI Socket
+	 *           factory. This will not be serialized to the client.
 	 */
 	public WrappingSocketFactory(final RMIClientSocketFactory cFac, final RMIServerSocketFactory sFac) {
 		this.baseCFactory = cFac;
@@ -89,8 +87,7 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 	 * @param fac
 	 *           the factory to be used as a base for both client and server
 	 *           socket. This should be either serializable or {@code null} (then
-	 *           we will use the {@linkplain RMISocketFactory#getDefault()
-	 *           default socket factory} as a base).
+	 *           we will use the default socket factory as a base).
 	 */
 	public WrappingSocketFactory(final RMISocketFactory fac) {
 		this(fac, fac);
@@ -102,7 +99,7 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 	 *
 	 * This uses the global socket factory at the time of the constructor call.
 	 * If this is {@code null}, we will use the
-	 * {@linkplain RMISocketFactory#getDefault() default socket factory} instead.
+	 * RMISocketFactory.getDefault() instead.
 	 */
 	public WrappingSocketFactory() {
 		this(RMISocketFactory.getSocketFactory());
@@ -116,11 +113,10 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 	 *           the input stream from the base socket.
 	 * @param output
 	 *           the output stream to the base socket.
-	 * @param server
-	 *           if true, we are constructing a socket in
-	 *           {@link ServerSocket#accept}. If false, this is a pure client
-	 *           socket.
 	 * @throws IOException
+	 * 			 the IOException
+	 * @return {@link StreamPair}
+	 * 			 the pair with streams
 	 */
 	protected abstract StreamPair wrap(InputStream input, OutputStream output) throws IOException;
 
@@ -183,8 +179,6 @@ public abstract class WrappingSocketFactory extends RMISocketFactory implements 
 	 * {@link ServerSocket#accept accept} wraps new Sockets (with a custom
 	 * SocketImpl) around the sockets from the base server socket.
 	 *
-	 * @param host
-	 *           the host we want to be connected with.
 	 * @param port
 	 *           the port we want to be connected with.
 	 * @return a new Socket connected to the host/port pair.

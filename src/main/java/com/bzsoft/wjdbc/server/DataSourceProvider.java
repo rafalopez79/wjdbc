@@ -14,6 +14,7 @@ public interface DataSourceProvider {
 	 * used to create the JDBC connections.
 	 *
 	 * @return DataSource to be used for creating the connections
+	 * @throws SQLException in case of error
 	 */
 	DataSource getDataSource() throws SQLException;
 }

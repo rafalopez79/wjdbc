@@ -66,6 +66,9 @@ import com.bzsoft.wjdbc.serial.StreamingResultSet;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 import com.bzsoft.wjdbc.util.Validate;
 
+/**
+ * The Class WPreparedStatement.
+ */
 public class WPreparedStatement extends WStatement implements PreparedStatement {
 
 	private static final PreparedStatementParameter[]	EMPTYPARAMS	= new PreparedStatementParameter[0];
@@ -75,6 +78,22 @@ public class WPreparedStatement extends WStatement implements PreparedStatement 
 	private PreparedStatementParameter[]					paramList	= new PreparedStatementParameter[10];
 	private int														maxIndex		= 0;
 
+	/**
+	 * Instantiates a new w prepared statement.
+	 *
+	 * @param uid
+	 *           the uid
+	 * @param connection
+	 *           the connection
+	 * @param sink
+	 *           the sink
+	 * @param resultSetType
+	 *           the result set type
+	 * @param maxRows
+	 *           the max rows
+	 * @param queryTimeout
+	 *           the query timeout
+	 */
 	WPreparedStatement(final long uid, final Connection connection, final DecoratedCommandSink sink, final int resultSetType, final int maxRows,
 			final int queryTimeout) {
 		super(uid, connection, sink, resultSetType, maxRows, queryTimeout);
@@ -298,6 +317,16 @@ public class WPreparedStatement extends WStatement implements PreparedStatement 
 		throw new UnsupportedOperationException("getParameterMetaData");
 	}
 
+	/**
+	 * Sets the param.
+	 *
+	 * @param index
+	 *           the index
+	 * @param parm
+	 *           the parm
+	 * @throws SQLException
+	 *            the SQL exception
+	 */
 	protected void setParam(final int index, final PreparedStatementParameter parm) throws SQLException {
 		Validate.isFalse(connection.isClosed(), "Connection closed");
 		if (paramList.length < index) {
@@ -311,6 +340,9 @@ public class WPreparedStatement extends WStatement implements PreparedStatement 
 		paramList[index - 1] = parm;
 	}
 
+	/**
+	 * Reduce param.
+	 */
 	protected void reduceParam() {
 		if (maxIndex > 0) {
 			final PreparedStatementParameter[] tmpArray = new PreparedStatementParameter[maxIndex];
@@ -332,6 +364,18 @@ public class WPreparedStatement extends WStatement implements PreparedStatement 
 		setParam(parameterIndex, new StringParameter(value));
 	}
 
+	/**
+	 * Sets the n character stream.
+	 *
+	 * @param parameterIndex
+	 *           the parameter index
+	 * @param reader
+	 *           the reader
+	 * @param length
+	 *           the length
+	 * @throws SQLException
+	 *            the SQL exception
+	 */
 	public void setNCharacterStream(final int parameterIndex, final Reader reader, final int length) throws SQLException {
 		setParam(parameterIndex, new CharStreamParameter(reader, length));
 	}

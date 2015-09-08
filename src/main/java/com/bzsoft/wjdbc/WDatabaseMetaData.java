@@ -15,10 +15,23 @@ import com.bzsoft.wjdbc.serial.StreamingResultSet;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 import com.bzsoft.wjdbc.util.Validate;
 
+/**
+ * The Class WDatabaseMetaData.
+ */
 public class WDatabaseMetaData extends WBase implements DatabaseMetaData {
 
 	private final Connection	connection;
 
+	/**
+	 * Instantiates a new w database meta data.
+	 *
+	 * @param conn
+	 *           the conn
+	 * @param uid
+	 *           the uid
+	 * @param sink
+	 *           the sink
+	 */
 	public WDatabaseMetaData(final Connection conn, final long uid, final DecoratedCommandSink sink) {
 		super(uid, sink);
 		connection = conn;
@@ -1147,6 +1160,17 @@ public class WDatabaseMetaData extends WBase implements DatabaseMetaData {
 				ReflectiveCommand.<Boolean, Object> of(JdbcInterfaceType.DATABASEMETADATA, "supportsStatementPooling"));
 	}
 
+	/**
+	 * Query result set.
+	 *
+	 * @param <T>
+	 *           the generic type
+	 * @param cmd
+	 *           the cmd
+	 * @return the result set
+	 * @throws SQLException
+	 *            the SQL exception
+	 */
 	protected <T> ResultSet queryResultSet(final Command<ResultSet, T> cmd) throws SQLException {
 		Validate.isFalse(connection.isClosed(), "Connection closed");
 		try {

@@ -21,6 +21,9 @@ import com.bzsoft.wjdbc.servlet.ServletCommandSink;
 import com.bzsoft.wjdbc.util.ClientInfo;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 
+/**
+ * The Class WDriver.
+ */
 public final class WDriver implements Driver {
 
 	private static final String	WJDBC_IDENTIFIER		= "jdbc:wjdbc:";
@@ -38,6 +41,9 @@ public final class WDriver implements Driver {
 		}
 	}
 
+	/**
+	 * Instantiates a new w driver.
+	 */
 	public WDriver() {
 		// empty
 	}

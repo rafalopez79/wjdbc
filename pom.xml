@@ -12,23 +12,49 @@
 	<connection>scm:git:git://github.com/rafalopez79/wjdbc.git</connection>
 	<developerConnection>scm:git:git@github.com:rafalopez79/wjdbc.git</developerConnection>
 	<url>http://github.com/rafalopez79/wjdbc</url>
-  </scm>    
+  </scm>  
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>  
 
   <repositories>
     <repository>
       <id>Maven Central repository</id>
       <url>http://repo.maven.apache.org/maven2/</url>
-    </repository>
-    <!-- Required until the Servlet 3.0 API can be resolved in Central -->     
-    <repository>
-      <id>Glassfish</id>
-      <name>Glassfish Maven2 Repository</name>
-      <url>http://download.java.net/maven/glassfish/</url>
-    </repository>
+    </repository>    
   </repositories>
 
   <build>
     <plugins>
+    
+      <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-source-plugin</artifactId>
+      <version>2.2.1</version>
+      <executions>
+        <execution>
+          <id>attach-sources</id>
+          <goals>
+            <goal>jar-no-fork</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-javadoc-plugin</artifactId>
+      <version>2.9.1</version>
+      <executions>
+        <execution>
+          <id>attach-javadocs</id>
+          <goals>
+            <goal>jar</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin> 
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>2.4.1</version>
@@ -45,7 +71,11 @@
         <configuration>
           <verbose>true</verbose>
           <fork>true</fork>
-          <compilerVersion>1.6</compilerVersion>
+          <compilerVersion>1.7</compilerVersion>
+          <configuration>
+            <source>1.7</source>
+            <target>1.7</target>
+          </configuration>
         </configuration>
       </plugin>
       
@@ -82,19 +112,26 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>1.4</version>                
+            <version>1.7.1</version>                
             <executions>
                 <execution>
                     <phase>package</phase>
                     <goals>
                         <goal>shade</goal>
                     </goals>
-                    <configuration>                          
+                    <configuration>     
+                        <createDependencyReducedPom>false</createDependencyReducedPom>
                         <artifactSet>
                           <includes>
                             <include>com.ning</include>
                           </includes>                          
-                        </artifactSet>                      
+                        </artifactSet> 
+                          <relocations>
+                            <relocation>
+                              <pattern>com.ning</pattern>
+                              <shadedPattern>com.bzsoft.wjdbc.ning</shadedPattern>                                                          
+                            </relocation>
+                          </relocations>
                     </configuration>
                 </execution>
             </executions>
@@ -109,27 +146,7 @@
 	  </license>
 	</licenses>
 
-  <developers>
-    <developer>
-      <id>sfcat</id>
-      <name>Hunter Payne</name>
-      <email>sfcat@users.sourceforge.net</email>
-      <roles>
-        <role>Developer</role>
-      </roles>
-      <organization>SQLStream Inc</organization>
-      <timezone>PST</timezone>
-    </developer>         
-    <developer>
-      <id>urmeli</id>
-      <name>Michael Link</name>
-      <email>urmeli@users.sourceforge.net</email>
-      <roles>
-        <role>Developer</role>
-      </roles>
-      <organization></organization>
-      <timezone></timezone>
-    </developer> 
+  <developers>    
     <developer>
       <id>rafalopez79</id>
       <name>Rafael Lopez</name>
@@ -138,7 +155,7 @@
         <role>Developer</role>
       </roles>
       <organization>BZSoft</organization>
-      <timezone></timezone>
+      <timezone>1</timezone>
     </developer>         
   </developers>
 
@@ -202,16 +219,17 @@
       <artifactId>log4j</artifactId>
       <version>1.2.8</version>
     </dependency>
+    
     <dependency>
         <groupId>com.ning</groupId>
         <artifactId>compress-lzf</artifactId>  
         <version>1.0.3</version>
     </dependency>
     
-    <dependency>  
-	    <groupId>org.h2</groupId>
-	    <artifactId>h2</artifactId>
-	    <version>1.3.176</version>
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>1.4.188</version>
 	    <scope>test</scope>
     </dependency>
     <dependency>
@@ -219,6 +237,13 @@
       <artifactId>junit</artifactId>
       <version>4.12</version>
       <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.0.1</version>
+        <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>
