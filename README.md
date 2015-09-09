@@ -2,6 +2,9 @@
 
 Fork of [**VJDBC**](http://vjdbc.sourceforge.net/) project.
 
+### Status
+[![Build Status](https://travis-ci.org/rafalopez79/wjdbc.svg?branch=master)](https://travis-ci.org/rafalopez79/wjdbc/)
+
 ##Motivation
 The motivation of this project is to increase the overall throughput of vjdbc in LAN environments.
 
