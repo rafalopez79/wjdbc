@@ -22,7 +22,7 @@ public class ReconnectableCommandSinkRmiProxy implements CommandSink {
 		this.url = url;
 		this.sf = sf;
 		final ConnectionBrokerRmi broker = (ConnectionBrokerRmi) Naming.lookup(url, sf);
-		this.rmiSink = broker.createCommandSink();
+		this.rmiSink = broker.getCommandSink();
 	}
 
 	@Override
@@ -34,11 +34,11 @@ public class ReconnectableCommandSinkRmiProxy implements CommandSink {
 				ConnectionBrokerRmi broker;
 				try {
 					broker = (ConnectionBrokerRmi) Naming.lookup(url, sf);
-					rmiSink = broker.createCommandSink();
+					rmiSink = broker.getCommandSink();
 				} catch (final Exception e1) {
 					throw SQLExceptionHelper.wrap(e);
 				}
-				throw new WJdbcSqlException("Reconnection");
+				throw new WJdbcSqlException("Reconnection error");
 			} catch (final RemoteException e) {
 				throw SQLExceptionHelper.wrap(e);
 			}
@@ -55,7 +55,7 @@ public class ReconnectableCommandSinkRmiProxy implements CommandSink {
 				ConnectionBrokerRmi broker;
 				try {
 					broker = (ConnectionBrokerRmi) Naming.lookup(url, sf);
-					rmiSink = broker.createCommandSink();
+					rmiSink = broker.getCommandSink();
 				} catch (final Exception e1) {
 					throw SQLExceptionHelper.wrap(e);
 				}

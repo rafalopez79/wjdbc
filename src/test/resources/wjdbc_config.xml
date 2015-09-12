@@ -1,5 +1,5 @@
 <wjdbc-configuration>
-    <rmi registryPort="40000" remotingPort="40001"/>
+    <rmi registryPort="40000" remotingPort="40001" rowPacketSize="10"/>
 	<connection 
 		id="h2" 		
        	sharedPoolId="pool1"

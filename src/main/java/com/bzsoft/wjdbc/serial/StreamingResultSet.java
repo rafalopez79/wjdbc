@@ -1398,7 +1398,7 @@ public final class StreamingResultSet implements ResultSet, Externalizable {
 			throw new SQLException("Unknown column " + name);
 		}
 		lastReadColumn = result;
-		return result + 1;
+		return result;
 	}
 
 	private final boolean preGetCheckNull(final int index) {

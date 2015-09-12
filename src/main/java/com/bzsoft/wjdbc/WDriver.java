@@ -135,7 +135,6 @@ public final class WDriver implements Driver {
 	}
 
 	@Override
-	@SuppressWarnings("static-method")
 	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
 		throw new SQLFeatureNotSupportedException("getParentLogger");
 	}

@@ -103,6 +103,7 @@ public class WPreparedStatement extends WStatement implements PreparedStatement 
 	@Override
 	public ResultSet executeQuery() throws SQLException {
 		Validate.isFalse(connection.isClosed(), "Connection closed");
+		Validate.isFalse(isClosed, "Statement closed");
 		StreamingResultSet result = null;
 		try {
 			reduceParam();
@@ -118,92 +119,111 @@ public class WPreparedStatement extends WStatement implements PreparedStatement 
 	@Override
 	public int executeUpdate() throws SQLException {
 		Validate.isFalse(connection.isClosed(), "Connection closed");
+		Validate.isFalse(isClosed, "Statement closed");
 		reduceParam();
 		return sink.processWithIntResult(objectUid, new PreparedStatementUpdateCommand(paramList));
 	}
 
 	@Override
 	public void setNull(final int parameterIndex, final int sqlType) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new NullParameter(sqlType, null));
 	}
 
 	@Override
 	public void setBoolean(final int parameterIndex, final boolean x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new BooleanParameter(x));
 	}
 
 	@Override
 	public void setByte(final int parameterIndex, final byte x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new ByteParameter(x));
 	}
 
 	@Override
 	public void setShort(final int parameterIndex, final short x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new ShortParameter(x));
 	}
 
 	@Override
 	public void setInt(final int parameterIndex, final int x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new IntegerParameter(x));
 	}
 
 	@Override
 	public void setLong(final int parameterIndex, final long x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new LongParameter(x));
 	}
 
 	@Override
 	public void setFloat(final int parameterIndex, final float x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new FloatParameter(x));
 	}
 
 	@Override
 	public void setDouble(final int parameterIndex, final double x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new DoubleParameter(x));
 	}
 
 	@Override
 	public void setBigDecimal(final int parameterIndex, final BigDecimal x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new BigDecimalParameter(x));
 	}
 
 	@Override
 	public void setString(final int parameterIndex, final String x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new StringParameter(x));
 	}
 
 	@Override
 	public void setBytes(final int parameterIndex, final byte x[]) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new ByteArrayParameter(x));
 	}
 
 	@Override
 	public void setDate(final int parameterIndex, final Date x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new DateParameter(x, null));
 	}
 
 	@Override
 	public void setTime(final int parameterIndex, final Time x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new TimeParameter(x, null));
 	}
 
 	@Override
 	public void setTimestamp(final int parameterIndex, final Timestamp x) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new TimestampParameter(x, null));
 	}
 
 	@Override
 	public void setAsciiStream(final int parameterIndex, final InputStream x, final int length) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new ByteStreamParameter(ByteStreamParameter.TYPE_ASCII, x, length));
 	}
 
 	@Override
 	public void setUnicodeStream(final int parameterIndex, final InputStream x, final int length) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new ByteStreamParameter(ByteStreamParameter.TYPE_UNICODE, x, length));
 	}
 
 	@Override
 	public void setBinaryStream(final int parameterIndex, final InputStream x, final int length) throws SQLException {
+		Validate.isFalse(isClosed, "Statement closed");
+		Validate.isFalse(isClosed, "Statement closed");
 		setParam(parameterIndex, new ByteStreamParameter(ByteStreamParameter.TYPE_BINARY, x, length));
 	}
 
@@ -329,6 +349,7 @@ public class WPreparedStatement extends WStatement implements PreparedStatement 
 	 */
 	protected void setParam(final int index, final PreparedStatementParameter parm) throws SQLException {
 		Validate.isFalse(connection.isClosed(), "Connection closed");
+		Validate.isFalse(isClosed, "Statement closed");
 		if (paramList.length < index) {
 			final List<PreparedStatementParameter> tmp = Arrays.asList(paramList);
 			final PreparedStatementParameter[] newArray = new PreparedStatementParameter[index * 2];

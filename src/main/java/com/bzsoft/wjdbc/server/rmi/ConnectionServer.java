@@ -38,13 +38,13 @@ public class ConnectionServer {
 	}
 
 	public void serve() throws IOException {
-		RmiConfiguration rmiConf = config.getRmiConfiguration();
-		if (rmiConf == null) {
+		RmiConfiguration rmiConfig = config.getRmiConfiguration();
+		if (rmiConfig == null) {
 			LOGGER.debug("No RMI-Configuration specified in WJdbc-Configuration, using default configuration");
-			rmiConf = new RmiConfiguration();
+			rmiConfig = new RmiConfiguration();
 		}
 		final RMISocketFactory socketFactory;
-		if (rmiConf.isUseSSL()) {
+		if (rmiConfig.isUseSSL()) {
 			LOGGER.info("Using SSL sockets for communication");
 			final SecureSocketFactory ssf = new SecureSocketFactory();
 			socketFactory = new CompressedRMISocketFactory(ssf, ssf);
@@ -52,12 +52,12 @@ public class ConnectionServer {
 			socketFactory = new CompressedRMISocketFactory();
 		}
 		final Registry reg;
-		if (rmiConf.isCreateRegistry()) {
-			LOGGER.info("Starting RMI-Registry on port " + rmiConf.getPort());
-			reg = LocateRegistry.createRegistry(rmiConf.getPort(), socketFactory, socketFactory);
+		if (rmiConfig.isCreateRegistry()) {
+			LOGGER.info("Starting RMI-Registry on port " + rmiConfig.getPort());
+			reg = LocateRegistry.createRegistry(rmiConfig.getPort(), socketFactory, socketFactory);
 		} else {
-			LOGGER.info("Using RMI-Registry on port " + rmiConf.getPort());
-			reg = LocateRegistry.getRegistry(rmiConf.getPort());
+			LOGGER.info("Using RMI-Registry on port " + rmiConfig.getPort());
+			reg = LocateRegistry.getRegistry(rmiConfig.getPort());
 		}
 		final Map<String, SharedConnectionPoolConfiguration> sharedConnMap = config.getSharedPoolConfiguration();
 		if (!sharedConnMap.isEmpty()) {
@@ -74,13 +74,13 @@ public class ConnectionServer {
 			}
 		}
 		final CommandProcessor commandProcessor = new CommandProcessor(config);
-		LOGGER.info("Binding remote object to '" + rmiConf.getObjectName() + "'");
-		final ConnectionBrokerRmi brk = new ConnectionBrokerRmiImpl(commandProcessor, socketFactory, rmiConf.getRemotingPort());
-		reg.rebind(rmiConf.getObjectName(), brk);
+		LOGGER.info("Binding remote object to '" + rmiConfig.getObjectName() + "'");
+		final ConnectionBrokerRmi brk = new ConnectionBrokerRmiImpl(commandProcessor, socketFactory, rmiConfig.getRemotingPort());
+		reg.rebind(rmiConfig.getObjectName(), brk);
 		this.broker = brk;
 		this.cproc = commandProcessor;
 		this.registry = reg;
-		this.rmiConf = rmiConf;
+		this.rmiConf = rmiConfig;
 	}
 
 	public void shutdown(){
@@ -106,6 +106,11 @@ public class ConnectionServer {
 			UnicastRemoteObject.unexportObject(broker, true);
 		} catch (final Exception e) {
 			LOGGER.error("Error destroying broker", e);
+		}
+		try {
+			UnicastRemoteObject.unexportObject(registry, true);
+		} catch (final Exception e) {
+			LOGGER.error("Error destroying registry", e);
 		}
 	}
 

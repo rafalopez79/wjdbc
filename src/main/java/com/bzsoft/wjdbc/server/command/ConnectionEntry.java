@@ -84,9 +84,7 @@ class ConnectionEntry implements ConnectionContext {
 		try {
 			if (!connection.isClosed()) {
 				connection.close();
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Closed connection " + uid);
-				}
+				LOGGER.debug("Closed connection " + uid);
 			}
 			traceConnectionStatistics();
 		} catch (final SQLException e) {

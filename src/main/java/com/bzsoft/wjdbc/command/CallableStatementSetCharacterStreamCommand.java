@@ -80,7 +80,6 @@ public class CallableStatementSetCharacterStreamCommand extends BaseCommand<Void
 		} else {
 			cstmt.setCharacterStream(index, reader, length);
 		}
-
 		return null;
 	}
 

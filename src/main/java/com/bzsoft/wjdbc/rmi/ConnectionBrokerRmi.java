@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 
 public interface ConnectionBrokerRmi extends Remote {
 
-	public CommandSinkRmi createCommandSink() throws RemoteException;
+	public CommandSinkRmi getCommandSink() throws RemoteException;
 
 	public void shutdown()throws RemoteException;
 }

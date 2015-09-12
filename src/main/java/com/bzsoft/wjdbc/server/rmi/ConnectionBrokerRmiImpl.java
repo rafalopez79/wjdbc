@@ -5,8 +5,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashSet;
-import java.util.Set;
 
 import com.bzsoft.wjdbc.rmi.CommandSinkRmi;
 import com.bzsoft.wjdbc.rmi.ConnectionBrokerRmi;
@@ -14,42 +12,37 @@ import com.bzsoft.wjdbc.server.command.CommandProcessor;
 
 public class ConnectionBrokerRmiImpl extends UnicastRemoteObject implements ConnectionBrokerRmi {
 
-	private static final long			serialVersionUID	= 3257290235934029618L;
+	private static final long		serialVersionUID	= 3257290235934029618L;
 
-	private final CommandProcessor	processor;
-	private final RMISocketFactory	sf;
-	private final int						port;
-	private final Set<Remote>        remotes;
+	private final CommandSinkRmi	remote;
 
 	public ConnectionBrokerRmiImpl(final CommandProcessor cp, final RMISocketFactory sf, final int remotingPort) throws RemoteException {
 		super(remotingPort, sf, sf);
-		port = remotingPort;
-		processor = cp;
-		this.sf = sf;
-		remotes = new HashSet<Remote>();
+		remote = createCommandSink(cp, sf, remotingPort);
 	}
 
 	@Override
-	public CommandSinkRmi createCommandSink() throws RemoteException {
-		final CommandSinkRmiImpl cs = new CommandSinkRmiImpl(processor);
+	public CommandSinkRmi getCommandSink() throws RemoteException {
+		return remote;
+	}
+
+	@Override
+	public void shutdown() {
+		try {
+			UnicastRemoteObject.unexportObject(remote, true);
+		} catch (final NoSuchObjectException e) {
+			// empty
+		}
+	}
+
+	private static final CommandSinkRmi createCommandSink(final CommandProcessor cp, final RMISocketFactory sf, final int port) throws RemoteException {
+		final CommandSinkRmiImpl cs = new CommandSinkRmiImpl(cp);
 		final Remote rem;
 		if (sf != null) {
 			rem = UnicastRemoteObject.exportObject(cs, port, sf, sf);
 		} else {
 			rem = UnicastRemoteObject.exportObject(cs, port);
 		}
-		remotes.add(rem);
 		return (CommandSinkRmi) rem;
-	}
-
-	@Override
-	public void shutdown() {
-		for(final Remote rem : remotes){
-			try {
-				UnicastRemoteObject.unexportObject(rem, true);
-			} catch (final NoSuchObjectException e) {
-				// empty
-			}
-		}
 	}
 }

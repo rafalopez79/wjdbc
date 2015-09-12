@@ -5,11 +5,15 @@ import java.rmi.server.Unreferenced;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import com.bzsoft.wjdbc.command.Command;
 import com.bzsoft.wjdbc.rmi.CommandSinkRmi;
 import com.bzsoft.wjdbc.server.command.CommandProcessor;
 
 public class CommandSinkRmiImpl implements CommandSinkRmi, Unreferenced {
+
+	private static final Logger		LOGGER	= Logger.getLogger(CommandSinkRmiImpl.class);
 
 	private final CommandProcessor	processor;
 
@@ -19,7 +23,7 @@ public class CommandSinkRmiImpl implements CommandSinkRmi, Unreferenced {
 
 	@Override
 	public void unreferenced() {
-		// empty
+		LOGGER.info("Remote object unreferenced");
 	}
 
 	@Override

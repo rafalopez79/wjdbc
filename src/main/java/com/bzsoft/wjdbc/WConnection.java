@@ -241,11 +241,13 @@ public class WConnection extends WBase implements Connection {
 
 	@Override
 	public SQLWarning getWarnings() throws SQLException {
+		Validate.isFalse(isClosed, "Connection closed");
 		return null;
 	}
 
 	@Override
 	public void clearWarnings() throws SQLException {
+		Validate.isFalse(isClosed, "Connection closed");
 		//empty
 	}
 

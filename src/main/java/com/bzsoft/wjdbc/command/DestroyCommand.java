@@ -40,11 +40,7 @@ public class DestroyCommand extends BaseCommand<Void, Object> {
 		if (target instanceof Connection) {
 			ctx.closeAllRelatedJdbcObjects();
 		}
-		// now we are ready to go on and close this connection
-
 		final Object removed = ctx.removeJDBCObject(uid);
-
-		// Check for identity
 		if (removed == target) {
 			try {
 				final Class<?> targetClass = JdbcInterfaceType.INTERFACES[interfaceType];

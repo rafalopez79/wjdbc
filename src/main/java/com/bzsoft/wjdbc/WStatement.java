@@ -107,7 +107,7 @@ public class WStatement extends WBase implements Statement {
 
 	@Override
 	public void close() throws SQLException {
-		if (!isClosed){
+		if (!isClosed && !connection.isClosed()){
 			sink.process(objectUid, new DestroyCommand(objectUid, JdbcInterfaceType.STATEMENT));
 			isClosed = true;
 		}
@@ -300,12 +300,14 @@ public class WStatement extends WBase implements Statement {
 
 	@Override
 	public void addBatch(final String sql) throws SQLException {
+		Validate.isFalse(connection.isClosed(), "Connection closed");
 		Validate.isFalse(isClosed, "Statement closed");
 		batchCollector.add(sql);
 	}
 
 	@Override
 	public void clearBatch() throws SQLException {
+		Validate.isFalse(connection.isClosed(), "Connection closed");
 		Validate.isFalse(isClosed, "Statement closed");
 		batchCollector.clear();
 	}

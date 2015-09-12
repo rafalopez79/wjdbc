@@ -128,12 +128,7 @@ public class CommandProcessor {
 				LOGGER.error(e);
 				throw SQLExceptionHelper.wrap(e);
 			} finally {
-				// When there are no more JDBC objects left in the connection
-				// entry (that means even the JDBC-Connection is gone) the
-				// connection entry will be immediately destroyed and removed.
 				if (!connentry.hasJdbcObjects()) {
-					// As remove can be called asynchronously here, we must check the
-					// return value.
 					if (connectionEntries.remove(connuid) != null) {
 						LOGGER.info("Connection " + connuid + " closed, statistics:");
 						connentry.traceConnectionStatistics();
@@ -169,8 +164,6 @@ public class CommandProcessor {
 				for (final Entry<Long, ConnectionEntry> entry : set) {
 					final Long key = entry.getKey();
 					final ConnectionEntry connentry = entry.getValue();
-					// Synchronize here so that the process-Method doesn't
-					// access the same entry concurrently
 					final long idleTime = millis - connentry.getLastAccess();
 					if (!connentry.isActive() && idleTime > occtConfig.getTimeoutInMillis()) {
 						LOGGER.info("Closing orphaned connection " + key + " after being idle for about " + idleTime / 1000 + "sec");
@@ -181,8 +174,7 @@ public class CommandProcessor {
 			} catch (final RuntimeException e) {
 				// Any other error will be propagated so that the timer task is
 				// stopped
-				final String msg = "Unexpected Runtime-Exception in OCCT";
-				LOGGER.fatal(msg, e);
+				LOGGER.fatal("Unexpected Runtime-Exception in OCCT", e);
 			}
 		}
 	}
