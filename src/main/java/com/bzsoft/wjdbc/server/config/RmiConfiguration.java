@@ -6,7 +6,8 @@ public class RmiConfiguration {
 
 	private static final Logger	LOGGER			= Logger.getLogger(RmiConfiguration.class);
 
-	protected String					objectName		= "WJdbc";
+	public static  final String OBJECTNAME		= "WJdbc";
+
 	protected int						registryPort	= 2000;
 	protected int						remotingPort	= 0;
 	protected boolean					createRegistry	= true;
@@ -16,21 +17,12 @@ public class RmiConfiguration {
 		// empty
 	}
 
-	public RmiConfiguration(final String objectName) {
-		this.objectName = objectName;
-	}
-
-	public RmiConfiguration(final String objectName, final int port) {
-		this.objectName = objectName;
+	public RmiConfiguration(final int port) {
 		registryPort = port;
 	}
 
 	public String getObjectName() {
-		return objectName;
-	}
-
-	public void setObjectName(final String objectName) {
-		this.objectName = objectName;
+		return OBJECTNAME;
 	}
 
 	public int getPort() {
@@ -75,7 +67,7 @@ public class RmiConfiguration {
 
 	protected void log() {
 		LOGGER.info("RMI-Configuration");
-		LOGGER.info("  ObjectName ............... " + objectName);
+		LOGGER.info("  ObjectName ............... " + OBJECTNAME);
 		LOGGER.info("  Registry-Port ............ " + registryPort);
 		if (remotingPort > 0) {
 			LOGGER.info("  Remoting-Port ............ " + remotingPort);

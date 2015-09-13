@@ -147,6 +147,7 @@ public class SharedConnectionPoolConfiguration {
 		LOGGER.info("    Min. idle time before eviction ....... " + ConfigurationUtil.getStringFromMillis(minEvictableIdleTimeMillis));
 	}
 
+	@SuppressWarnings("unused")
 	public String createSharedConnectionPool() {
 		final String dbcpId = DBCPID + id;
 		// Try to load the DBCP-Driver

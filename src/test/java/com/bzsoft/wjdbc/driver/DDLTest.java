@@ -6,7 +6,9 @@ import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.Date;
 
 import org.junit.After;
@@ -192,8 +194,8 @@ public class DDLTest extends BaseTest{
 				"CREATE SCHEMA TEST3",
 				"CREATE TABLE TEST3.TEST1 ( A SMALLINT, B INT, C FLOAT, D REAL, E CLOB)");
 		stmt.execute("TRUNCATE TABLE TEST3.TEST1");
+		final String s = "Hello World";
 		{
-			final String s = "Hello World";
 			final PreparedStatement pstmt = conn.prepareStatement("INSERT INTO TEST3.TEST1 VALUES(?,?,?,?,?)");
 			pstmt.setShort(1, (short)10);
 			pstmt.setInt(2, 10);
@@ -206,7 +208,55 @@ public class DDLTest extends BaseTest{
 			Assert.assertFalse(hasrs);
 			pstmt.close();
 		}
+		{
+			final Statement stmtq = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			final ResultSet rs = stmtq.executeQuery("SELECT * FROM TEST3.TEST1");
+			final boolean next = rs.next();
+			Assert.assertTrue(next);
+			final short a = rs.getShort("A");
+			final int b = rs.getInt("B");
+			final float c = rs.getFloat("C");
+			final double d = rs.getDouble("D");
+			final String e = rs.getString("E");
+			Assert.assertEquals(a, (short) 10);
+			Assert.assertEquals(b, 10);
+			Assert.assertEquals(c, 10f, EPS);
+			Assert.assertEquals(d, 10d, EPS);
+			Assert.assertEquals(e, s);
+			rs.close();
+			stmtq.close();
+		}
 		stmt.close();
 	}
 
+	@Test
+	public void testMetadata() throws Exception{
+		final Statement stmt = conn.createStatement();
+		executeUpdate(stmt,
+				"DROP SCHEMA IF EXISTS TEST3",
+				"CREATE SCHEMA TEST3",
+				"CREATE TABLE TEST3.TEST1 ( A SMALLINT, B INT, C FLOAT, D REAL, E CLOB)");
+		stmt.execute("TRUNCATE TABLE TEST3.TEST1");
+		stmt.close();
+		{
+			final Statement stmtq = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			final ResultSet rs = stmtq.executeQuery("SELECT * FROM TEST3.TEST1");
+			final ResultSetMetaData md = rs.getMetaData();
+			Assert.assertEquals(md.getColumnCount(), 5);
+			Assert.assertEquals(md.getColumnName(1), "A");
+			Assert.assertEquals(md.getColumnName(2), "B");
+			Assert.assertEquals(md.getColumnName(3), "C");
+			Assert.assertEquals(md.getColumnName(4), "D");
+			Assert.assertEquals(md.getColumnName(5), "E");
+
+			Assert.assertEquals(md.getColumnType(1), Types.SMALLINT);
+			Assert.assertEquals(md.getColumnType(2), Types.INTEGER);
+			Assert.assertEquals(md.getColumnType(3), Types.DOUBLE);
+			Assert.assertEquals(md.getColumnType(4), Types.REAL);
+			Assert.assertEquals(md.getColumnType(5), Types.CLOB);
+
+			rs.close();
+			stmtq.close();
+		}
+	}
 }

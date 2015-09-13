@@ -305,6 +305,7 @@ public class ConnectionConfiguration {
 		return result;
 	}
 
+	@SuppressWarnings("unused")
 	protected Connection createConnectionViaDriverManager(final Properties props) throws SQLException {
 		if (sharedPoolUrl != null) {
 			return DriverManager.getConnection(sharedPoolUrl);

@@ -140,19 +140,13 @@ public class CommandProcessor {
 				LOGGER.debug("Connection entry already gone, DestroyCommand will be ignored");
 			} else {
 				final String msg = "Unknown connection entry " + connuid + " for command " + cmd.toString();
-				LOGGER.error(msg);
+				LOGGER.error("Unknown connection entry " + connuid + " for command " + cmd.toString());
 				throw new SQLException(msg);
 			}
 		}
 		return result;
 	}
 
-	/**
-	 * The orphaned connection collector task periodically checks the existing
-	 * connection entries for orphaned entries that means connections which
-	 * weren't used for a specific time and where the client didn't send keep
-	 * alive pings.
-	 */
 	private class OrphanedConnectionCollector implements Runnable {
 		@Override
 		public void run() {
@@ -189,12 +183,12 @@ public class CommandProcessor {
 			final String clientUser = clientInfo.getProperty("user");
 			final String clientPass = clientInfo.getProperty("password");
 			valid = wjdbcUser.equals(clientUser) && wjdbcPass.equals(clientPass) ? true : false;
-			LOGGER.info("received login request from {user=" + clientInfo.getProperty("user") + ", wjdbc-client.name="
+			LOGGER.info("Received login request from {user=" + clientInfo.getProperty("user") + ", wjdbc-client.name="
 					+ clientInfo.getProperty("wjdbc-client.name") + ", wjdbc-client.address=" + clientInfo.getProperty("wjdbc-client.address")
 					+ "} Validation was " + valid);
 		} catch (final Exception e) {
 			valid = false;
-			LOGGER.error("login properties don't found. You can't access the system.");
+			LOGGER.error("Login properties don't found. You can't access the system.");
 		}
 		return valid;
 	}

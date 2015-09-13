@@ -67,7 +67,7 @@ public class SerializationTest extends BaseSerTest{
 	}
 
 	@Test
-	public void testCallableStatementGetCharacgterStreamCommand() throws Exception{
+	public void testCallableStatementGetCharacterStreamCommand() throws Exception{
 		final CallableStatementGetCharacterStreamCommand icmd1 = new CallableStatementGetCharacterStreamCommand();
 		final CallableStatementGetCharacterStreamCommand ocmd1 = deserialize(serialize(icmd1));
 		assertTrue(icmd1.equals(ocmd1));
@@ -79,6 +79,54 @@ public class SerializationTest extends BaseSerTest{
 		assertTrue(icmd3.equals(ocmd3));
 		final CallableStatementGetCharacterStreamCommand icmd4 = new CallableStatementGetCharacterStreamCommand(null);
 		final CallableStatementGetCharacterStreamCommand ocmd4 = deserialize(serialize(icmd4));
+		assertTrue(icmd4.equals(ocmd4));
+	}
+
+	@Test
+	public void testCallableStatementGetClobCommand() throws Exception{
+		final CallableStatementGetClobCommand icmd1 = new CallableStatementGetClobCommand();
+		final CallableStatementGetClobCommand ocmd1 = deserialize(serialize(icmd1));
+		assertTrue(icmd1.equals(ocmd1));
+		final CallableStatementGetClobCommand icmd2 = new CallableStatementGetClobCommand(randomInt(MAXINT));
+		final CallableStatementGetClobCommand ocmd2 = deserialize(serialize(icmd2));
+		assertTrue(icmd2.equals(ocmd2));
+		final CallableStatementGetClobCommand icmd3 = new CallableStatementGetClobCommand(randomString(MAXSTRINGSIZE));
+		final CallableStatementGetClobCommand ocmd3 = deserialize(serialize(icmd3));
+		assertTrue(icmd3.equals(ocmd3));
+		final CallableStatementGetClobCommand icmd4 = new CallableStatementGetClobCommand(null);
+		final CallableStatementGetClobCommand ocmd4 = deserialize(serialize(icmd4));
+		assertTrue(icmd4.equals(ocmd4));
+	}
+
+	@Test
+	public void testCallableStatementGetNCharacterStreamCommand() throws Exception{
+		final CallableStatementGetNCharacterStreamCommand icmd1 = new CallableStatementGetNCharacterStreamCommand();
+		final CallableStatementGetNCharacterStreamCommand ocmd1 = deserialize(serialize(icmd1));
+		assertTrue(icmd1.equals(ocmd1));
+		final CallableStatementGetNCharacterStreamCommand icmd2 = new CallableStatementGetNCharacterStreamCommand(randomInt(MAXINT));
+		final CallableStatementGetNCharacterStreamCommand ocmd2 = deserialize(serialize(icmd2));
+		assertTrue(icmd2.equals(ocmd2));
+		final CallableStatementGetNCharacterStreamCommand icmd3 = new CallableStatementGetNCharacterStreamCommand(randomString(MAXSTRINGSIZE));
+		final CallableStatementGetNCharacterStreamCommand ocmd3 = deserialize(serialize(icmd3));
+		assertTrue(icmd3.equals(ocmd3));
+		final CallableStatementGetNCharacterStreamCommand icmd4 = new CallableStatementGetNCharacterStreamCommand(null);
+		final CallableStatementGetNCharacterStreamCommand ocmd4 = deserialize(serialize(icmd4));
+		assertTrue(icmd4.equals(ocmd4));
+	}
+
+	@Test
+	public void testCallableStatementGetNClobStreamCommand() throws Exception{
+		final CallableStatementGetNClobCommand icmd1 = new CallableStatementGetNClobCommand();
+		final CallableStatementGetNClobCommand ocmd1 = deserialize(serialize(icmd1));
+		assertTrue(icmd1.equals(ocmd1));
+		final CallableStatementGetNClobCommand icmd2 = new CallableStatementGetNClobCommand(randomInt(MAXINT));
+		final CallableStatementGetNClobCommand ocmd2 = deserialize(serialize(icmd2));
+		assertTrue(icmd2.equals(ocmd2));
+		final CallableStatementGetNClobCommand icmd3 = new CallableStatementGetNClobCommand(randomString(MAXSTRINGSIZE));
+		final CallableStatementGetNClobCommand ocmd3 = deserialize(serialize(icmd3));
+		assertTrue(icmd3.equals(ocmd3));
+		final CallableStatementGetNClobCommand icmd4 = new CallableStatementGetNClobCommand(null);
+		final CallableStatementGetNClobCommand ocmd4 = deserialize(serialize(icmd4));
 		assertTrue(icmd4.equals(ocmd4));
 	}
 

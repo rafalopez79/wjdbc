@@ -184,4 +184,14 @@ public class SerialClob implements Clob, Externalizable {
 	public void free() throws SQLException {
 		data = null;
 	}
+
+	@Override
+	public String toString() {
+		if (data == null){
+			return null;
+		}else if (data.length == 0){
+			return "";
+		}
+		return new StringBuilder(data.length).append(data).toString();
+	}
 }
