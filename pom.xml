@@ -172,7 +172,7 @@
         <artifactId>coveralls-maven-plugin</artifactId>
         <version>4.0.0</version>
         <configuration>
-            
+            <repoToken>${env.coveralls_repo_token}</repoToken>
         </configuration>
     </plugin>
      </plugins>
@@ -214,8 +214,7 @@
         <version>2.7</version>
         <configuration>
           <formats>           
-            <format>xml</format>
-            <format>html</format>
+            <format>xml</format>            
           </formats>
            <maxmem>256m</maxmem>
            <aggregate>true</aggregate>
