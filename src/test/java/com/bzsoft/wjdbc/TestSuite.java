@@ -15,9 +15,9 @@ import com.bzsoft.wjdbc.driver.DDLTest;
 import com.bzsoft.wjdbc.driver.DriverTest;
 import com.bzsoft.wjdbc.serialization.SerializationTest;
 
-@RunWith(Suite.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@SuiteClasses({ SerializationTest.class, DriverTest.class, DDLTest.class, CloseJdbcObjectsTest.class })
+//@RunWith(Suite.class)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@SuiteClasses({ SerializationTest.class, DriverTest.class, DDLTest.class, CloseJdbcObjectsTest.class })
 public class TestSuite {
 
 	protected static final Logger	LOGGER	= Logger.getLogger(TestSuite.class);
