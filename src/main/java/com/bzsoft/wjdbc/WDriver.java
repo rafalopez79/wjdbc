@@ -39,6 +39,7 @@ public final class WDriver implements Driver {
 		} catch (final Exception e) {
 			throw new RuntimeException("Couldn't register Wirtual-JDBC-Driver !", e);
 		}
+
 	}
 
 	/**

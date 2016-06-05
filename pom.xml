@@ -352,5 +352,17 @@
         <version>2.5</version>
         <scope>provided</scope>
     </dependency>
+<!--     <dependency> -->
+<!--         <groupId>de.myfoo</groupId> -->
+<!--         <artifactId>commonj</artifactId> -->
+<!--         <version>1.1.0</version> -->
+<!--         <scope>provided</scope> -->
+<!--     </dependency> -->
+<!--     <dependency> -->
+<!--         <groupId>commonj</groupId> -->
+<!--         <artifactId>commonj-twm</artifactId> -->
+<!--         <version>1.1.0</version> -->
+<!--         <scope>provided</scope> -->
+<!--     </dependency> -->
   </dependencies>
 </project>
