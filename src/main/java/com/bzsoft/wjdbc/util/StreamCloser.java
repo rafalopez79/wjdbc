@@ -18,4 +18,12 @@ public final class StreamCloser {
 			}
 		}
 	}
+
+	public static void close(final Closeable ... cs) {
+		for(final Closeable c : cs){
+			if (c != null){
+				close(c);
+			}
+		}
+	}
 }

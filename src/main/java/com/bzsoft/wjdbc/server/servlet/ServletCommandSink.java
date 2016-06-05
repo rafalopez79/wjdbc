@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -16,7 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bzsoft.wjdbc.command.Command;
 import com.bzsoft.wjdbc.rmi.sf.LZFCompressingInputStream;
@@ -26,6 +26,8 @@ import com.bzsoft.wjdbc.server.config.ConfigurationException;
 import com.bzsoft.wjdbc.server.config.ConnectionConfiguration;
 import com.bzsoft.wjdbc.server.config.WJdbcConfiguration;
 import com.bzsoft.wjdbc.servlet.ServletCommandConstants;
+import com.bzsoft.wjdbc.util.IgnoreCloseInputStream;
+import com.bzsoft.wjdbc.util.IgnoreCloseOutputStream;
 import com.bzsoft.wjdbc.util.SQLExceptionHelper;
 import com.bzsoft.wjdbc.util.StreamCloser;
 
@@ -38,7 +40,7 @@ public class ServletCommandSink extends HttpServlet {
 	private static final String DEFAULT_CONFIG_RESOURCE = "/WEB-INF/wjdbc-config.xml";
 
 
-	private static final Logger		LOGGER	= Logger.getLogger(ServletCommandSink.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServletCommandSink.class);
 
 	private CommandProcessor processor;
 	private WJdbcConfiguration config;
@@ -53,7 +55,7 @@ public class ServletCommandSink extends HttpServlet {
 		if(configResource == null) {
 			configResource = DEFAULT_CONFIG_RESOURCE;
 		}
-		LOGGER.info("Trying to get config resource " + configResource + "...");
+		LOGGER.info("Trying to get config resource {}...",configResource);
 		final InputStream cis = getClass().getResourceAsStream(configResource);
 		if(cis == null) {
 			final String msg = "WJDBC-Configuration " + configResource + " not found !";
@@ -109,17 +111,16 @@ public class ServletCommandSink extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) throws ServletException {
+	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException {
 		ObjectInputStream ois = null;
 		ObjectOutputStream oos = null;
 		try {
 			// Get the method to execute
-			final String method = httpServletRequest.getHeader(ServletCommandConstants.METHOD);
+			final String method = request.getHeader(ServletCommandConstants.METHOD);
 			if(method != null) {
-				ois = new ObjectInputStream(new LZFCompressingInputStream(httpServletRequest.getInputStream()));
+				ois = new ObjectInputStream(new LZFCompressingInputStream(new IgnoreCloseInputStream(request.getInputStream())));
 				// And initialize the output
-				final OutputStream os = new LZFCompressingOutputStream(httpServletResponse.getOutputStream());
-				oos = new ObjectOutputStream(os);
+				oos = new ObjectOutputStream(new LZFCompressingOutputStream(new IgnoreCloseOutputStream(response.getOutputStream())));
 				Object objectToReturn = null;
 				try {
 					// Some command to process ?
@@ -142,7 +143,7 @@ public class ServletCommandSink extends HttpServlet {
 							objectToReturn = new SQLException("WJDBC-Connection " + url + " not found");
 						}
 					}else{
-						httpServletResponse.sendError(500);
+						response.sendError(500);
 					}
 				} catch (final Throwable t) {
 					objectToReturn = SQLExceptionHelper.wrap(t);
@@ -150,16 +151,15 @@ public class ServletCommandSink extends HttpServlet {
 				// Write the result in the response buffer
 				oos.writeObject(objectToReturn);
 				oos.flush();
-				httpServletResponse.flushBuffer();
+				response.flushBuffer();
 			} else {
-				httpServletResponse.sendError(404);
+				response.sendError(404);
 			}
 		} catch (final Exception e) {
 			LOGGER.error("Unexpected Exception", e);
 			throw new ServletException(e);
 		} finally {
-			StreamCloser.close(ois);
-			StreamCloser.close(oos);
+			StreamCloser.close(ois, oos);
 		}
 	}
 }

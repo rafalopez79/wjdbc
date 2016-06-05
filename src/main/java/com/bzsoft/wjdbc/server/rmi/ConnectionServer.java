@@ -12,7 +12,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bzsoft.wjdbc.rmi.ConnectionBrokerRmi;
 import com.bzsoft.wjdbc.rmi.SecureSocketFactory;
@@ -25,7 +26,7 @@ import com.bzsoft.wjdbc.server.config.WJdbcConfiguration;
 
 public class ConnectionServer {
 
-	private static final Logger		LOGGER	= Logger.getLogger(ConnectionServer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionServer.class);
 
 	private final WJdbcConfiguration	config;
 	private RmiConfiguration rmiConf;
@@ -53,10 +54,10 @@ public class ConnectionServer {
 		}
 		final Registry reg;
 		if (rmiConfig.isCreateRegistry()) {
-			LOGGER.info("Starting RMI-Registry on port " + rmiConfig.getPort());
+			LOGGER.info("Starting RMI-Registry on port {}", rmiConfig.getPort());
 			reg = LocateRegistry.createRegistry(rmiConfig.getPort(), socketFactory, socketFactory);
 		} else {
-			LOGGER.info("Using RMI-Registry on port " + rmiConfig.getPort());
+			LOGGER.info("Using RMI-Registry on port {}", rmiConfig.getPort());
 			reg = LocateRegistry.getRegistry(rmiConfig.getPort());
 		}
 		final Map<String, SharedConnectionPoolConfiguration> sharedConnMap = config.getSharedPoolConfiguration();
@@ -74,7 +75,7 @@ public class ConnectionServer {
 			}
 		}
 		final CommandProcessor commandProcessor = new CommandProcessor(config);
-		LOGGER.info("Binding remote object to '" + rmiConfig.getObjectName() + "'");
+		LOGGER.info("Binding remote object to '{}'",rmiConfig.getObjectName());
 		final ConnectionBrokerRmi brk = new ConnectionBrokerRmiImpl(commandProcessor, socketFactory, rmiConfig.getRemotingPort());
 		reg.rebind(rmiConfig.getObjectName(), brk);
 		this.broker = brk;

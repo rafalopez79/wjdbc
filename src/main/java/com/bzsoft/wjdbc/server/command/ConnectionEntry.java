@@ -23,7 +23,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bzsoft.wjdbc.command.Command;
 import com.bzsoft.wjdbc.command.ConnectionContext;
@@ -43,7 +44,7 @@ import com.bzsoft.wjdbc.transport.StatementRemoteJdbcObjectTransport;
 
 class ConnectionEntry implements ConnectionContext {
 
-	private static final Logger						LOGGER	= Logger.getLogger(ConnectionEntry.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionEntry.class);
 
 	private final long									uid;
 	private final Connection							connection;
@@ -84,7 +85,7 @@ class ConnectionEntry implements ConnectionContext {
 		try {
 			if (!connection.isClosed()) {
 				connection.close();
-				LOGGER.debug("Closed connection " + uid);
+				LOGGER.debug("Closed connection {}", uid);
 			}
 			traceConnectionStatistics();
 		} catch (final SQLException e) {
@@ -173,7 +174,7 @@ class ConnectionEntry implements ConnectionContext {
 			final JdbcObjectHolder<V> target = (JdbcObjectHolder<V>) jdbcObjects.get(objectUID);
 			if (target != null) {
 				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Target for UID " + objectUID + " found");
+					LOGGER.debug("Target for UID {} found",objectUID );
 				}
 				final V val = target.getJdbcObject();
 				// Execute the command on the target object
@@ -188,7 +189,7 @@ class ConnectionEntry implements ConnectionContext {
 					final long ruid = transport.getUID();
 					jdbcObjects.put(ruid, new JdbcObjectHolder<V>((V) transport.getJDBCObject(), jdbcInterfaceType));
 					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Registered " + result.getClass().getName() + " with UID " + ruid);
+						LOGGER.debug("Registered {} with UID {}",result.getClass().getName(), ruid);
 					}
 					return rr;
 				}
@@ -198,17 +199,16 @@ class ConnectionEntry implements ConnectionContext {
 					if (cmd instanceof ResultSetProducerCommand) {
 						forwardOnly = ((ResultSetProducerCommand) cmd).getResultSetType() == ResultSet.TYPE_FORWARD_ONLY;
 					} else {
-						LOGGER.debug("Command " + cmd.toString() + " doesn't implement "
-								+ "ResultSetProducer-Interface, assuming ResultSet is scroll insensitive");
+						LOGGER.debug("Command {} doesn't implement ResultSetProducer-Interface, assuming ResultSet is scroll insensitive",  cmd.toString() );
 					}
 					result = (R) handleResultSet((ResultSet) result, forwardOnly);
 				} else if (result instanceof ResultSetMetaData) {
 					result = (R) handleResultSetMetaData((ResultSetMetaData) result);
 				} else if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("... returned " + result);
+					LOGGER.debug("... returned {}", result);
 				}
 			} else {
-				LOGGER.warn("JDBC-Object for UID " + objectUID + " and command " + cmd + " is null !");
+				LOGGER.warn("JDBC-Object for UID {} and command {} is null !",objectUID,cmd);
 			}
 
 			if (connectionConfiguration.isTraceCommandCount()) {
@@ -276,27 +276,27 @@ class ConnectionEntry implements ConnectionContext {
 				if (stmt != null) {
 					cmd.execute(stmt, this);
 				} else {
-					LOGGER.info("no statement with id " + itemuid + " to cancel");
+					LOGGER.info("no statement with id {} to cancel",itemuid);
 				}
 			} catch (final Exception e) {
 				LOGGER.info(e.getMessage(), e);
 			}
 		} else {
-			LOGGER.info("no statement with id " + itemuid + " to cancel");
+			LOGGER.info("no statement with id {} to cancel",itemuid);
 		}
 	}
 
 	public void traceConnectionStatistics() {
-		LOGGER.info("  Connection ........... " + connectionConfiguration.getId());
-		LOGGER.info("  IP address ........... " + clientInfo.getProperty("wjdbc-client.address", "n.a."));
-		LOGGER.info("  Host name ............ " + clientInfo.getProperty("wjdbc-client.name", "n.a."));
+		LOGGER.info("  Connection ........... {}", connectionConfiguration.getId());
+		LOGGER.info("  IP address ........... {}", clientInfo.getProperty("wjdbc-client.address", "n.a."));
+		LOGGER.info("  Host name ............ {}", clientInfo.getProperty("wjdbc-client.name", "n.a."));
 		dumpClientInfoProperties();
-		LOGGER.info("  Last time of access .. " + new Date(lastAccessTimestamp));
-		LOGGER.info("  Processed commands ... " + numberOfProcessedCommands);
+		LOGGER.info("  Last time of access .. {}", new Date(lastAccessTimestamp));
+		LOGGER.info("  Processed commands ... {}", numberOfProcessedCommands);
 		if (!jdbcObjects.isEmpty()) {
-			LOGGER.info("  Remaining objects .... " + jdbcObjects.size());
+			LOGGER.info("  Remaining objects .... {}", jdbcObjects.size());
 			for (final JdbcObjectHolder<?> jdbcObjectHolder : jdbcObjects.values()) {
-				LOGGER.info("  - " + jdbcObjectHolder.getJdbcObject().getClass().getName());
+				LOGGER.info("  - {}", jdbcObjectHolder.getJdbcObject().getClass().getName());
 			}
 		}
 		if (!commandCountMap.isEmpty()) {
@@ -315,7 +315,7 @@ class ConnectionEntry implements ConnectionContext {
 			for (final Entry<String, Integer> entry : entries) {
 				final String cmd = entry.getKey();
 				final Integer count = entry.getValue();
-				LOGGER.info("     " + count + " : " + cmd);
+				LOGGER.info("     {} : {}", count, cmd);
 			}
 		}
 	}
@@ -332,7 +332,7 @@ class ConnectionEntry implements ConnectionContext {
 		jdbcObjects.put(id, new JdbcObjectHolder<ResultSetHolder>(new ResultSetHolder(result, executor, rowPacketSize, lastPartReached),
 				JdbcInterfaceType.RESULTSETHOLDER));
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Registered ResultSet with UID " + id);
+			LOGGER.debug("Registered ResultSet with UID {}", id);
 		}
 		return srs;
 	}
@@ -351,7 +351,7 @@ class ConnectionEntry implements ConnectionContext {
 						printedHeader = true;
 						LOGGER.info("  Client-Properties ...");
 					}
-					LOGGER.info("    " + key + " => " + clientInfo.getProperty(key));
+					LOGGER.info("    {} => {}",key, clientInfo.getProperty(key));
 				}
 			}
 		}

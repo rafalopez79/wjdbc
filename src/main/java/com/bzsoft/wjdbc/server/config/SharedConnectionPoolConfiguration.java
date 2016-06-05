@@ -10,11 +10,13 @@ import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDriver;
 import org.apache.commons.pool.impl.GenericObjectPool;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class SharedConnectionPoolConfiguration {
 
-	private static final Logger	LOGGER								= Logger.getLogger(SharedConnectionPoolConfiguration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SharedConnectionPoolConfiguration.class);
 
 	protected String					id;
 	protected String					driver;
@@ -131,20 +133,20 @@ public class SharedConnectionPoolConfiguration {
 
 	protected void log() {
 		LOGGER.info("  Shared ConnectionPool-Configuration");
-		LOGGER.info("    Id ................................... " + id);
-		LOGGER.info("    Driver ............................... " + driver);
+		LOGGER.info("    Id ................................... {}", id);
+		LOGGER.info("    Driver ............................... {}", driver);
 		if (dataSourceProvider != null) {
-			LOGGER.info("    DatasourceProvider .......................... " + driver);
+			LOGGER.info("    DatasourceProvider .......................... {}", driver);
 		}
-		LOGGER.info("    Url .................................. " + url);
-		LOGGER.info("    User ................................. " + user);
-		LOGGER.info("    Password ............................. " + password);
-		LOGGER.info("    Max. active connections .............. " + maxActive);
-		LOGGER.info("    Max. number of idle connections ...... " + maxIdle);
-		LOGGER.info("    Min. number of idle connections ...... " + minIdle);
-		LOGGER.info("    Max. waiting time for connections .... " + ConfigurationUtil.getStringFromMillis(maxWait));
-		LOGGER.info("    Time between eviction runs ........... " + ConfigurationUtil.getStringFromMillis(timeBetweenEvictionRunsMillis));
-		LOGGER.info("    Min. idle time before eviction ....... " + ConfigurationUtil.getStringFromMillis(minEvictableIdleTimeMillis));
+		LOGGER.info("    Url .................................. {}", url);
+		LOGGER.info("    User ................................. {}", user);
+		LOGGER.info("    Password ............................. {}", password);
+		LOGGER.info("    Max. active connections .............. {}", maxActive);
+		LOGGER.info("    Max. number of idle connections ...... {}", maxIdle);
+		LOGGER.info("    Min. number of idle connections ...... {}", minIdle);
+		LOGGER.info("    Max. waiting time for connections .... {}", ConfigurationUtil.getStringFromMillis(maxWait));
+		LOGGER.info("    Time between eviction runs ........... {}", ConfigurationUtil.getStringFromMillis(timeBetweenEvictionRunsMillis));
+		LOGGER.info("    Min. idle time before eviction ....... {}", ConfigurationUtil.getStringFromMillis(minEvictableIdleTimeMillis));
 	}
 
 	@SuppressWarnings("unused")
@@ -168,10 +170,10 @@ public class SharedConnectionPoolConfiguration {
 			final PoolingDriver dbcpDriver = (PoolingDriver) DriverManager.getDriver(DBCPID);
 			// Register pool with connection id
 			dbcpDriver.registerPool(id, connectionPool);
-			LOGGER.debug("Shared Connection-Pooling successfully initialized for pool " + id);
+			LOGGER.debug("Shared Connection-Pooling successfully initialized for pool {}", id);
 			return dbcpId;
 		} catch (final Exception e) {
-			LOGGER.error("Cannot initialize shared pool " + id, e);
+			LOGGER.error("Cannot initialize shared pool {}", id, e);
 			return null;
 		}
 	}

@@ -1,10 +1,12 @@
 package com.bzsoft.wjdbc.server.config;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class RmiConfiguration {
 
-	private static final Logger	LOGGER			= Logger.getLogger(RmiConfiguration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RmiConfiguration.class);
 
 	public static  final String OBJECTNAME		= "WJdbc";
 
@@ -67,12 +69,12 @@ public class RmiConfiguration {
 
 	protected void log() {
 		LOGGER.info("RMI-Configuration");
-		LOGGER.info("  ObjectName ............... " + OBJECTNAME);
-		LOGGER.info("  Registry-Port ............ " + registryPort);
+		LOGGER.info("  ObjectName ............... {}", OBJECTNAME);
+		LOGGER.info("  Registry-Port ............ {}", registryPort);
 		if (remotingPort > 0) {
-			LOGGER.info("  Remoting-Port ............ " + remotingPort);
+			LOGGER.info("  Remoting-Port ............ {}", remotingPort);
 		}
-		LOGGER.info("  Create Registry .......... " + createRegistry);
-		LOGGER.info("  Use SSL .................. " + useSSL);
+		LOGGER.info("  Create Registry .......... {}", createRegistry);
+		LOGGER.info("  Use SSL .................. {}", useSSL);
 	}
 }

@@ -1,7 +1,8 @@
 package com.bzsoft.wjdbc.server.config;
 
 import org.apache.commons.pool.impl.GenericObjectPool;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class inherits from the GenericObjectPool and provides a little bit of
@@ -11,7 +12,7 @@ import org.apache.log4j.Logger;
  */
 public class LoggingGenericObjectPool extends GenericObjectPool {
 
-	private static final Logger	LOGGER	= Logger.getLogger(LoggingGenericObjectPool.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoggingGenericObjectPool.class);
 
 	private final String				idOfConnection;
 
@@ -28,8 +29,6 @@ public class LoggingGenericObjectPool extends GenericObjectPool {
 	@Override
 	public synchronized void evict() throws Exception {
 		super.evict();
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("DBCP-Evictor: number of idle connections in '" + idOfConnection + "' = " + getNumIdle());
-		}
+		LOGGER.debug("DBCP-Evictor: number of idle connections in '{}' = {}", idOfConnection, getNumIdle());
 	}
 }

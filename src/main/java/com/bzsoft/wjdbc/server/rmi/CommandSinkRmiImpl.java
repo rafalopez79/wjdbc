@@ -5,7 +5,8 @@ import java.rmi.server.Unreferenced;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bzsoft.wjdbc.command.Command;
 import com.bzsoft.wjdbc.rmi.CommandSinkRmi;
@@ -13,7 +14,7 @@ import com.bzsoft.wjdbc.server.command.CommandProcessor;
 
 public class CommandSinkRmiImpl implements CommandSinkRmi, Unreferenced {
 
-	private static final Logger		LOGGER	= Logger.getLogger(CommandSinkRmiImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommandSinkRmiImpl.class);
 
 	private final CommandProcessor	processor;
 

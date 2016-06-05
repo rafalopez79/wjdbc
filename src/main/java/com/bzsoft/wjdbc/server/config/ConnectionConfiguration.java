@@ -16,14 +16,15 @@ import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDriver;
 import org.apache.commons.pool.impl.GenericObjectPool;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bzsoft.wjdbc.WJdbcException;
 import com.bzsoft.wjdbc.server.DataSourceProvider;
 
 public class ConnectionConfiguration {
 
-	private static final Logger				LOGGER								= Logger.getLogger(ConnectionConfiguration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionConfiguration.class);
 
 	// Basic properties
 	protected String								id;
@@ -237,7 +238,7 @@ public class ConnectionConfiguration {
 			}
 			userWJDBCPassword = String.valueOf(hiddenPassword);
 		}
-		LOGGER.info("Connection-Configuration '" + id + "'");
+		LOGGER.info("Connection-Configuration '{}'",id);
 		// We must differentiate between the DataSource-API and the older
 		// DriverManager-API. When the DataSource-Provider is provided, the
 		// driver and URL configurations will be ignored

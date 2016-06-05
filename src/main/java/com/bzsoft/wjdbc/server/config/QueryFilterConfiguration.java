@@ -7,11 +7,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class QueryFilterConfiguration {
 
-	private static final Logger	LOGGER	= Logger.getLogger(QueryFilterConfiguration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(QueryFilterConfiguration.class);
 
 	private final List<Filter>		filters	= new ArrayList<Filter>();
 

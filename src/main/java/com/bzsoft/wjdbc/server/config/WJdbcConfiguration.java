@@ -12,7 +12,8 @@ import java.util.Properties;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.substitution.MultiVariableExpander;
 import org.apache.commons.digester.substitution.VariableSubstitutor;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import com.bzsoft.wjdbc.server.concurrent.Executor;
@@ -20,7 +21,7 @@ import com.bzsoft.wjdbc.server.concurrent.impl.BaseExecutor;
 
 public class WJdbcConfiguration {
 
-	private static final Logger												LOGGER					= Logger.getLogger(WJdbcConfiguration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(WJdbcConfiguration.class);
 	private static final int													SCHEDTHREADPOOLSIZE	= 1;
 	private static final int													MAXTHREADPOOLSIZE		= 200;
 

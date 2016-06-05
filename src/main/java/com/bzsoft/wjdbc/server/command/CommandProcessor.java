@@ -13,7 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bzsoft.wjdbc.WJdbcException;
 import com.bzsoft.wjdbc.command.Command;
@@ -31,7 +32,7 @@ import com.bzsoft.wjdbc.util.SQLExceptionHelper;
  */
 public class CommandProcessor {
 
-	private static final Logger					LOGGER	= Logger.getLogger(CommandProcessor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommandProcessor.class);
 	private static final AtomicLong				COUNTER;
 
 	static {
@@ -109,7 +110,7 @@ public class CommandProcessor {
 	public <R, V> R process(final long connuid, final long uid, final Command<R, V> cmd) throws SQLException {
 		R result = null;
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug(cmd);
+			LOGGER.debug("Command {}",cmd);
 		}
 		final ConnectionEntry connentry = connectionEntries.get(connuid);
 		if (connentry != null) {
@@ -125,7 +126,7 @@ public class CommandProcessor {
 				}
 				throw SQLExceptionHelper.wrap(e);
 			} catch (final Throwable e) {
-				LOGGER.error(e);
+				LOGGER.error("Error {}",e);
 				throw SQLExceptionHelper.wrap(e);
 			} finally {
 				if (!connentry.hasJdbcObjects()) {
@@ -168,7 +169,7 @@ public class CommandProcessor {
 			} catch (final RuntimeException e) {
 				// Any other error will be propagated so that the timer task is
 				// stopped
-				LOGGER.fatal("Unexpected Runtime-Exception in OCCT", e);
+				LOGGER.error("Unexpected Runtime-Exception in OCCT", e);
 			}
 		}
 	}

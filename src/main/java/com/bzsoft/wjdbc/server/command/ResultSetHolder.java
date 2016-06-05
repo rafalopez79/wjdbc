@@ -9,7 +9,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bzsoft.wjdbc.serial.RowPacket;
 import com.bzsoft.wjdbc.server.concurrent.Executor;
@@ -21,7 +22,7 @@ import com.bzsoft.wjdbc.server.concurrent.Executor;
  */
 public class ResultSetHolder {
 
-	private static final Logger	LOGGER	= Logger.getLogger(ResultSetHolder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResultSetHolder.class);
 
 	private final Lock				lock;
 	private final Executor			executor;

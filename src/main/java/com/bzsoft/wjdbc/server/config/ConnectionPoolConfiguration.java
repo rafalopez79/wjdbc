@@ -1,10 +1,12 @@
 package com.bzsoft.wjdbc.server.config;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class ConnectionPoolConfiguration {
 
-	private static final Logger	LOGGER								= Logger.getLogger(ConnectionPoolConfiguration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionPoolConfiguration.class);
 
 	protected int						maxActive							= 8;
 	protected int						maxIdle								= 8;
@@ -67,11 +69,11 @@ public class ConnectionPoolConfiguration {
 
 	protected void log() {
 		LOGGER.info("  ConnectionPool-Configuration");
-		LOGGER.info("    Max. active connections .............. " + maxActive);
-		LOGGER.info("    Max. number of idle connections ...... " + maxIdle);
-		LOGGER.info("    Min. number of idle connections ...... " + minIdle);
-		LOGGER.info("    Max. waiting time for connections .... " + ConfigurationUtil.getStringFromMillis(maxWait));
-		LOGGER.info("    Time between eviction runs ........... " + ConfigurationUtil.getStringFromMillis(timeBetweenEvictionRunsMillis));
-		LOGGER.info("    Min. idle time before eviction ....... " + ConfigurationUtil.getStringFromMillis(minEvictableIdleTimeMillis));
+		LOGGER.info("    Max. active connections .............. {}", maxActive);
+		LOGGER.info("    Max. number of idle connections ...... {}", maxIdle);
+		LOGGER.info("    Min. number of idle connections ...... {}", minIdle);
+		LOGGER.info("    Max. waiting time for connections .... {}", ConfigurationUtil.getStringFromMillis(maxWait));
+		LOGGER.info("    Time between eviction runs ........... {}", ConfigurationUtil.getStringFromMillis(timeBetweenEvictionRunsMillis));
+		LOGGER.info("    Min. idle time before eviction ....... {}", ConfigurationUtil.getStringFromMillis(minEvictableIdleTimeMillis));
 	}
 }
