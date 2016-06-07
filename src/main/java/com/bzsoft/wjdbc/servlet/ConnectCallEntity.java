@@ -19,7 +19,6 @@ public class ConnectCallEntity extends AbstractHttpEntity {
 	private final Properties props;
 	private final Properties clientInfo;
 
-
 	public ConnectCallEntity(final String database, final Properties props, final Properties clientInfo) throws IOException {
 		this.database = database;
 		this.props = props;
