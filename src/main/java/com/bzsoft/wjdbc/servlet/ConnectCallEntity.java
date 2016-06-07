@@ -19,18 +19,7 @@ public class ConnectCallEntity extends AbstractHttpEntity {
 	private final Properties props;
 	private final Properties clientInfo;
 
-	/**
-	 * Creates new instance of this class.
-	 *
-	 * @param methodName
-	 *           the method name
-	 * @param args
-	 *           the args
-	 * @param sosFactory
-	 *           the sos factory
-	 * @throws IOException
-	 *            in case of an I/O error
-	 */
+
 	public ConnectCallEntity(final String database, final Properties props, final Properties clientInfo) throws IOException {
 		this.database = database;
 		this.props = props;

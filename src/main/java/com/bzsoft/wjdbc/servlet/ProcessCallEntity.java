@@ -20,18 +20,6 @@ public class ProcessCallEntity<R,P> extends AbstractHttpEntity {
 	private final long uid;
 	private final Command<R,P> cmd;
 
-	/**
-	 * Creates new instance of this class.
-	 *
-	 * @param methodName
-	 *           the method name
-	 * @param args
-	 *           the args
-	 * @param sosFactory
-	 *           the sos factory
-	 * @throws IOException
-	 *            in case of an I/O error
-	 */
 	public ProcessCallEntity(final long connuid, final long uid, final Command<R,P> cmd) throws IOException {
 		this.connuid = connuid;
 		this.uid = uid;
